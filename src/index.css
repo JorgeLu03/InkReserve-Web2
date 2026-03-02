@@ -1,0 +1,239 @@
+/* =============== InkReserve Auth Base (Responsive) =============== */
+
+:root{
+  --bg: #0f1014;
+  --card: rgba(245, 240, 232, 0.88);
+  --card-edge: rgba(255,255,255,.25);
+  --text: #1b1b1e;
+  --muted: rgba(27,27,30,.7);
+  --field: rgba(255,255,255,.55);
+  --field-edge: rgba(0,0,0,.08);
+  --accent: #d6762a;
+  --accent-2: #e08a3f;
+  --shadow: rgba(0,0,0,.35);
+}
+
+/* Reset mínimo */
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+}
+
+/* Fondo full */
+.authScreen{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 44px);
+  background: url("/assets/fondo.png") center/cover no-repeat fixed;
+}
+
+/* Card central */
+.authCard{
+  width: min(520px, 100%);
+  position: relative;
+  border-radius: 18px;
+  padding: clamp(18px, 3vw, 30px);
+  padding-top: 14px;           /* 👈 NUEVO (sube todo) */
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  box-shadow: 0 18px 50px var(--shadow);
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+/* Decoraciones: siempre arriba pero no estorban */
+.decor{
+  position: absolute;
+  pointer-events: none;
+  opacity: .35;
+  filter: contrast(0.95);
+  width: clamp(110px, 18vw, 170px);
+  height: auto;
+}
+
+.decorTopLeft{ top: 10px; left: 10px; }
+.decorTopRight{ top: 10px; right: 10px; }
+.decorBottomLeft{ bottom: 10px; left: 10px; }
+.decorBottomRight{ bottom: 10px; right: 10px; }
+
+/* Header */
+.brandRow{
+  display:flex;
+  justify-content:center;
+  margin-bottom: 0; /* importante */
+}
+
+.brandLogo{
+  width: clamp(220px, 35vw, 360px);
+  height: auto;
+  display: block;
+
+  /* 👇 esto SÍ reduce el hueco real */
+ margin: -20px auto -48px auto;
+}
+
+.title{
+  margin: 0 0 3px;
+  text-align:center;
+  font-size: clamp(22px, 2.4vw, 30px);
+}
+.subtitle{
+  margin: 0 0 10px;   /* antes 16px */
+  text-align:center;
+  color: var(--muted);
+  font-size: clamp(13px, 1.5vw, 15px);
+}
+
+/* Toggle */
+.roleToggle{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 10px 0 18px;
+}
+.roleBtn{
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.35);
+  font-weight: 600;
+  cursor: pointer;
+}
+.roleBtnGhost{
+  opacity: .7;
+}
+.roleBtnActive{
+  border-color: rgba(214,118,42,.45);
+  box-shadow: 0 0 0 3px rgba(214,118,42,.12);
+  background: rgba(255,255,255,.55);
+}
+
+/* Form */
+.form{
+  display: grid;
+  gap: 12px;
+}
+
+.field{ display:grid; gap: 8px; }
+.label{ font-weight: 600; font-size: 14px; }
+
+.inputWrap{
+  position: relative;
+  display:flex;
+  align-items:center;
+  background: var(--field);
+  border: 1px solid var(--field-edge);
+  border-radius: 12px;
+  height: 46px; /* tocable en móvil */
+  padding-left: 44px;
+  padding-right: 44px;
+}
+
+.inputIcon{
+  position:absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  opacity: .85;
+}
+
+.input{
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.eyeBtn{
+  position:absolute;
+  right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: .7;
+  font-size: 16px;
+}
+
+.rowBetween{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.remember{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.linkBtn{
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  cursor:pointer;
+  padding: 6px 4px;
+}
+
+/* Botón principal */
+.primaryBtn{
+  margin-top: 8px;
+  height: 46px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(214,118,42,.25);
+}
+
+.bottomText{
+  display:flex;
+  justify-content:center;
+  gap: 8px;
+  align-items:center;
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* Responsivo: celular */
+@media (max-width: 420px){
+  .authCard{
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .decor{
+    opacity: .22;
+    width: 120px;
+  }
+  .rowBetween{
+    flex-direction: column;
+    align-items:flex-start;
+  }
+}
+
+.inputWrapActive{
+  border-color: rgba(214,118,42,.45);
+  box-shadow: 0 0 0 3px rgba(214,118,42,.12);
+}
+.inputWrapError{
+  border-color: rgba(176, 0, 32, .45);
+  box-shadow: 0 0 0 3px rgba(176, 0, 32, .12);
+}
+
+.errorText{
+  color: #b00020;
+  font-size: 12px;
+  margin-top: 2px;
+}
