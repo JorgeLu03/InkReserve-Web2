@@ -1,4 +1,6 @@
 import { Usuario } from './schema.js';
+import jwt from 'jsonwebtoken';
+const JWT_SECRET = "testtest_clave";
 
 export const Registrar_Usuario = async (req, res) => {
     try {
@@ -65,6 +67,24 @@ export const Login_Usuario = async (req, res) => {
             const Usuario_Existe_Contrasena = await Usuario.findOne({ Contrasena });
 
             if (Usuario_Existe_Contrasena) {
+                
+
+
+                //Token
+                const token = jwt.sign(
+                    { id: Usuario_Existe_Contrasena._id, Es_Admin: Usuario_Existe_Contrasena.Es_Admin,
+                        Nombre_Completo:Usuario_Existe_Contrasena.Nombre_Completo,
+                        Correo_Electronico:Usuario_Existe_Contrasena.Correo_Electronico,
+                        Contrasena:Usuario_Existe_Contrasena.Contrasena,
+                        Telefono:Usuario_Existe_Contrasena.Telefono
+                    }, 
+                    JWT_SECRET, 
+                    { expiresIn: '1h' }
+                );
+
+                res.json({ token });
+
+
                 return res.status(201).json({ message: "Usuario si existe, Login exitoso"});
             }
             else{
