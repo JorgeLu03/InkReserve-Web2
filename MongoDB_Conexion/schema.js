@@ -1,6 +1,6 @@
 //Para probar archivo, la ruta es *node ./MongoDB_Conexion/schema.cjs*
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ConnectToMongoDB = async () => {
     try {
@@ -296,13 +296,12 @@ const Venta_Schema = new mongoose.Schema({
 
 
 
-const Usuario = mongoose.model('Usuario', Usuario_Schema);
-const Cliente = mongoose.model('Cliente', Cliente_Schema);
-const Tatuador = mongoose.model('Tatuador', Tatuador_Schema);
-const Categoria = mongoose.model('Categoria', Categoria_Schema);
-const Cita = mongoose.model('Cita', Cita_Schema);
-const Foto_Tatuaje = mongoose.model('Foto_Tatuaje', Foto_Tatuaje_Schema);
-const Venta = mongoose.model('Venta', Venta_Schema);
+export const Usuario = mongoose.model('Usuario', Usuario_Schema);
+export const Cliente = mongoose.model('Cliente', Cliente_Schema);
+export const Tatuador = mongoose.model('Tatuador', Tatuador_Schema);
+export const Categoria = mongoose.model('Categoria', Categoria_Schema);
+export const Cita = mongoose.model('Cita', Cita_Schema);
+export const Foto_Tatuaje = mongoose.model('Foto_Tatuaje', Foto_Tatuaje_Schema);
+export const Venta = mongoose.model('Venta', Venta_Schema);
 
-
-module.exports = {Usuario, Cliente,Tatuador,Categoria,Cita,Foto_Tatuaje,Venta};
+//module.exports = {Usuario, Cliente,Tatuador,Categoria,Cita,Foto_Tatuaje,Venta};
