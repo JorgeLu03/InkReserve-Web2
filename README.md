@@ -15,16 +15,17 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-# Ejemplo de ejecutar Node en archivos dentro de una carpeta
+# Ejemplos
+## Ejecutar Node en archivos dentro de una carpeta
 
 - node ./MongoDB_Conexion/server.js
 - node ./MongoDB_Conexion/schema.js
 - node ./MongoDB_Conexion/create.js
 
 
-# Ejemplos probar con POSTMAN
+## Ejemplos probar con POSTMAN
 
-## Login:
+### Login:
 POST http://localhost:3000/api/auth/login
 Body json
 {      
@@ -32,7 +33,7 @@ Body json
     "Contrasena": "jinjin123"
 }
 
-## Registrar
+### Registrar
 POST http://localhost:3000/api/auth/register
 Body json
 {      
@@ -44,7 +45,7 @@ Body json
     "Esta_Activo": true
 }
 
-## Token
+### Token
 POST http://localhost:3000/api/auth/login
 copiar el token que sale en respuesta
 GET http://localhost:3000/api/auth/perfil
