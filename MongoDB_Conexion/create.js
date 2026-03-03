@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { Categoria } from './schema.js';
 
 const ConnectToMongoDB = async () => {
   
@@ -16,11 +17,14 @@ const ConnectToMongoDB = async () => {
 
     
     //Definir Modelo al que se va a insertar
-    const { Categoria } = require('./schema');
-    /*
+    //import { Categoria } from './schema.js';
+
+
+    
     //Comprobar, si esto da {} o "undefined" Entonces Modelo no se exportó bien
     console.log("¿Que Modelo se Importo?:", Categoria);
 
+    
     //Insertar a Categoria
     const new_Categoria = await Categoria.create({
         Titulo: 'Banda de Rock'
@@ -28,7 +32,7 @@ const ConnectToMongoDB = async () => {
 
     //Comprobar qué se insertó
     console.log("Salio bien!, ID:", new_Categoria._id);
-    */
+    
 
     
     
