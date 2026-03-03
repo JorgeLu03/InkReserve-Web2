@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Categoria } from './schema.js';
+import { Usuario } from './schema.js';
 
 const ConnectToMongoDB = async () => {
   
@@ -33,6 +34,18 @@ const ConnectToMongoDB = async () => {
     //Comprobar qué se insertó
     console.log("Salio bien!, ID:", new_Categoria._id);
     
+
+    const new_Usuario = await Usuario.create({
+        Nombre_Completo: 'Admin manuel',
+        Correo_Electronico: 'manuel@hotmail.com',
+        Contrasena: 'minmin123',
+        Telefono: '8123454522',
+        Es_Admin: true,
+        Esta_Activo: true
+        
+    });
+
+    console.log("Salio bien!, ID:", new_Usuario._id);
 
     
     
