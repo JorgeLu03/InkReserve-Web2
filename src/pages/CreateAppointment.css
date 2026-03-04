@@ -1,0 +1,162 @@
+/* ── PAGE BASE ── */
+.pageScreen {
+  position: relative; min-height: 100vh; display: flex; flex-direction: column;
+  background: url("/assets/fondo.png") center/cover no-repeat fixed;
+  color: #1b1b1e;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; overflow: hidden;
+}
+.pageBg { display: none; }
+.pageHeader {
+  position: relative; z-index: 1; display: flex; align-items: center; gap: 1rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #b85e1e 0%, #d6762a 55%, #e08a3f 100%);
+  border-bottom: 1px solid rgba(0,0,0,0.18); color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.pageTitle { flex: 1; text-align: center; margin: 0; font-size: 1.2rem; font-weight: 900; color: #fff; font-family: 'Cinzel', serif; letter-spacing: 0.06em; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.iconBtn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; color: white; transition: background 0.2s; flex-shrink: 0;
+}
+.iconBtn:hover { background: rgba(214,118,42,0.35); border-color: #d6762a; }
+
+/* ── FORM LAYOUT ── */
+.createMain {
+  position: relative; z-index: 1; display: flex; justify-content: center;
+  padding: 2rem; flex: 1; overflow-y: auto;
+}
+.createForm {
+  width: 100%; max-width: 680px;
+  display: flex; flex-direction: column; gap: 1.5rem;
+  background: rgba(245,240,232,0.92); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 18px; padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,.28);
+}
+
+/* ── FORM SECTIONS ── */
+.formSection { display: flex; flex-direction: column; gap: 0.45rem; }
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.formLabel { font-size: 0.8rem; font-weight: 600; color: rgba(27,27,30,.65); text-transform: uppercase; letter-spacing: 0.05em; }
+.fieldError { font-size: 0.75rem; color: #b00020; }
+
+.formInput {
+  background: rgba(255,255,255,.6); border: 1px solid rgba(0,0,0,.1);
+  border-radius: 10px; padding: 0.7rem 0.9rem; color: #1b1b1e; font-size: 0.88rem;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; box-sizing: border-box;
+}
+.formInput:focus { border-color: rgba(214,118,42,0.5); box-shadow: 0 0 0 3px rgba(214,118,42,0.12); }
+.inputError { border-color: rgba(176,0,32,.45) !important; box-shadow: 0 0 0 3px rgba(176,0,32,.12) !important; }
+
+.formTextarea {
+  background: rgba(255,255,255,.6); border: 1px solid rgba(0,0,0,.1);
+  border-radius: 10px; padding: 0.7rem 0.9rem; color: #1b1b1e; font-size: 0.88rem;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical; width: 100%;
+  box-sizing: border-box; font-family: inherit;
+}
+.formTextarea:focus { border-color: rgba(214,118,42,0.5); box-shadow: 0 0 0 3px rgba(214,118,42,0.12); }
+
+/* ── STYLE GRID ── */
+.styleGrid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.styleChip {
+  padding: 0.4rem 0.9rem; background: rgba(255,255,255,.55);
+  border: 1px solid rgba(0,0,0,.1); border-radius: 999px; color: rgba(27,27,30,.7);
+  font-size: 0.8rem; cursor: pointer; transition: all 0.15s;
+}
+.styleChip:hover { border-color: rgba(214,118,42,0.5); color: #1b1b1e; background: rgba(214,118,42,0.08); }
+.styleChipActive { background: rgba(214,118,42,0.18) !important; border-color: #d6762a !important; color: #b85e1e !important; font-weight: 600; }
+
+/* ── ARTIST PICKER ── */
+.artistPicker { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.artistOption {
+  display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  padding: 0.6rem 0.8rem; background: rgba(255,255,255,.55);
+  border: 1px solid rgba(0,0,0,.1); border-radius: 12px;
+  cursor: pointer; transition: all 0.15s; position: relative; min-width: 70px;
+}
+.artistOption:hover { background: rgba(255,255,255,.85); border-color: rgba(214,118,42,0.3); }
+.artistOptionActive { background: rgba(214,118,42,0.14) !important; border-color: rgba(214,118,42,0.5) !important; }
+.artistOptionName { font-size: 0.72rem; color: rgba(27,27,30,.7); white-space: nowrap; }
+.artistOffBadge {
+  position: absolute; top: -6px; right: -6px; background: #dc2626; color: #fff;
+  font-size: 0.6rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 999px;
+}
+
+/* ── HOURS ── */
+.hoursRow { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.hourChip {
+  padding: 0.4rem 0.7rem; background: rgba(255,255,255,.55);
+  border: 1px solid rgba(0,0,0,.1); border-radius: 8px; color: rgba(27,27,30,.7);
+  font-size: 0.82rem; cursor: pointer; transition: all 0.15s;
+}
+.hourChip:hover { border-color: rgba(214,118,42,0.4); background: rgba(214,118,42,0.08); }
+.hourChipActive { background: rgba(214,118,42,0.18) !important; border-color: #d6762a !important; color: #b85e1e !important; font-weight: 600; }
+
+/* ── TIME SLOTS ── */
+.timeGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+.timeChip {
+  padding: 0.45rem; background: rgba(255,255,255,.55);
+  border: 1px solid rgba(0,0,0,.1); border-radius: 8px; color: rgba(27,27,30,.7);
+  font-size: 0.8rem; cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.timeChip:hover { border-color: rgba(214,118,42,0.4); background: rgba(214,118,42,0.08); }
+.timeChipActive { background: rgba(214,118,42,0.18) !important; border-color: #d6762a !important; color: #b85e1e !important; font-weight: 600; }
+
+/* ── IMAGE UPLOAD ── */
+.refUploadZone {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  padding: 1.5rem 1rem; border: 2px dashed rgba(214,118,42,0.4);
+  border-radius: 12px; background: rgba(255,255,255,.45);
+  cursor: pointer; transition: all 0.2s; color: rgba(27,27,30,.5); text-align: center;
+}
+.refUploadZone:hover { border-color: #d6762a; background: rgba(214,118,42,0.07); color: rgba(27,27,30,.75); }
+.refDragOver { border-color: #d6762a; background: rgba(214,118,42,0.12) !important; color: #b85e1e !important; }
+.refUploadHint { margin: 0; font-size: 0.83rem; }
+.refUploadHint span { color: #d6762a; font-weight: 600; text-decoration: underline; }
+.refUploadTypes { margin: 0; font-size: 0.72rem; color: rgba(27,27,30,.4); }
+
+.refImageGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.65rem; margin-top: 0.75rem;
+}
+.refThumb {
+  position: relative; border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.6);
+  display: flex; flex-direction: column;
+}
+.refThumb img {
+  width: 100%; height: 90px; object-fit: cover; display: block;
+}
+.refThumbRemove {
+  position: absolute; top: 4px; right: 4px; width: 20px; height: 20px;
+  background: rgba(0,0,0,.55); color: #fff; border: none; border-radius: 50%;
+  font-size: 0.6rem; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; line-height: 1; transition: background 0.15s;
+}
+.refThumbRemove:hover { background: #dc2626; }
+.refThumbName {
+  font-size: 0.65rem; color: rgba(27,27,30,.6); padding: 0.25rem 0.4rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── ACTIONS ── */
+.formActions { display: flex; gap: 1rem; justify-content: flex-end; padding-bottom: 0.25rem; }
+.cancelBtn {
+  padding: 0.7rem 1.5rem; background: rgba(255,255,255,.6);
+  border: 1px solid rgba(0,0,0,.12); border-radius: 10px; color: rgba(27,27,30,.7);
+  font-size: 0.88rem; cursor: pointer; transition: all 0.2s;
+}
+.cancelBtn:hover { background: rgba(255,255,255,.85); color: #1b1b1e; }
+.submitBtn {
+  padding: 0.7rem 2rem; background: linear-gradient(180deg, #e08a3f, #d6762a); border: none;
+  border-radius: 10px; color: #fff; font-size: 0.9rem; font-weight: 800;
+  cursor: pointer; transition: opacity 0.2s; box-shadow: 0 8px 20px rgba(214,118,42,.3);
+}
+.submitBtn:hover { opacity: 0.88; }
+.submitBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  .formRow { grid-template-columns: 1fr; }
+  .timeGrid { grid-template-columns: repeat(3, 1fr); }
+  .createForm { padding: 1.25rem; }
+}

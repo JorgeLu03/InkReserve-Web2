@@ -1,21 +1,6 @@
-//Para probar archivo, la ruta es *node ./MongoDB_Conexion/schema.cjs*
+// Schemas de Mongoose — la conexión la maneja server.js
 
 import mongoose from 'mongoose';
-
-const ConnectToMongoDB = async () => {
-    try {
-        const url = 'mongodb://localhost:27017/Ink_Reserve'; 
-        
-        await mongoose.connect(url);
-        
-        console.log("✅ Conexion con MongoDB exitosa");
-    }
-    catch (err) {
-        console.error("❌ Conexion con MongoDB Fallida, Error:", err.message);
-    }
-};
-
-ConnectToMongoDB();
 
 const Usuario_Schema = new mongoose.Schema({
     Nombre_Completo: {
@@ -151,66 +136,60 @@ const Categoria_Schema = new mongoose.Schema({
 
 
 const Cita_Schema = new mongoose.Schema({
+    // ── Referencias MongoDB (opcionales para compatibilidad con frontend) ──
     Cliente_Asociado: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Cliente',
-        required: true
-
     },
-
     Tatuador_Asociado: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tatuador',
-        required: true
-
     },
-
     Categoria_Asociada: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Categoria',
-        required: true
     },
 
-    Fecha_y_Hora: {
-        type: Date
-    },
+    // ── Campos del frontend ──
+    clientName:     { type: String, default: '' },
+    clientInitials: { type: String, default: '' },
+    clientColor:    { type: String, default: '#c084fc' },
+    artistId:       { type: Number },          // id numérico del artista mock
+    date:           { type: String },          // "YYYY-MM-DD"
+    time:           { type: String },          // "HH:MM"
+    hours:          { type: Number, default: 1 },
+    style:          { type: String, default: '' },
+    dimensions:     { type: String, default: '—' },
+    total_precio:   { type: Number, default: 0 },
+    tattooKey:      { type: String, default: 'rose' },
+    // status string: pending | confirmed | in_progress | completed | cancelled
+    status:         { type: String, default: 'pending' },
+    cancellationFee:{ type: Number, default: 0 },
+    refImages:      { type: Array,  default: [] },
 
-    Duracion_Estimada:{
+    // ── Campos originales ──
+    Fecha_y_Hora: { type: Date },
+
+    Duracion_Estimada: {
         type: Number,
-        default: 20 //En Minutos
+        default: 60, // En Minutos
     },
 
-    Estado_Cita:{
+    Estado_Cita: {
         type: Number,
-        default: 0 //0-Pendiente, 1-Confirmada, 2-Completa, 3-Cancelada, 4-No Asistio
+        default: 0, // 0-Pendiente,1-Confirmada,2-En progreso,3-Completa,4-Cancelada
     },
 
-    Anticipo:{
-        type: Number, //Monto en Pesos
-    },
-
-    Metodo_Anticipo: {
-        type: Number,
-        default: 0 //0-Efectivo, 1-Transferencia, 2-Referencia
-    },
+    Anticipo:        { type: Number },
+    Metodo_Anticipo: { type: Number, default: 0 },
 
     Nota_Del_Cliente: {
         type: String,
-        default: 'Sin comentarios' //idea, zona del cuerpo, referencia
-
+        default: 'Sin comentarios',
     },
 
-    Fecha_Creacion: {
-        type: Date,
-        default: Date.now
-
-    },
-
-    Fecha_ultima_Modificacion: {
-        type: Date,
-        default: Date.now
-
-    }
+    Fecha_Creacion:            { type: Date, default: Date.now },
+    Fecha_ultima_Modificacion: { type: Date, default: Date.now },
 });
 
 

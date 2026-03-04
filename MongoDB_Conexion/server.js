@@ -1,18 +1,32 @@
+import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
-import authRoutes from './authRoutes.js';
+import cors from 'cors';
+import authRoutes      from './authRoutes.js';
+import serviciosRoutes from './serviciosRoutes.js';
+import tatuadoresRoutes from './tatuadoresRoutes.js';
+import citasRoutes     from './citasRoutes.js';
 
 const app = express();
 
-// MIDDLEWARE: Essential for reading JSON from the request body
-app.use(express.json());
+// MIDDLEWARE
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ROUTES: Connect the auth routes
-app.use('/api/auth', authRoutes);
+// ROUTES
+app.use('/api/auth',       authRoutes);
+app.use('/api/servicios',  serviciosRoutes);
+app.use('/api/tatuadores', tatuadoresRoutes);
+app.use('/api/citas',      citasRoutes);
 
 // DATABASE CONNECTION
-mongoose.connect('mongodb://localhost:27017/Ink_Reserve')
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/Ink_Reserve';
+const PORT      = process.env.PORT      || 3000;
+
+mongoose.connect(MONGO_URI)
     .then(() => {
-        app.listen(3000, () => console.log("🚀 Server running on port 3000"));
+        console.log('✅ Conexion con MongoDB exitosa');
+        app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
     })
-    .catch(err => console.error("Connection error", err));
+    .catch(err => console.error('Connection error', err));

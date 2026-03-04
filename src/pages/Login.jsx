@@ -4,7 +4,7 @@ import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
 
-export default function Login({ onGoRegister }) {
+export default function Login({ onGoRegister, onLoginSuccess }) {
   const [role, setRole] = useState("user"); // "user" | "admin"
   const [form, setForm] = useState({
     email: "",
@@ -48,19 +48,50 @@ export default function Login({ onGoRegister }) {
       return;
     }
 
-    // Mock login (sin BD)
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 450));
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          Correo_Electronico: form.email.trim(),
+          Contrasena: form.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        await MySwal.fire({
+          icon: "error",
+          title: "Error al ingresar",
+          text: data.message || "Credenciales incorrectas.",
+          confirmButtonText: "Ok",
+        });
+        return;
+      }
+
+      // Guardar token en localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("nombre", data.Nombre_Completo ?? "");
+
+      const resolvedRole = data.Es_Admin ? "admin" : "user";
 
       await MySwal.fire({
         icon: "success",
         title: "Ingreso correcto",
-        text: `Entraste como ${role === "admin" ? "Admin" : "Usuario"} (modo demo).`,
+        text: `Bienvenido, ${data.Nombre_Completo ?? form.email}`,
         confirmButtonText: "Continuar",
       });
 
-      // FUTURO: aquí iría navigate("/dashboard") o algo
+      onLoginSuccess?.(resolvedRole);
+    } catch {
+      await MySwal.fire({
+        icon: "error",
+        title: "Error de conexión",
+        text: "No se pudo conectar con el servidor. Intenta más tarde.",
+        confirmButtonText: "Ok",
+      });
     } finally {
       setLoading(false);
     }

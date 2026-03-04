@@ -50,22 +50,48 @@ export default function Register({ onGoLogin }) {
       return;
     }
 
-    // Simulación “future-proof”: aquí luego conectas tu backend
     setLoading(true);
     try {
-      // Aquí es donde en el futuro harás:
-      // await fetch("/api/register", { method:"POST", body: JSON.stringify(validation.payloadReady) })
-      // Por ahora solo simulamos éxito:
-      await new Promise((r) => setTimeout(r, 600));
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          Nombre_Completo:    form.fullName.trim(),
+          Correo_Electronico: form.email.trim(),
+          Contrasena:         form.password,
+          Telefono:           form.phone.trim(),
+          Es_Admin:           false,
+          Esta_Activo:        true,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        await MySwal.fire({
+          icon: "error",
+          title: "Error al registrar",
+          text: data.message || "No se pudo crear la cuenta.",
+          confirmButtonText: "Ok",
+        });
+        return;
+      }
 
       await MySwal.fire({
         icon: "success",
         title: "Cuenta creada",
-        text: "Tu información quedó validada y lista para enviarse a la base de datos.",
+        text: "Tu cuenta fue registrada exitosamente. Ahora puedes iniciar sesión.",
         confirmButtonText: "Ir a iniciar sesión",
       });
 
       onGoLogin?.();
+    } catch {
+      await MySwal.fire({
+        icon: "error",
+        title: "Error de conexión",
+        text: "No se pudo conectar con el servidor. Intenta más tarde.",
+        confirmButtonText: "Ok",
+      });
     } finally {
       setLoading(false);
     }

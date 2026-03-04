@@ -1,0 +1,174 @@
+/* ── BASE ── */
+.dashScreen {
+  position: relative; min-height: 100vh; display: flex; flex-direction: column;
+  background: url("/assets/fondo.png") center/cover no-repeat fixed;
+  color: #1b1b1e;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; overflow: hidden;
+}
+.dashBg { display: none; }
+
+/* ── HEADER ── */
+.dashHeader {
+  position: relative; z-index: 1; display: flex; align-items: center; gap: 1rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #b85e1e 0%, #d6762a 55%, #e08a3f 100%);
+  border-bottom: 1px solid rgba(0,0,0,0.18); color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.dashTitle { flex: 1; text-align: center; }
+.dashTitle h1 { margin: 0; font-size: 1.25rem; font-weight: 900; letter-spacing: 0.06em; color: #fff; font-family: 'Cinzel', serif; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.dashDate { font-size: 0.78rem; color: rgba(255,255,255,0.8); margin-left: 0.5rem; }
+.dashActions { display: flex; align-items: center; gap: 0.5rem; }
+
+.iconBtn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; color: white; transition: background 0.2s;
+}
+.iconBtn:hover { background: rgba(214,118,42,0.35); border-color: #d6762a; }
+
+.userAvatarSmall {
+  width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.8rem; font-weight: 700; color: #fff;
+  cursor: pointer; border: 2px solid rgba(255,255,255,0.25); transition: border-color 0.2s;
+}
+.userAvatarSmall:hover { border-color: #d6762a; }
+
+/* ── MAIN ── */
+.dashMain {
+  position: relative; z-index: 1; display: flex; gap: 1.5rem; padding: 1.75rem 2rem;
+  flex: 1; align-items: flex-start; overflow-y: auto;
+}
+
+/* ── LEFT PANEL ── */
+.dashLeft {
+  display: flex; flex-direction: column; gap: 1.25rem;
+  min-width: 200px; max-width: 220px; padding: 1.25rem 1rem;
+  position: sticky; top: 0;
+  background: rgba(245,240,232,0.92); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 18px; box-shadow: 0 8px 28px rgba(0,0,0,.28);
+}
+.dashLogo { width: 150px; display: block; margin: 0 auto; }
+.dashTagline { font-size: 0.8rem; color: rgba(27,27,30,.6); line-height: 1.5; margin: 0; }
+.dashNav { display: flex; flex-direction: column; gap: 0.2rem; }
+.navItem {
+  display: flex; align-items: center; gap: 0.65rem;
+  padding: 0.6rem 0.85rem; background: transparent;
+  border: 1px solid transparent; border-radius: 10px; color: rgba(27,27,30,.65);
+  font-size: 0.85rem; cursor: pointer; transition: all 0.18s; text-align: left; width: 100%;
+}
+.navItem:hover { background: rgba(214,118,42,0.08); color: #1b1b1e; border-color: rgba(214,118,42,0.2); }
+.navItemActive {
+  background: rgba(214,118,42,0.14) !important;
+  border-color: rgba(214,118,42,0.45) !important;
+  color: #d6762a !important; font-weight: 600;
+}
+.navIcon { opacity: 0.5; transition: opacity 0.18s; }
+.navItem:hover .navIcon { opacity: 0.8; }
+.navItemActive .navIcon { opacity: 1; }
+
+/* ── CONTENT ── */
+.dashContent { flex: 1; display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; }
+.dashTopRow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+/* ── CARDS ── */
+.dashCard {
+  background: rgba(245,240,232,0.92); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 16px; padding: 1.25rem 1.5rem;
+  box-shadow: 0 8px 28px rgba(0,0,0,.25);
+}
+.cardTitleRow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.cardTitle { margin: 0; font-size: 1rem; font-weight: 700; color: #1b1b1e; }
+.cardLinkBtn {
+  background: none; border: none; color: #d6762a; font-size: 0.75rem;
+  cursor: pointer; padding: 0; transition: color 0.2s; font-weight: 600;
+}
+.cardLinkBtn:hover { color: #b85e1e; }
+.emptyMsg { color: rgba(27,27,30,.5); font-size: 0.83rem; margin: 0.5rem 0; }
+
+/* ── TODAY APPOINTMENTS ── */
+.appointmentList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.appointmentBtn {
+  width: 100%; background: rgba(255,255,255,.55); border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px; padding: 0.6rem 0.75rem; cursor: pointer;
+  transition: background 0.2s, border-color 0.2s; text-align: left;
+}
+.appointmentBtn:hover { background: rgba(214,118,42,0.1); border-color: rgba(214,118,42,0.35); }
+.appointmentItem { display: flex; align-items: center; gap: 0.75rem; }
+.apptInfo { flex: 1; display: flex; flex-direction: column; }
+.apptName { font-size: 0.88rem; font-weight: 600; color: #1b1b1e; }
+.apptService { font-size: 0.74rem; color: rgba(27,27,30,.6); }
+.apptStatusDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.apptChevron { flex-shrink: 0; opacity: 0.45; transition: opacity 0.2s; }
+.appointmentBtn:hover .apptChevron { opacity: 0.9; }
+
+.addApptBtn {
+  margin-top: 0.85rem; width: 100%; padding: 0.55rem;
+  background: rgba(214,118,42,0.08); border: 1px dashed rgba(214,118,42,0.45);
+  border-radius: 10px; color: #d6762a; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: background 0.2s;
+}
+.addApptBtn:hover { background: rgba(214,118,42,0.18); }
+
+/* ── UPCOMING ── */
+.upcomingList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.upcomingItem {
+  background: rgba(255,255,255,.55); border: 1px solid rgba(0,0,0,.08);
+  border-radius: 10px; overflow: hidden; transition: border-color 0.2s;
+}
+.upcomingItem:hover { border-color: rgba(214,118,42,0.4); background: rgba(214,118,42,0.06); }
+.upcomingBtn {
+  width: 100%; background: none; border: none; color: #1b1b1e; font-size: 0.83rem;
+  padding: 0.65rem 0.9rem; display: flex; align-items: center; gap: 0.75rem; cursor: pointer; text-align: left;
+}
+.upcomingDate { display: flex; align-items: baseline; gap: 0.1rem; min-width: 38px; }
+.upcomingDay { font-size: 1rem; font-weight: 700; color: #d6762a; }
+.upcomingMonth { font-size: 0.72rem; color: rgba(27,27,30,.5); }
+.upcomingInfo { flex: 1; display: flex; flex-direction: column; }
+.upcomingClient { font-size: 0.83rem; font-weight: 600; color: #1b1b1e; }
+.upcomingMeta { font-size: 0.72rem; color: rgba(27,27,30,.6); }
+
+/* ── ARTISTS ── */
+.artistsCard { }
+.artistList {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.75rem;
+}
+.artistItem {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: rgba(255,255,255,.6); border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px; padding: 0.7rem 0.9rem; transition: border-color 0.2s;
+}
+.artistItem:hover { border-color: rgba(214,118,42,0.4); background: rgba(214,118,42,0.06); }
+.artistInfo { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.artistName { font-size: 0.85rem; font-weight: 600; color: #1b1b1e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.artistClients { font-size: 0.73rem; color: rgba(27,27,30,.6); }
+.clockBadge {
+  display: flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 600;
+  padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+}
+.clockBadge.clockedIn  { background: rgba(74,222,128,0.15); color: #16a34a; border: 1px solid rgba(74,222,128,0.4); }
+.clockBadge.clockedOut { background: rgba(239,68,68,0.1); color: #dc2626; border: 1px solid rgba(239,68,68,0.3); }
+
+/* ── STATS ── */
+.dashStatsRow { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+.statCard {
+  background: rgba(245,240,232,0.92); border: 1px solid rgba(255,255,255,.3); border-radius: 16px;
+  padding: 1.1rem 1.4rem; display: flex; flex-direction: column; gap: 0.35rem;
+  box-shadow: 0 8px 28px rgba(0,0,0,.22); transition: border-color 0.2s;
+}
+.statCard:hover { border-color: rgba(214,118,42,0.4); }
+.statCardHighlight { border-color: #d6762a; box-shadow: 0 0 0 3px rgba(214,118,42,0.15), 0 8px 28px rgba(0,0,0,.22); }
+.statLabel { font-size: 0.78rem; color: rgba(27,27,30,.6); font-weight: 500; }
+.statValue { font-size: 1.6rem; font-weight: 800; color: #1b1b1e; letter-spacing: -0.02em; }
+.trend { margin-top: 0.15rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .dashMain { flex-direction: column; padding: 1rem; }
+  .dashLeft { max-width: 100%; position: static; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .dashLogo { width: 110px; }
+  .dashTopRow { grid-template-columns: 1fr; }
+  .dashStatsRow { grid-template-columns: 1fr; }
+  .artistList { grid-template-columns: 1fr; }
+}

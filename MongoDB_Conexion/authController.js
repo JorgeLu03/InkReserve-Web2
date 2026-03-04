@@ -1,6 +1,6 @@
 import { Usuario } from './schema.js';
 import jwt from 'jsonwebtoken';
-const JWT_SECRET = "testtest_clave";
+const JWT_SECRET = process.env.JWT_SECRET || "testtest_clave";
 
 export const Registrar_Usuario = async (req, res) => {
     try {
@@ -72,20 +72,23 @@ export const Login_Usuario = async (req, res) => {
 
                 //Token
                 const token = jwt.sign(
-                    { id: Usuario_Existe_Contrasena._id, Es_Admin: Usuario_Existe_Contrasena.Es_Admin,
-                        Nombre_Completo:Usuario_Existe_Contrasena.Nombre_Completo,
-                        Correo_Electronico:Usuario_Existe_Contrasena.Correo_Electronico,
-                        Contrasena:Usuario_Existe_Contrasena.Contrasena,
-                        Telefono:Usuario_Existe_Contrasena.Telefono
-                    }, 
-                    JWT_SECRET, 
+                    {
+                        id:                 Usuario_Existe_Contrasena._id,
+                        Es_Admin:           Usuario_Existe_Contrasena.Es_Admin,
+                        Nombre_Completo:    Usuario_Existe_Contrasena.Nombre_Completo,
+                        Correo_Electronico: Usuario_Existe_Contrasena.Correo_Electronico,
+                        Telefono:           Usuario_Existe_Contrasena.Telefono
+                    },
+                    JWT_SECRET,
                     { expiresIn: '1h' }
                 );
 
-                res.json({ token });
-
-
-                return res.status(201).json({ message: "Usuario si existe, Login exitoso"});
+                return res.status(200).json({
+                    message:  'Login exitoso',
+                    token,
+                    Es_Admin: Usuario_Existe_Contrasena.Es_Admin,
+                    Nombre_Completo: Usuario_Existe_Contrasena.Nombre_Completo,
+                });
             }
             else{
                 return res.status(400).json({ message: "Usuario si existe, contrasena equivocada!"});

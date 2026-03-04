@@ -1,0 +1,142 @@
+.confScreen {
+  position: relative; min-height: 100vh; display: flex; flex-direction: column;
+  background: url("/assets/fondo.png") center/cover no-repeat fixed;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+.confBg { display: none; }
+
+/* Header */
+.confHeader {
+  position: relative; z-index: 1; display: flex; align-items: center;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #b85e1e 0%, #d6762a 55%, #e08a3f 100%);
+  border-bottom: 1px solid rgba(0,0,0,.18); color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+.confHeaderTitle {
+  flex: 1; text-align: center; margin: 0; font-size: 1.2rem; font-weight: 900;
+  font-family: 'Cinzel', serif; letter-spacing: 0.06em;
+  text-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+
+/* Main layout */
+.confMain {
+  position: relative; z-index: 1; flex: 1;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 2rem 1.5rem 3rem;
+}
+
+/* Card */
+.confCard {
+  width: 100%; max-width: 560px;
+  background: rgba(245,240,232,0.97);
+  border-radius: 20px;
+  padding: 1.75rem 1.75rem 1.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,.28);
+  display: flex; flex-direction: column; gap: 1.1rem;
+}
+
+/* Success badge */
+.confBadge {
+  display: flex; align-items: center; gap: 0.85rem;
+  background: rgba(34,197,94,.07);
+  border: 1px solid rgba(34,197,94,.2);
+  border-radius: 12px; padding: 0.9rem 1rem;
+}
+.confBadgeText { display: flex; flex-direction: column; gap: 0.15rem; }
+.confBadgeTitle { font-size: 1rem; font-weight: 800; color: #15803d; }
+.confBadgeSub { font-size: 0.75rem; color: rgba(21,128,61,.7); }
+
+/* Divider */
+.confDivider { height: 1px; background: rgba(0,0,0,.09); margin: 0.1rem 0; }
+
+/* Parties row */
+.confParties {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  background: rgba(255,255,255,.55); border-radius: 12px; padding: 0.9rem 1rem;
+}
+.confParty { display: flex; align-items: center; gap: 0.65rem; flex: 1; }
+.confPartyAvatar {
+  width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-weight: 800; font-size: 0.9rem; color: #fff; flex-shrink: 0;
+}
+.confPartyInfo { display: flex; flex-direction: column; min-width: 0; }
+.confPartyRole { font-size: 0.65rem; font-weight: 600; color: rgba(27,27,30,.45); text-transform: uppercase; letter-spacing: 0.05em; }
+.confPartyName { font-size: 0.9rem; font-weight: 700; color: #1b1b1e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.confArrow { flex-shrink: 0; opacity: 0.7; }
+
+/* Detail grid */
+.confGrid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.6rem;
+}
+.confItem {
+  background: rgba(255,255,255,.6); border: 1px solid rgba(0,0,0,.06);
+  border-radius: 10px; padding: 0.65rem 0.75rem;
+  display: flex; flex-direction: column; gap: 0.2rem;
+}
+.confItemHighlight {
+  background: rgba(214,118,42,.08); border-color: rgba(214,118,42,.25);
+}
+.confItemLabel { font-size: 0.63rem; font-weight: 600; color: rgba(27,27,30,.45); text-transform: uppercase; letter-spacing: 0.05em; }
+.confItemValue { font-size: 0.9rem; font-weight: 700; color: #1b1b1e; }
+.confItemHighlight .confItemValue { color: #b85e1e; }
+
+/* Notes */
+.confNotes {
+  background: rgba(255,255,255,.5); border-radius: 10px;
+  padding: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem;
+}
+.confNotesLabel { font-size: 0.63rem; font-weight: 600; color: rgba(27,27,30,.45); text-transform: uppercase; letter-spacing: 0.05em; }
+.confNotesText { margin: 0; font-size: 0.83rem; color: rgba(27,27,30,.75); line-height: 1.5; }
+
+/* Images */
+.confImages { display: flex; flex-direction: column; gap: 0.5rem; }
+.confImagesLabel { font-size: 0.63rem; font-weight: 600; color: rgba(27,27,30,.45); text-transform: uppercase; letter-spacing: 0.05em; }
+.confImageRow { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.confImageThumb {
+  width: 64px; height: 64px; border-radius: 8px; overflow: hidden;
+  border: 1.5px solid rgba(0,0,0,.1); flex-shrink: 0;
+}
+.confImageThumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Status chip */
+.confStatusRow { display: flex; justify-content: center; }
+.confStatusChip {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.72rem; font-weight: 600; color: rgba(27,27,30,.55);
+  background: rgba(250,204,21,.12); border: 1px solid rgba(250,204,21,.3);
+  border-radius: 999px; padding: 0.3rem 0.85rem;
+}
+
+/* Actions */
+.confActions {
+  display: flex; gap: 0.75rem; margin-top: 0.25rem;
+}
+.confSecondaryBtn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+  padding: 0.75rem 1rem; background: rgba(255,255,255,.7);
+  border: 1.5px solid rgba(0,0,0,.12); border-radius: 12px;
+  font-size: 0.88rem; font-weight: 600; color: rgba(27,27,30,.75);
+  cursor: pointer; transition: all 0.18s;
+}
+.confSecondaryBtn:hover { background: #fff; border-color: rgba(0,0,0,.2); }
+
+.confPrimaryBtn {
+  flex: 2; display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, #b85e1e 0%, #d6762a 55%, #e08a3f 100%);
+  border: none; border-radius: 12px;
+  font-size: 0.88rem; font-weight: 700; color: #fff;
+  cursor: pointer; transition: opacity 0.18s;
+  box-shadow: 0 3px 12px rgba(184,94,30,.35);
+}
+.confPrimaryBtn:hover { opacity: 0.92; }
+
+@media (max-width: 600px) {
+  .confCard { padding: 1.25rem 1rem 1.1rem; }
+  .confGrid { grid-template-columns: 1fr 1fr; }
+  .confActions { flex-direction: column; }
+  .confPrimaryBtn { flex: unset; }
+  .confSecondaryBtn { flex: unset; }
+}

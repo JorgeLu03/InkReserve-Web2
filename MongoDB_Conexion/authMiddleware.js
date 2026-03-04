@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = "testtest_clave";
+const JWT_SECRET = process.env.JWT_SECRET || "testtest_clave";
 
 export const Token_Verificar = (req, res, next) => {
     //Conseguir Token de Header
