@@ -1,58 +1,96 @@
-/* =============== InkReserve Auth Base (Responsive) =============== */
+/* =============== InkReserve Auth UI (Refined) =============== */
 
 :root{
   --bg: #0f1014;
-  --card: rgba(245, 240, 232, 0.88);
-  --card-edge: rgba(255,255,255,.25);
-  --text: #1b1b1e;
-  --muted: rgba(27,27,30,.7);
-  --field: rgba(255,255,255,.55);
-  --field-edge: rgba(0,0,0,.08);
+
+  /* Tarjeta */
+  --card-solid: #f4efe7;
+  --card-overlay: rgba(244, 239, 231, 0.90);
+  --card-edge: rgba(72, 53, 35, .08);
+
+  /* Texto */
+  --text: #1f1c19;
+  --muted: rgba(31,28,25,.66);
+
+  /* Campos */
+  --field: rgba(255,255,255,.46);
+  --field-edge: rgba(73,55,39,.10);
+  --field-focus: rgba(214,118,42,.18);
+
+  /* Marca */
   --accent: #d6762a;
   --accent-2: #e08a3f;
-  --shadow: rgba(0,0,0,.35);
+  --accent-soft: rgba(214,118,42,.12);
+
+  /* Error */
+  --danger: #b00020;
+  --danger-soft: rgba(176,0,32,.12);
+
+  /* Sombra */
+  --shadow-lg: rgba(0,0,0,.32);
+  --shadow-sm: rgba(0,0,0,.12);
 }
 
-/* Reset mínimo */
+/* Reset */
 *{ box-sizing: border-box; }
-html, body{ height: 100%; margin: 0; }
-#root{ height: 100%; }
+html, body{ height:100%; margin:0; }
+#root{ height:100%; }
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Fondo full */
+/* Fondo principal */
 .authScreen{
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: clamp(16px, 3vw, 44px);
-  background: url("/assets/fondo.png") center/cover no-repeat fixed;
+  padding: clamp(16px, 3vw, 40px);
+  background:
+    linear-gradient(rgba(0,0,0,.38), rgba(0,0,0,.38)),
+    url("/assets/fondo.png") center/cover no-repeat fixed;
 }
 
-/* Card central */
+/* Tarjeta central */
 .authCard{
   width: min(520px, 100%);
   position: relative;
-  border-radius: 18px;
-  padding: clamp(18px, 3vw, 30px);
-  padding-top: 14px;           /* 👈 NUEVO (sube todo) */
-  background: var(--card);
-  border: 1px solid var(--card-edge);
-  box-shadow: 0 18px 50px var(--shadow);
   overflow: hidden;
-  backdrop-filter: blur(6px);
+  border-radius: 22px;
+
+  padding: clamp(20px, 3vw, 30px);
+  padding-top: 14px;
+
+  background-color: #f4efe7;
+  background-image:
+    linear-gradient(rgba(244, 239, 231, 0.76), rgba(244, 239, 231, 0.76)),
+    url("/assets/papelTextura.png");
+  background-position: center, center;
+  background-size: auto, 700px auto;
+  background-repeat: no-repeat, repeat;
+
+  border: 1px solid rgba(72, 53, 35, .08);
+
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.32),
+    0 4px 14px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.35);
+
+  backdrop-filter: blur(3px);
 }
-/* Decoraciones: siempre arriba pero no estorban */
+
+/* Decoraciones */
 .decor{
   position: absolute;
   pointer-events: none;
-  opacity: .35;
-  filter: contrast(0.95);
-  width: clamp(110px, 18vw, 170px);
+  opacity: .26;
+  filter: grayscale(.08) contrast(.95);
+  width: clamp(105px, 16vw, 160px);
   height: auto;
+  z-index: 0;
 }
 
 .decorTopLeft{ top: 10px; left: 10px; }
@@ -60,85 +98,151 @@ body{
 .decorBottomLeft{ bottom: 10px; left: 10px; }
 .decorBottomRight{ bottom: 10px; right: 10px; }
 
+/* Asegura que el contenido quede arriba */
+.brandRow,
+.title,
+.subtitle,
+.roleToggle,
+.form{
+  position: relative;
+  z-index: 1;
+}
+
 /* Header */
 .brandRow{
   display:flex;
   justify-content:center;
-  margin-bottom: 0; /* importante */
+  margin-bottom: 0;
 }
 
 .brandLogo{
   width: clamp(220px, 35vw, 360px);
   height: auto;
   display: block;
-
-  /* 👇 esto SÍ reduce el hueco real */
- margin: -20px auto -48px auto;
+  margin: -18px auto -44px auto;
+  user-select: none;
 }
 
 .title{
-  margin: 0 0 3px;
-  text-align:center;
-  font-size: clamp(22px, 2.4vw, 30px);
-}
-.subtitle{
-  margin: 0 0 10px;   /* antes 16px */
-  text-align:center;
-  color: var(--muted);
-  font-size: clamp(13px, 1.5vw, 15px);
+  margin: 0 0 2px;
+  text-align: center;
+  font-size: clamp(2rem, 2.6vw, 2.25rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -.03em;
 }
 
-/* Toggle */
+.subtitle{
+  margin: 0 0 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(14px, 1.5vw, 15px);
+  line-height: 1.35;
+}
+
+/* Toggle de rol */
 .roleToggle{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin: 10px 0 18px;
-}
-.roleBtn{
-  height: 42px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,.12);
-  background: rgba(255,255,255,.35);
-  font-weight: 600;
-  cursor: pointer;
-}
-.roleBtnGhost{
-  opacity: .7;
-}
-.roleBtnActive{
-  border-color: rgba(214,118,42,.45);
-  box-shadow: 0 0 0 3px rgba(214,118,42,.12);
-  background: rgba(255,255,255,.55);
+  margin: 10px 0 20px;
 }
 
-/* Form */
+.roleBtn{
+  height: 50px;
+  border-radius: 14px;
+  border: 1px solid rgba(90,68,47,.10);
+  background: rgba(255,255,255,.34);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease,
+    opacity .18s ease;
+}
+
+.roleBtn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(214,118,42,.24);
+}
+
+.roleBtnGhost{
+  opacity: .82;
+}
+
+.roleBtnActive{
+  background: rgba(255,255,255,.56);
+  border-color: rgba(214,118,42,.36);
+  box-shadow:
+    0 0 0 3px var(--accent-soft),
+    inset 0 1px 0 rgba(255,255,255,.50);
+  opacity: 1;
+}
+
+/* Formulario */
 .form{
   display: grid;
-  gap: 12px;
+  gap: 13px;
 }
 
-.field{ display:grid; gap: 8px; }
-.label{ font-weight: 600; font-size: 14px; }
+.field{
+  display: grid;
+  gap: 8px;
+}
+
+.label{
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
 
 .inputWrap{
   position: relative;
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding-left: 44px;
+  padding-right: 46px;
+  border-radius: 14px;
+
   background: var(--field);
   border: 1px solid var(--field-edge);
-  border-radius: 12px;
-  height: 46px; /* tocable en móvil */
-  padding-left: 44px;
-  padding-right: 44px;
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease,
+    transform .18s ease;
+}
+
+.inputWrap:hover{
+  border-color: rgba(214,118,42,.18);
+  background: rgba(255,255,255,.52);
+}
+
+.inputWrap:focus-within,
+.inputWrapActive{
+  border-color: rgba(214,118,42,.42);
+  box-shadow: 0 0 0 4px var(--field-focus);
+  background: rgba(255,255,255,.62);
+}
+
+.inputWrapError{
+  border-color: rgba(176, 0, 32, .34);
+  box-shadow: 0 0 0 4px var(--danger-soft);
 }
 
 .inputIcon{
-  position:absolute;
+  position: absolute;
   left: 14px;
-  width: 18px;
-  height: 18px;
-  opacity: .85;
+  width: 17px;
+  height: 17px;
+  opacity: .66;
+  object-fit: contain;
 }
 
 .input{
@@ -146,24 +250,54 @@ body{
   border: none;
   outline: none;
   background: transparent;
-  font-size: 14px;
   color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input::placeholder{
+  color: rgba(31,28,25,.42);
 }
 
 .eyeBtn{
-  position:absolute;
-  right: 10px;
+  position: absolute;
+  right: 9px;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
   border: none;
+  border-radius: 10px;
   background: transparent;
   cursor: pointer;
-  opacity: .7;
+  color: var(--muted);
   font-size: 16px;
+  opacity: .78;
+  transition: background .18s ease, opacity .18s ease, transform .18s ease;
 }
 
+.eyeBtn:hover{
+  background: rgba(0,0,0,.05);
+  opacity: 1;
+}
+
+.eyeBtn:active{
+  transform: scale(.97);
+}
+
+.errorText{
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 1px;
+  padding-left: 2px;
+}
+
+/* Fila inferior */
 .rowBetween{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 10px;
   margin-top: 2px;
 }
@@ -174,67 +308,139 @@ body{
   gap: 8px;
   font-size: 14px;
   color: var(--muted);
+  user-select: none;
 }
 
+.remember input[type="checkbox"]{
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+}
+
+/* Links */
 .linkBtn{
   border: none;
   background: transparent;
   color: var(--accent);
-  font-weight: 700;
-  cursor:pointer;
-  padding: 6px 4px;
-}
-
-/* Botón principal */
-.primaryBtn{
-  margin-top: 8px;
-  height: 46px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(180deg, var(--accent-2), var(--accent));
-  color: white;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(214,118,42,.25);
+  padding: 6px 4px;
+  transition: opacity .18s ease, transform .18s ease;
 }
 
+.linkBtn:hover{
+  opacity: .86;
+}
+
+.linkBtn:active{
+  transform: translateY(1px);
+}
+
+/* CTA principal */
+.primaryBtn{
+  margin-top: 8px;
+  height: 50px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: .01em;
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 24px rgba(214,118,42,.23),
+    inset 0 1px 0 rgba(255,255,255,.20);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease,
+    opacity .18s ease;
+}
+
+.primaryBtn:hover:not(:disabled){
+  transform: translateY(-1px);
+  box-shadow:
+    0 16px 28px rgba(214,118,42,.28),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  filter: saturate(1.03);
+}
+
+.primaryBtn:active:not(:disabled){
+  transform: translateY(0);
+}
+
+.primaryBtn:disabled{
+  opacity: .72;
+  cursor: wait;
+}
+
+/* Texto inferior */
 .bottomText{
   display:flex;
   justify-content:center;
-  gap: 8px;
   align-items:center;
+  gap: 8px;
   color: var(--muted);
   font-size: 14px;
   margin-top: 6px;
 }
 
-/* Responsivo: celular */
-@media (max-width: 420px){
+/* Responsive */
+@media (max-width: 520px){
   .authCard{
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 18px;
+    padding: 18px 16px 16px;
+    padding-top: 12px;
   }
+
+  .brandLogo{
+    width: clamp(210px, 58vw, 300px);
+    margin: -14px auto -34px auto;
+  }
+
   .decor{
-    opacity: .22;
     width: 120px;
+    opacity: .19;
   }
+
+  .roleBtn{
+    height: 48px;
+    font-size: .97rem;
+  }
+
+  .inputWrap{
+    height: 50px;
+  }
+
+  .primaryBtn{
+    height: 48px;
+  }
+}
+
+@media (max-width: 420px){
   .rowBetween{
     flex-direction: column;
-    align-items:flex-start;
+    align-items: flex-start;
+  }
+
+  .bottomText{
+    flex-wrap: wrap;
+  }
+
+  .title{
+    font-size: 1.9rem;
   }
 }
 
-.inputWrapActive{
-  border-color: rgba(214,118,42,.45);
-  box-shadow: 0 0 0 3px rgba(214,118,42,.12);
-}
-.inputWrapError{
-  border-color: rgba(176, 0, 32, .45);
-  box-shadow: 0 0 0 3px rgba(176, 0, 32, .12);
-}
-
-.errorText{
-  color: #b00020;
-  font-size: 12px;
-  margin-top: 2px;
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }

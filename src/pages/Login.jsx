@@ -110,7 +110,7 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
 
         {/* Header */}
         <div className="brandRow">
-          <img className="brandLogo" src="/assets/logo.png" alt="InkReserve" />
+          <img className="brandLogo" src="/assets/Logo.png" alt="InkReserve" />
         </div>
 
         <h1 className="title">Iniciar sesión</h1>

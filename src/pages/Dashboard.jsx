@@ -109,7 +109,7 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
 
         {/* LEFT */}
         <aside className="dashLeft">
-          <img src="/assets/logo.png" alt="InkReserve" className="dashLogo" />
+          <img src="/assets/Logo.png" alt="InkReserve" className="dashLogo" />
           <p className="dashTagline">Reserva, agenda y gestiona tus citas con estilo.</p>
           <nav className="dashNav">
             <button

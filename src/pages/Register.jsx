@@ -108,7 +108,7 @@ export default function Register({ onGoLogin }) {
 
         {/* Header */}
         <div className="brandRow">
-          <img className="brandLogo" src="/assets/logo.png" alt="InkReserve" />
+          <img className="brandLogo" src="/assets/Logo.png" alt="InkReserve" />
         </div>
 
         <h1 className="title">Crear cuenta</h1>
