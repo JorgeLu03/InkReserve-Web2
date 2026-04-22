@@ -53,53 +53,37 @@ export const Login_Usuario = async (req, res) => {
     try {
         const { Correo_Electronico, Contrasena } = req.body;
 
-        
-        
-        const Usuario_Existe_Correo = await Usuario.findOne({ Correo_Electronico });
-        
-        
-        
+        // Buscar usuario por correo
+        const usuario = await Usuario.findOne({ Correo_Electronico });
 
-        //Checar si usuario Existe
-        if (Usuario_Existe_Correo) {
-            //return res.status(201).json({ message: "Usuario si existe!"});
-
-            const Usuario_Existe_Contrasena = await Usuario.findOne({ Contrasena });
-
-            if (Usuario_Existe_Contrasena) {
-                
-
-
-                //Token
-                const token = jwt.sign(
-                    {
-                        id:                 Usuario_Existe_Contrasena._id,
-                        Es_Admin:           Usuario_Existe_Contrasena.Es_Admin,
-                        Nombre_Completo:    Usuario_Existe_Contrasena.Nombre_Completo,
-                        Correo_Electronico: Usuario_Existe_Contrasena.Correo_Electronico,
-                        Telefono:           Usuario_Existe_Contrasena.Telefono
-                    },
-                    JWT_SECRET,
-                    { expiresIn: '1h' }
-                );
-
-                return res.status(200).json({
-                    message:  'Login exitoso',
-                    token,
-                    Es_Admin: Usuario_Existe_Contrasena.Es_Admin,
-                    Nombre_Completo: Usuario_Existe_Contrasena.Nombre_Completo,
-                });
-            }
-            else{
-                return res.status(400).json({ message: "Usuario si existe, contrasena equivocada!"});
-            }
-
-
-
+        if (!usuario) {
+            return res.status(400).json({ message: "Usuario no existe!" });
         }
-        else{
-            return res.status(400).json({ message: "Usuario no existe!"});
+
+        // Validar contraseña DEL MISMO USUARIO
+        if (usuario.Contrasena !== Contrasena) {
+            return res.status(400).json({ message: "Contraseña incorrecta!" });
         }
+
+        // Crear token
+        const token = jwt.sign(
+            {
+                id: usuario._id,
+                Es_Admin: usuario.Es_Admin,
+                Nombre_Completo: usuario.Nombre_Completo,
+                Correo_Electronico: usuario.Correo_Electronico,
+                Telefono: usuario.Telefono
+            },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        return res.status(200).json({
+            message: 'Login exitoso',
+            token,
+            Es_Admin: usuario.Es_Admin,
+            Nombre_Completo: usuario.Nombre_Completo,
+        });
 
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "./CreateAppointment.css";
 import Avatar from "../components/Avatar";
@@ -30,6 +30,205 @@ const EMPTY_FORM = {
 
 const MAX_REF_IMAGES = 6;
 
+/* ── STEP PROGRESS ───────────────────────────────────────────── */
+function StepProgress({ stepStatus }) {
+  const steps = [
+    { label: "Cliente", icon: "👤" },
+    { label: "Artista", icon: "🎨" },
+    { label: "Agenda",  icon: "📅" },
+    { label: "Detalles", icon: "📋" },
+  ];
+
+  const completedCount = stepStatus.filter(Boolean).length;
+
+  return (
+    <div className="stepProgress">
+      <div className="stepProgressBar">
+        <div
+          className="stepProgressFill"
+          style={{ width: `${(completedCount / steps.length) * 100}%` }}
+        />
+      </div>
+
+      <div className="stepItems">
+        {steps.map((s, i) => {
+          const done = stepStatus[i];
+          return (
+            <div key={s.label} className={`stepItem ${done ? "stepDone" : ""}`}>
+              <div className="stepDot">
+                {done ? (
+                  <svg width="11" height="11" viewBox="0 0 11 11">
+                    <polyline
+                      points="1.8,5.5 4.2,8 9,2.5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : (
+                  i + 1
+                )}
+              </div>
+              <span className="stepLabel">{s.label}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <p className="stepSummaryText">
+        {completedCount === 4
+          ? "✓ Todos los campos requeridos completados"
+          : `${completedCount} de ${steps.length} secciones completadas`}
+      </p>
+    </div>
+  );
+}
+
+/* ── DURATION STEPPER ────────────────────────────────────────── */
+function DurationStepper({ value, onChange }) {
+  const MIN = 1;
+  const MAX = 8;
+
+  return (
+    <div className="durationStepper">
+      <button
+        type="button"
+        className="stepperBtn"
+        onClick={() => onChange(Math.max(MIN, value - 1))}
+        disabled={value <= MIN}
+        aria-label="Reducir duración"
+      >
+        −
+      </button>
+      <div className="stepperValue">
+        <span className="stepperNumber">{value}</span>
+        <span className="stepperUnit">h</span>
+      </div>
+      <button
+        type="button"
+        className="stepperBtn"
+        onClick={() => onChange(Math.min(MAX, value + 1))}
+        disabled={value >= MAX}
+        aria-label="Aumentar duración"
+      >
+        +
+      </button>
+    </div>
+  );
+}
+
+/* ── TIME PICKER MODAL ───────────────────────────────────────── */
+function TimePickerModal({ currentTime, onConfirm, onClose }) {
+  const [selected, setSelected] = useState(currentTime || "");
+
+  /* Cerrar con Escape */
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  /* Agrupar slots por período */
+  const groups = useMemo(() => {
+    const morning = TIME_SLOTS.filter((t) => {
+      const h = parseInt(t.split(":")[0], 10);
+      return h < 12;
+    });
+    const afternoon = TIME_SLOTS.filter((t) => {
+      const h = parseInt(t.split(":")[0], 10);
+      return h >= 12 && h < 17;
+    });
+    const evening = TIME_SLOTS.filter((t) => {
+      const h = parseInt(t.split(":")[0], 10);
+      return h >= 17;
+    });
+    return [
+      { label: "🌅 Mañana", slots: morning },
+      { label: "☀️ Tarde", slots: afternoon },
+      { label: "🌆 Noche", slots: evening },
+    ].filter((g) => g.slots.length > 0);
+  }, []);
+
+  return (
+    <div className="modalOverlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="modalCard timeModal" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div className="modalHeader">
+          <div className="modalHeaderContent">
+            <div className="modalIconBadge">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/>
+                <polyline points="12,7 12,12.5 15.5,14.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3 className="modalTitle">Hora de inicio</h3>
+              <p className="modalSubtitle">Selecciona cuándo comenzará la sesión</p>
+            </div>
+          </div>
+          <button className="modalCloseBtn" onClick={onClose} aria-label="Cerrar">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Time grid */}
+        <div className="modalBody">
+          {groups.map((g) => (
+            <div key={g.label} className="timeGroup">
+              <p className="timeGroupLabel">{g.label}</p>
+              <div className="timeModalGrid">
+                {g.slots.map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`timeModalChip ${selected === t ? "timeModalChipActive" : ""}`}
+                    onClick={() => setSelected(t)}
+                    aria-pressed={selected === t}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div className="modalFooter">
+          {selected && (
+            <p className="modalSelectedInfo">
+              Hora elegida: <strong>{selected}</strong>
+            </p>
+          )}
+          <div className="modalActions">
+            <button type="button" className="modalCancelBtn" onClick={onClose}>
+              Cancelar
+            </button>
+            <button
+              type="button"
+              className="modalConfirmBtn"
+              disabled={!selected}
+              onClick={() => {
+                onConfirm(selected);
+                onClose();
+              }}
+            >
+              Confirmar hora
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── MAIN COMPONENT ──────────────────────────────────────────── */
 export default function CreateAppointment({ nav, onAdd }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
@@ -37,8 +236,47 @@ export default function CreateAppointment({ nav, onAdd }) {
   const [refImages, setRefImages] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const [confirmed, setConfirmed] = useState(null);
+  const [timeModalOpen, setTimeModalOpen] = useState(false);
+  const [shakeErrors, setShakeErrors] = useState(false);
 
   const fileInputRef = useRef(null);
+
+  const selectedArtist = useMemo(
+    () => ARTISTS.find((a) => a.id === form.artistId) || null,
+    [form.artistId]
+  );
+
+  const formattedDate = useMemo(() => {
+    if (!form.date) return null;
+    const parsed = new Date(`${form.date}T12:00:00`);
+    return new Intl.DateTimeFormat("es-MX", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(parsed);
+  }, [form.date]);
+
+  const formattedTotal = useMemo(() => {
+    const amount = Number(form.total);
+    if (!form.total || Number.isNaN(amount) || amount <= 0) return null;
+    return new Intl.NumberFormat("es-MX", {
+      style: "currency",
+      currency: "MXN",
+      maximumFractionDigits: 0,
+    }).format(amount);
+  }, [form.total]);
+
+  /* Step completion status */
+  const stepStatus = useMemo(
+    () => [
+      Boolean(form.clientName.trim() && form.style),
+      Boolean(form.artistId !== null),
+      Boolean(form.date && form.time),
+      Boolean(form.total && Number(form.total) > 0),
+    ],
+    [form]
+  );
 
   const isDirty = useMemo(() => {
     return (
@@ -74,11 +312,47 @@ export default function CreateAppointment({ nav, onAdd }) {
     });
   }
 
+  function formatMoneyInput(value) {
+    return String(value).replace(/[^\d]/g, "");
+  }
+
+  function validate() {
+    const next = {};
+    if (!form.clientName.trim()) next.clientName = "Escribe el nombre del cliente.";
+    if (!form.style) next.style = "Selecciona un estilo.";
+    if (form.artistId === null) next.artistId = "Selecciona un artista.";
+    if (!form.date) next.date = "Selecciona una fecha.";
+    if (!form.time) next.time = "Selecciona una hora.";
+    if (!form.total || Number(form.total) <= 0)
+      next.total = "Ingresa un total válido.";
+    return next;
+  }
+
+  async function handleCancel() {
+    if (!isDirty) {
+      nav.back?.();
+      return;
+    }
+    const result = await Swal.fire({
+      icon: "question",
+      title: "¿Descartar cambios?",
+      text: "Hay información sin guardar en esta cita.",
+      showCancelButton: true,
+      confirmButtonText: "Salir",
+      cancelButtonText: "Seguir editando",
+      confirmButtonColor: "#d6762a",
+      cancelButtonColor: "#b0a79f",
+      background: "#f4efe7",
+      color: "#1b1b1e",
+    });
+    if (result.isConfirmed) nav.back?.();
+  }
+
   async function showArtistOffAlert(artistName) {
     await Swal.fire({
       icon: "warning",
       title: "Artista no disponible",
-      text: `${artistName} no está fichado actualmente. Selecciona otro artista disponible.`,
+      text: `${artistName} no está fichado actualmente. Selecciona otro artista.`,
       confirmButtonText: "Entendido",
       confirmButtonColor: "#d6762a",
       background: "#f4efe7",
@@ -93,7 +367,7 @@ export default function CreateAppointment({ nav, onAdd }) {
       text:
         count === 1
           ? "Solo se permiten imágenes JPG, JPEG o PNG."
-          : `Se omitieron ${count} archivos. Solo se permiten imágenes JPG, JPEG o PNG.`,
+          : `Se omitieron ${count} archivos. Solo se permiten JPG, JPEG o PNG.`,
       confirmButtonText: "Aceptar",
       confirmButtonColor: "#d6762a",
       background: "#f4efe7",
@@ -104,8 +378,8 @@ export default function CreateAppointment({ nav, onAdd }) {
   async function showMaxImagesAlert() {
     await Swal.fire({
       icon: "info",
-      title: "Límite de imágenes alcanzado",
-      text: `Puedes subir hasta ${MAX_REF_IMAGES} imágenes de referencia.`,
+      title: "Límite de imágenes",
+      text: `Solo puedes agregar hasta ${MAX_REF_IMAGES} imágenes de referencia.`,
       confirmButtonText: "Aceptar",
       confirmButtonColor: "#d6762a",
       background: "#f4efe7",
@@ -113,133 +387,50 @@ export default function CreateAppointment({ nav, onAdd }) {
     });
   }
 
-  async function handleCancel() {
-    if (!isDirty) {
-      nav.goBack();
-      return;
-    }
-
-    const result = await Swal.fire({
-      icon: "question",
-      title: "¿Cancelar esta cita?",
-      text: "Perderás los cambios que hayas escrito en el formulario.",
-      showCancelButton: true,
-      confirmButtonText: "Sí, salir",
-      cancelButtonText: "Seguir editando",
-      confirmButtonColor: "#d6762a",
-      cancelButtonColor: "#b0b0b0",
-      background: "#f4efe7",
-      color: "#1b1b1e",
-      reverseButtons: true,
-    });
-
-    if (result.isConfirmed) {
-      nav.goBack();
-    }
-  }
-
-  function validate() {
-    const e = {};
-
-    if (!form.clientName.trim()) e.clientName = "Nombre requerido";
-    if (!form.style) e.style = "Selecciona un estilo";
-    if (!form.artistId) e.artistId = "Selecciona un artista";
-    if (!form.date) e.date = "Selecciona una fecha";
-    if (!form.time) e.time = "Selecciona una hora";
-
-    if (!form.total || Number.isNaN(Number(form.total)) || Number(form.total) <= 0) {
-      e.total = "Ingresa un total válido";
-    }
-
-    return e;
-  }
-
-  function readFiles(files) {
-    clearSubmitError();
-
-    const allowed = ["image/jpeg", "image/png", "image/jpg"];
-    const incoming = Array.from(files);
-
-    if (!incoming.length) return;
-
-    const validFiles = incoming.filter((file) => allowed.includes(file.type));
-    const invalidCount = incoming.length - validFiles.length;
-
-    if (invalidCount > 0) {
-      showInvalidFilesAlert(invalidCount);
-    }
-
+  function readFiles(fileList) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    const validFiles = files.filter((f) =>
+      ["image/jpeg", "image/jpg", "image/png"].includes(f.type)
+    );
+    const invalidCount = files.length - validFiles.length;
+    if (invalidCount > 0) showInvalidFilesAlert(invalidCount);
     const availableSlots = MAX_REF_IMAGES - refImages.length;
-
-    if (availableSlots <= 0) {
-      showMaxImagesAlert();
-      return;
-    }
-
+    if (availableSlots <= 0) { showMaxImagesAlert(); return; }
     const filesToRead = validFiles.slice(0, availableSlots);
-
-    if (validFiles.length > availableSlots) {
-      showMaxImagesAlert();
-    }
-
+    if (validFiles.length > availableSlots) showMaxImagesAlert();
     filesToRead.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setRefImages((prev) => [
-          ...prev,
-          {
-            url: e.target.result,
-            name: file.name,
-          },
-        ]);
+        setRefImages((prev) => [...prev, { url: e.target.result, name: file.name }]);
       };
       reader.readAsDataURL(file);
     });
   }
 
-  function handleFileChange(e) {
-    readFiles(e.target.files);
-    e.target.value = "";
-  }
-
-  function handleDrop(e) {
-    e.preventDefault();
-    setDragOver(false);
-    readFiles(e.dataTransfer.files);
-  }
-
-  function removeImage(idx) {
-    setRefImages((prev) => prev.filter((_, i) => i !== idx));
-  }
+  function handleFileChange(e) { readFiles(e.target.files); e.target.value = ""; }
+  function handleDrop(e) { e.preventDefault(); setDragOver(false); readFiles(e.dataTransfer.files); }
+  function removeImage(idx) { setRefImages((prev) => prev.filter((_, i) => i !== idx)); }
 
   async function handleArtistSelect(artist) {
     clearSubmitError();
-
-    if (!artist.clockedIn) {
-      await showArtistOffAlert(artist.name.split(" ")[0]);
-      return;
-    }
-
+    if (!artist.clockedIn) { await showArtistOffAlert(artist.name.split(" ")[0]); return; }
     setField("artistId", artist.id);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     clearSubmitError();
-
     const nextErrors = validate();
     setErrors(nextErrors);
-
     if (Object.keys(nextErrors).length) {
+      setShakeErrors(true);
+      setTimeout(() => setShakeErrors(false), 600);
       return;
     }
-
     setSaving(true);
-
     await new Promise((r) => setTimeout(r, 400));
-
     const colorIdx = Math.floor(Math.random() * CLIENT_COLORS.length);
-
     const appt = {
       clientName: form.clientName.trim(),
       clientInitials: initials(form.clientName).toUpperCase(),
@@ -256,17 +447,13 @@ export default function CreateAppointment({ nav, onAdd }) {
       notes: form.notes.trim(),
       refImages,
     };
-
     try {
       const creada = await onAdd(appt);
       setSaving(false);
       setConfirmed(creada);
     } catch (err) {
       setSaving(false);
-      setErrors({
-        submit: err.message || "Error al guardar la cita. Intenta de nuevo.",
-      });
-
+      setErrors({ submit: err.message || "Error al guardar la cita." });
       await Swal.fire({
         icon: "error",
         title: "No se pudo guardar",
@@ -296,291 +483,422 @@ export default function CreateAppointment({ nav, onAdd }) {
 
   return (
     <div className="pageScreen">
-      <div className="pageBg" />
 
+      {/* ── HEADER ── */}
       <header className="pageHeader">
         <button className="iconBtn" onClick={handleCancel} aria-label="Volver">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <circle cx="9" cy="9" r="8" stroke="white" strokeWidth="1.5" />
-            <polyline
-              points="10.5,5.5 6.5,9 10.5,12.5"
-              stroke="white"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+            <polyline points="10.5,5.5 6.5,9 10.5,12.5" stroke="white" strokeWidth="1.8"
+              strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
-
         <h1 className="pageTitle">Nueva Cita</h1>
         <div style={{ width: 38, flexShrink: 0 }} />
       </header>
 
+      {/* ── FORM ── */}
       <main className="createMain">
-        <form className="createForm" onSubmit={handleSubmit} noValidate>
-          {/* ── CLIENTE ── */}
-          <div className="formSection">
-            <label className="formLabel">Nombre del cliente *</label>
-            <input
-              className={`formInput ${errors.clientName ? "inputError" : ""}`}
-              placeholder="Nombre completo"
-              value={form.clientName}
-              onChange={(e) => setField("clientName", e.target.value)}
-            />
-            {errors.clientName && (
-              <span className="fieldError">{errors.clientName}</span>
-            )}
+        <form
+          className={`createForm ${shakeErrors ? "formShake" : ""}`}
+          onSubmit={handleSubmit}
+          noValidate
+        >
+
+          {/* ── INTRO ── */}
+          <div className="introBlock">
+            <p className="eyebrowText">Agenda del estudio</p>
+            <h2 className="sectionHeroTitle">Programa una nueva sesión</h2>
+            <p className="sectionHeroCopy">
+              Completa los 4 pasos para registrar la cita. Puedes rellenar las secciones
+              en cualquier orden.
+            </p>
           </div>
 
-          {/* ── ESTILO ── */}
-          <div className="formSection">
-            <label className="formLabel">Estilo de tatuaje *</label>
-            {errors.style && <span className="fieldError">{errors.style}</span>}
+          {/* ── PROGRESS ── */}
+          <StepProgress stepStatus={stepStatus} />
 
-            <div className="styleGrid">
-              {STYLES.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  className={`styleChip ${form.style === s ? "styleChipActive" : ""}`}
-                  onClick={() => setField("style", s)}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* ── ARTISTA ── */}
-          <div className="formSection">
-            <label className="formLabel">Artista asignado *</label>
-            {errors.artistId && <span className="fieldError">{errors.artistId}</span>}
-
-            <div className="artistPicker">
-              {ARTISTS.map((a) => {
-                const isActive = form.artistId === a.id;
-                const isOff = !a.clockedIn;
-
-                return (
-                  <button
-                    key={a.id}
-                    type="button"
-                    className={`artistOption ${isActive ? "artistOptionActive" : ""}`}
-                    onClick={() => handleArtistSelect(a)}
-                    style={{ borderColor: isActive ? a.color : undefined, opacity: isOff ? 0.85 : 1 }}
-                    aria-label={`Seleccionar a ${a.name}`}
-                  >
-                    <Avatar initials={a.initials} color={a.color} size={36} />
-                    <span className="artistOptionName">{a.name.split(" ")[0]}</span>
-                    {isOff && <span className="artistOffBadge">Off</span>}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* ── FECHA Y DURACIÓN ── */}
-          <div className="formRow">
-            <div className="formSection">
-              <label className="formLabel">Fecha *</label>
-              <input
-                type="date"
-                className={`formInput ${errors.date ? "inputError" : ""}`}
-                value={form.date}
-                onChange={(e) => setField("date", e.target.value)}
-              />
-              {errors.date && <span className="fieldError">{errors.date}</span>}
+          {/* ═══ SECTION 1: CLIENTE ══════════════════════════════ */}
+          <section className="contentSection" style={{ "--section-delay": "0.05s" }}>
+            <div className="sectionHeader">
+              <div className="sectionBadge">1</div>
+              <div>
+                <h3 className="sectionTitle">Cliente y estilo</h3>
+                <p className="sectionSubtitle">Nombre del cliente y tipo de tatuaje</p>
+              </div>
+              {stepStatus[0] && <div className="sectionCheck">✓</div>}
             </div>
 
-            <div className="formSection">
-              <label className="formLabel">Duración (horas)</label>
-              <div className="hoursRow">
-                {[1, 2, 3, 4, 5, 6].map((h) => (
-                  <button
-                    key={h}
-                    type="button"
-                    className={`hourChip ${form.hours === h ? "hourChipActive" : ""}`}
-                    onClick={() => setField("hours", h)}
-                  >
-                    {h}h
-                  </button>
-                ))}
+            <div className="sectionBody">
+              {/* Nombre */}
+              <div className="formSection">
+                <label className="formLabel">
+                  Nombre del cliente <span className="reqStar">*</span>
+                </label>
+                <input
+                  className={`formInput ${errors.clientName ? "inputError" : ""}`}
+                  placeholder="Nombre completo"
+                  value={form.clientName}
+                  onChange={(e) => setField("clientName", e.target.value)}
+                  autoComplete="off"
+                />
+                {errors.clientName && (
+                  <span className="fieldError">{errors.clientName}</span>
+                )}
+              </div>
+
+              {/* Estilo */}
+              <div className="formSection">
+                <div className="labelRow">
+                  <label className="formLabel">
+                    Estilo de tatuaje <span className="reqStar">*</span>
+                  </label>
+                  {form.style && (
+                    <span className="selectedBadge">{form.style}</span>
+                  )}
+                </div>
+                {errors.style && <span className="fieldError">{errors.style}</span>}
+                <div className="styleGrid">
+                  {STYLES.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      className={`styleChip ${form.style === s ? "styleChipActive" : ""}`}
+                      onClick={() => setField("style", s)}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* ── HORA ── */}
-          <div className="formSection">
-            <label className="formLabel">Hora de inicio *</label>
-            {errors.time && <span className="fieldError">{errors.time}</span>}
+          {/* ═══ SECTION 2: ARTISTA ══════════════════════════════ */}
+          <section className="contentSection" style={{ "--section-delay": "0.1s" }}>
+            <div className="sectionHeader">
+              <div className="sectionBadge">2</div>
+              <div>
+                <h3 className="sectionTitle">Artista asignado</h3>
+                <p className="sectionSubtitle">¿Quién realizará la sesión?</p>
+              </div>
+              {stepStatus[1] && <div className="sectionCheck">✓</div>}
+            </div>
 
-            <div className="timeGrid">
-              {TIME_SLOTS.map((t) => (
+            <div className="sectionBody">
+              <div className="formSection">
+                {errors.artistId && (
+                  <span className="fieldError">{errors.artistId}</span>
+                )}
+                <div className="artistPicker">
+                  {ARTISTS.map((a) => {
+                    const isActive = form.artistId === a.id;
+                    const isOff = !a.clockedIn;
+                    return (
+                      <button
+                        key={a.id}
+                        type="button"
+                        className={`artistOption ${isActive ? "artistOptionActive" : ""} ${isOff ? "artistOff" : ""}`}
+                        onClick={() => handleArtistSelect(a)}
+                        style={{ "--artist-color": a.color }}
+                        aria-label={`Seleccionar a ${a.name}`}
+                        aria-pressed={isActive}
+                      >
+                        <Avatar initials={a.initials} color={a.color} size={40} />
+                        <span className="artistOptionName">{a.name.split(" ")[0]}</span>
+                        {isOff && <span className="artistOffBadge">Off</span>}
+                        {isActive && (
+                          <span className="artistCheckmark">
+                            <svg width="12" height="12" viewBox="0 0 12 12">
+                              <polyline points="1.5,6 4.5,9 10.5,3" stroke="currentColor" strokeWidth="2"
+                                fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ═══ SECTION 3: AGENDA ═══════════════════════════════ */}
+          <section className="contentSection" style={{ "--section-delay": "0.15s" }}>
+            <div className="sectionHeader">
+              <div className="sectionBadge">3</div>
+              <div>
+                <h3 className="sectionTitle">Fecha y horario</h3>
+                <p className="sectionSubtitle">Cuándo y por cuánto tiempo</p>
+              </div>
+              {stepStatus[2] && <div className="sectionCheck">✓</div>}
+            </div>
+
+            <div className="sectionBody">
+              <div className="scheduleGrid">
+
+                {/* Fecha */}
+                <div className="formSection">
+                  <label className="formLabel">
+                    Fecha <span className="reqStar">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    className={`formInput dateInput ${errors.date ? "inputError" : ""}`}
+                    value={form.date}
+                    onChange={(e) => setField("date", e.target.value)}
+                  />
+                  {errors.date && <span className="fieldError">{errors.date}</span>}
+                  {formattedDate && (
+                    <p className="fieldConfirm">📅 {formattedDate}</p>
+                  )}
+                </div>
+
+                {/* Duración */}
+                <div className="formSection">
+                  <label className="formLabel">Duración de la sesión</label>
+                  <DurationStepper
+                    value={form.hours}
+                    onChange={(v) => setField("hours", v)}
+                  />
+                  <p className="fieldHint">
+                    Duración estimada en horas.
+                  </p>
+                </div>
+              </div>
+
+              {/* Hora - botón que abre modal */}
+              <div className="formSection">
+                <div className="labelRow">
+                  <label className="formLabel">
+                    Hora de inicio <span className="reqStar">*</span>
+                  </label>
+                  {form.time && (
+                    <span className="selectedBadge">{form.time}</span>
+                  )}
+                </div>
+                {errors.time && <span className="fieldError">{errors.time}</span>}
+
                 <button
-                  key={t}
                   type="button"
-                  className={`timeChip ${form.time === t ? "timeChipActive" : ""}`}
-                  onClick={() => setField("time", t)}
+                  className={`timePickerTrigger ${form.time ? "timePickerTriggerFilled" : ""} ${errors.time ? "timePickerTriggerError" : ""}`}
+                  onClick={() => setTimeModalOpen(true)}
                 >
-                  {t}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.7"/>
+                    <polyline points="12,7 12,12.5 15.5,14.5" stroke="currentColor" strokeWidth="1.7"
+                      strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span>
+                    {form.time ? `Inicio a las ${form.time}` : "Seleccionar hora de inicio"}
+                  </span>
+                  <svg className="triggerChevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <polyline points="4,6 8,10 12,6" stroke="currentColor" strokeWidth="1.8"
+                      strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
+          </section>
 
-          {/* ── DIMENSIONES Y TOTAL ── */}
-          <div className="formRow">
-            <div className="formSection">
-              <label className="formLabel">Dimensiones</label>
-              <input
-                className="formInput"
-                placeholder="ej. 15 × 10 cm"
-                value={form.dimensions}
-                onChange={(e) => setField("dimensions", e.target.value)}
-              />
-            </div>
-
-            <div className="formSection">
-              <label className="formLabel">Total ($ MXN) *</label>
-              <input
-                type="number"
-                min="0"
-                className={`formInput ${errors.total ? "inputError" : ""}`}
-                placeholder="2500"
-                value={form.total}
-                onChange={(e) => setField("total", e.target.value)}
-              />
-              {errors.total && <span className="fieldError">{errors.total}</span>}
-            </div>
-          </div>
-
-          {/* ── NOTAS ── */}
-          <div className="formSection">
-            <label className="formLabel">Notas internas</label>
-            <textarea
-              className="formTextarea"
-              placeholder="Observaciones del cliente, referencias o indicaciones importantes..."
-              value={form.notes}
-              onChange={(e) => setField("notes", e.target.value)}
-              rows={3}
-            />
-          </div>
-
-          {/* ── IMÁGENES DE REFERENCIA ── */}
-          <div className="formSection">
-            <label className="formLabel">Imágenes de referencia</label>
-
-            <div
-              className={`refUploadZone ${dragOver ? "refDragOver" : ""}`}
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver(true);
-              }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={handleDrop}
-            >
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <rect
-                  x="2"
-                  y="6"
-                  width="28"
-                  height="20"
-                  rx="3"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <circle cx="10" cy="13" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-                <polyline
-                  points="2,24 10,16 16,22 22,17 30,24"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <line
-                  x1="16"
-                  y1="2"
-                  x2="16"
-                  y2="12"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-                <polyline
-                  points="12,6 16,2 20,6"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-
-              <p className="refUploadHint">
-                Arrastra imágenes aquí o <span>haz clic para subir</span>
-              </p>
-              <p className="refUploadTypes">
-                JPG, JPEG, PNG · máximo {MAX_REF_IMAGES} imágenes
-              </p>
-
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-                multiple
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
+          {/* ═══ SECTION 4: DETALLES ══════════════════════════════ */}
+          <section className="contentSection" style={{ "--section-delay": "0.2s" }}>
+            <div className="sectionHeader">
+              <div className="sectionBadge">4</div>
+              <div>
+                <h3 className="sectionTitle">Medidas, costo y referencias</h3>
+                <p className="sectionSubtitle">Información de apoyo para la sesión</p>
+              </div>
+              {stepStatus[3] && <div className="sectionCheck">✓</div>}
             </div>
 
-            {refImages.length > 0 && (
-              <div className="refImageGrid">
-                {refImages.map((img, idx) => (
-                  <div key={`${img.name}-${idx}`} className="refThumb">
-                    <img src={img.url} alt={img.name} />
-                    <button
-                      type="button"
-                      className="refThumbRemove"
-                      onClick={() => removeImage(idx)}
-                      aria-label="Eliminar imagen"
-                    >
-                      ✕
-                    </button>
-                    <span className="refThumbName">
-                      {img.name.length > 16 ? `${img.name.slice(0, 14)}…` : img.name}
-                    </span>
+            <div className="sectionBody">
+              <div className="formRow">
+                {/* Dimensiones */}
+                <div className="formSection">
+                  <label className="formLabel">Dimensiones</label>
+                  <input
+                    className="formInput"
+                    placeholder="ej. 15 × 10 cm"
+                    value={form.dimensions}
+                    onChange={(e) => setField("dimensions", e.target.value)}
+                  />
+                  <p className="fieldHint">Aproximación del tamaño del tatuaje.</p>
+                </div>
+
+                {/* Total */}
+                <div className="formSection">
+                  <div className="labelRow">
+                    <label className="formLabel">
+                      Total ($ MXN) <span className="reqStar">*</span>
+                    </label>
+                    {formattedTotal && (
+                      <span className="selectedBadge">{formattedTotal}</span>
+                    )}
+                  </div>
+                  <input
+                    inputMode="numeric"
+                    className={`formInput ${errors.total ? "inputError" : ""}`}
+                    placeholder="2500"
+                    value={form.total}
+                    onChange={(e) => setField("total", formatMoneyInput(e.target.value))}
+                  />
+                  {errors.total && <span className="fieldError">{errors.total}</span>}
+                </div>
+              </div>
+
+              {/* Notas */}
+              <div className="formSection">
+                <div className="labelRow">
+                  <label className="formLabel">Notas internas</label>
+                  <span className="charCount">{form.notes.trim().length} caracteres</span>
+                </div>
+                <textarea
+                  className="formTextarea"
+                  placeholder="Observaciones del cliente, zona del cuerpo, referencias o indicaciones importantes..."
+                  value={form.notes}
+                  onChange={(e) => setField("notes", e.target.value)}
+                />
+              </div>
+
+              {/* Imágenes de referencia */}
+              <div className="formSection">
+                <div className="labelRow">
+                  <label className="formLabel">Imágenes de referencia</label>
+                  <span className="charCount">
+                    {refImages.length}/{MAX_REF_IMAGES} subidas
+                  </span>
+                </div>
+
+                <div
+                  className={`refUploadZone ${dragOver ? "refDragOver" : ""}`}
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={handleDrop}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click();
+                  }}
+                >
+                  <div className="uploadIcon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 16V8M12 8l-3 3M12 8l3 3M4 16.5V18a2 2 0 002 2h12a2 2 0 002-2v-1.5"
+                        stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                      <rect x="3" y="4" width="18" height="14" rx="2.4"
+                        stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+                    </svg>
+                  </div>
+                  <p className="refUploadHint">
+                    Arrastra aquí o <span>haz clic para subir</span>
+                  </p>
+                  <p className="refUploadTypes">JPG, JPEG, PNG · máx. {MAX_REF_IMAGES} imágenes</p>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    multiple
+                    hidden
+                    onChange={handleFileChange}
+                  />
+                </div>
+
+                {refImages.length > 0 && (
+                  <div className="refImageGrid">
+                    {refImages.map((img, idx) => (
+                      <div key={`${img.name}-${idx}`} className="refThumb">
+                        <button
+                          type="button"
+                          className="refThumbRemove"
+                          onClick={() => removeImage(idx)}
+                          aria-label={`Eliminar ${img.name}`}
+                        >
+                          <svg width="9" height="9" viewBox="0 0 10 10">
+                            <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="2"
+                              strokeLinecap="round"/>
+                          </svg>
+                        </button>
+                        <img src={img.url} alt={img.name} />
+                        <div className="refThumbName" title={img.name}>{img.name}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* ═══ RESUMEN ══════════════════════════════════════════ */}
+          {stepStatus.some(Boolean) && (
+            <section className="summaryCard" style={{ "--section-delay": "0.25s" }}>
+              <div className="summaryCardHeader">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.8"/>
+                  <path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" strokeWidth="1.7"
+                    strokeLinecap="round"/>
+                </svg>
+                <span>Resumen de la cita</span>
+              </div>
+
+              <div className="summaryGrid">
+                {[
+                  { label: "Cliente",   value: form.clientName.trim() || null },
+                  { label: "Estilo",    value: form.style || null },
+                  { label: "Artista",   value: selectedArtist?.name || null },
+                  { label: "Fecha",     value: formattedDate },
+                  { label: "Hora",      value: form.time || null },
+                  { label: "Duración",  value: `${form.hours}h` },
+                  { label: "Total",     value: formattedTotal },
+                  { label: "Refs.",     value: refImages.length > 0 ? `${refImages.length} imagen(es)` : null },
+                ].map(({ label, value }) => (
+                  <div key={label} className={`summaryItem ${!value ? "summaryItemEmpty" : ""}`}>
+                    <span className="summaryLabel">{label}</span>
+                    <strong className="summaryValue">{value ?? "—"}</strong>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
-
-          {/* ── ACTIONS ── */}
-          {errors.submit && (
-            <p
-              style={{
-                color: "#dc2626",
-                textAlign: "center",
-                marginBottom: "0.25rem",
-                fontSize: "0.88rem",
-                fontWeight: 600,
-              }}
-            >
-              {errors.submit}
-            </p>
+            </section>
           )}
 
+          {/* ── ERROR SUBMIT ── */}
+          {errors.submit && (
+            <div className="submitErrorBox">{errors.submit}</div>
+          )}
+
+          {/* ── ACTIONS ── */}
           <div className="formActions">
-            <button type="button" className="cancelBtn" onClick={handleCancel}>
+            <button
+              type="button"
+              className="cancelBtn"
+              onClick={handleCancel}
+              disabled={saving}
+            >
               Cancelar
             </button>
-
             <button type="submit" className="submitBtn" disabled={saving}>
-              {saving ? "Guardando..." : "Guardar cita"}
+              {saving ? (
+                <>
+                  <span className="savingSpinner" />
+                  Guardando...
+                </>
+              ) : (
+                "Guardar cita"
+              )}
             </button>
           </div>
         </form>
       </main>
+
+      {/* ── TIME MODAL ── */}
+      {timeModalOpen && (
+        <TimePickerModal
+          currentTime={form.time}
+          onConfirm={(t) => setField("time", t)}
+          onClose={() => setTimeModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
