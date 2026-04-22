@@ -1,7 +1,6 @@
 import express from 'express';
-import { Registrar_Usuario } from './authController.js';
-import { Login_Usuario } from './authController.js';
-import { Token_Verificar } from './authMiddleware.js'
+import { Registrar_Usuario, Login_Usuario, Logout_Usuario } from './authController.js';
+import { Token_Verificar } from './authMiddleware.js';
 
 const router = express.Router();
 
@@ -12,6 +11,8 @@ router.post('/login', Login_Usuario);
 router.get('/perfil', Token_Verificar, (req, res) => {
     res.json({ message: "Login exitoso, bienvenido", user: req.user });
 });
+
+router.post('/logout', Token_Verificar, Logout_Usuario);
 
 
 

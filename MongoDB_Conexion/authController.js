@@ -49,6 +49,12 @@ export const Registrar_Usuario = async (req, res) => {
     }
 };
 
+export const Logout_Usuario = (req, res) => {
+    // Con JWT el token vive en el cliente; el logout formal
+    // le indica al frontend que lo descarte.
+    res.status(200).json({ message: 'Sesión cerrada correctamente.' });
+};
+
 export const Login_Usuario = async (req, res) => {
     try {
         const { Correo_Electronico, Contrasena } = req.body;
