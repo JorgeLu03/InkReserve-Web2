@@ -1,121 +1,196 @@
 import { useState } from "react";
+import { Routes, Route, useNavigate, Navigate, useParams } from "react-router-dom";
 import "./index.css";
 import { INITIAL_APPOINTMENTS } from "./data/mockData";
-import { INITIAL_EMPLOYEES }    from "./data/employeesMock";
-import { getCitas, createCita, updateCita } from "./services/apiService";
+import {
+  getCitas,
+  createCita,
+  updateCita,
+  getTatuadores,
+  createTatuador,
+  updateTatuador,
+} from "./services/apiService";
 
-import Login             from "./pages/Login";
-import Register          from "./pages/Register";
-import Dashboard         from "./pages/Dashboard";
-import Calendar          from "./pages/Calendar";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Calendar from "./pages/Calendar";
 import CreateAppointment from "./pages/CreateAppointment";
 import AppointmentDetail from "./pages/AppointmentDetail";
-import AdminShell        from "./pages/admin/AdminShell";
-import AdminDashboard    from "./pages/admin/AdminDashboard";
+import AdminShell from "./pages/admin/AdminShell";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+
+function ProtectedRoute({ children, adminOnly = false }) {
+  const token = localStorage.getItem("token");
+  const rol = localStorage.getItem("rol");
+  if (!token) return <Navigate to="/" replace />;
+  if (adminOnly && rol !== "admin") return <Navigate to="/dashboard" replace />;
+  return children;
+}
+
+function AppointmentDetailPage({ appointments, onUpdate, nav }) {
+  const { id } = useParams();
+  const appt = appointments.find((a) => String(a._id ?? a.id) === id) ?? null;
+  return <AppointmentDetail appointment={appt} nav={nav} onUpdate={onUpdate} />;
+}
+
+function AdminShellPage({ employees, appointments, onAddEmployee, onUpdateEmployee, nav }) {
+  const { section = "employees" } = useParams();
+  return (
+    <AdminShell
+      employees={employees}
+      appointments={appointments}
+      onAddEmployee={onAddEmployee}
+      onUpdateEmployee={onUpdateEmployee}
+      nav={nav}
+      initialSection={section}
+    />
+  );
+}
 
 export default function App() {
-  const [screen,        setScreen]        = useState("login");
-  const [homeDashboard, setHomeDashboard] = useState("dashboard");
-  const [detailId,      setDetailId]      = useState(null);
-  const [adminSection,  setAdminSection]  = useState("employees");
-  const [appointments,  setAppts]         = useState(INITIAL_APPOINTMENTS);
-  const [employees,     setEmployees]     = useState(INITIAL_EMPLOYEES);
+  const [appointments, setAppts] = useState(INITIAL_APPOINTMENTS);
+  const [employees, setEmployees] = useState([]);
+  const navigate = useNavigate();
+  const rol = localStorage.getItem("rol") ?? "user";
 
   const nav = {
-    toDashboard      : ()   => setScreen("dashboard"),
-    toCalendar       : ()   => setScreen("calendar"),
-    toCreate         : ()   => setScreen("create"),
-    toDetail         : (id) => { setDetailId(id); setScreen("detail"); },
-    toLogin          : ()   => setScreen("login"),
-    toRegister       : ()   => setScreen("register"),
-    toAdminDashboard : ()   => setScreen("adminDashboard"),
-    toAdminEmployees : ()   => { setAdminSection("employees"); setScreen("admin"); },
-    toAdminClients   : ()   => { setAdminSection("clients");   setScreen("admin"); },
-    toAdminWeek      : ()   => { setAdminSection("week");      setScreen("admin"); },
-    toAdminMonth     : ()   => { setAdminSection("month");     setScreen("admin"); },
-    goBack           : ()   => setScreen(homeDashboard),
+    toDashboard: () => navigate("/dashboard"),
+    toCalendar: () => navigate("/calendar"),
+    toCreate: () => navigate("/cita/nueva"),
+    toDetail: (id) => navigate(`/cita/${id}`),
+    toLogin: () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("rol");
+      navigate("/");
+    },
+    toRegister: () => navigate("/register"),
+    toAdminDashboard: () => navigate("/admin"),
+    toAdminEmployees: () => navigate("/admin/employees"),
+    toAdminClients: () => navigate("/admin/clients"),
+    toAdminWeek: () => navigate("/admin/week"),
+    toAdminMonth: () => navigate("/admin/month"),
+    goBack: () => navigate(rol === "admin" ? "/admin" : "/dashboard"),
   };
 
   async function addAppointment(appt) {
-    const data = await createCita(appt); // deja que el error suba al caller
+    const data = await createCita(appt);
     setAppts((p) => [...p, data.cita]);
     return data.cita;
   }
 
   async function updateAppointment(id, changes) {
-    // Actualización optimista inmediata (UI no se congela)
     setAppts((p) => p.map((a) => (String(a.id) === String(id) ? { ...a, ...changes } : a)));
     try {
       const data = await updateCita(id, changes);
-      // Sincronizar con la versión real del servidor
       setAppts((p) => p.map((a) => (String(a.id) === String(data.cita.id) ? data.cita : a)));
     } catch {
-      // La actualización optimista ya se aplicó, se deja como está
+      // Se mantiene actualización optimista
     }
   }
 
-  function addEmployee(emp) {
-    setEmployees((p) => [...p, emp]);
+  async function addEmployee(emp) {
+    try {
+      const saved = await createTatuador(emp);
+      setEmployees((p) => [...p, saved]);
+    } catch {
+      setEmployees((p) => [...p, emp]);
+    }
   }
 
-  function updateEmployee(id, changes) {
-    setEmployees((p) => p.map((e) => (e.id === id ? { ...e, ...changes } : e)));
+  async function updateEmployee(id, changes) {
+    const emp = employees.find((e) => String(e._id ?? e.id) === String(id) || String(e.id) === String(id));
+    setEmployees((p) =>
+      p.map((e) =>
+        String(e._id ?? e.id) === String(id) || String(e.id) === String(id)
+          ? { ...e, ...changes }
+          : e
+      )
+    );
+
+    if (emp?._id) {
+      try {
+        const updated = await updateTatuador(emp._id, { ...emp, ...changes });
+        setEmployees((p) => p.map((e) => (String(e._id) === String(updated._id) ? updated : e)));
+      } catch {
+        // Se mantiene actualización optimista
+      }
+    }
   }
 
   async function handleLoginSuccess(role) {
-    try {
-      const citas = await getCitas();
-      setAppts(citas);
-    } catch {
-      // Si falla la carga, se usan los datos mock como fallback
-    }
-    if (role === "admin") {
-      setHomeDashboard("adminDashboard");
-      setScreen("adminDashboard");
-    } else {
-      setHomeDashboard("dashboard");
-      setScreen("dashboard");
-    }
+    const [citas, tats] = await Promise.allSettled([getCitas(), getTatuadores()]);
+    if (citas.status === "fulfilled") setAppts(citas.value);
+    if (tats.status === "fulfilled") setEmployees(tats.value);
+    navigate(role === "admin" ? "/admin" : "/dashboard");
   }
 
-  const detailAppt = appointments.find((a) => a.id === detailId) ?? null;
+  return (
+    <Routes>
+      <Route path="/" element={<Login onGoRegister={nav.toRegister} onLoginSuccess={handleLoginSuccess} />} />
+      <Route path="/register" element={<Register onGoLogin={nav.toLogin} />} />
 
-  switch (screen) {
-    case "dashboard":
-      return <Dashboard appointments={appointments} employees={employees} onUpdate={updateAppointment} nav={nav} />;
-    case "calendar":
-      return <Calendar  appointments={appointments} nav={nav} />;
-    case "create":
-      return <CreateAppointment nav={nav} onAdd={addAppointment} />;
-    case "detail":
-      return <AppointmentDetail appointment={detailAppt} nav={nav} onUpdate={updateAppointment} />;
-    case "admin":
-      return (
-        <AdminShell
-          employees={employees}
-          appointments={appointments}
-          onAddEmployee={addEmployee}
-          onUpdateEmployee={updateEmployee}
-          nav={nav}
-          initialSection={adminSection}
-        />
-      );
-    case "adminDashboard":
-      return (
-        <AdminDashboard
-          appointments={appointments}
-          employees={employees}
-          nav={nav}
-        />
-      );
-    case "register":
-      return <Register onGoLogin={nav.toLogin} />;
-    default:
-      return (
-        <Login
-          onGoRegister={nav.toRegister}
-          onLoginSuccess={handleLoginSuccess}
-        />
-      );
-  }
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard appointments={appointments} employees={employees} onUpdate={updateAppointment} nav={nav} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/calendar"
+        element={
+          <ProtectedRoute>
+            <Calendar appointments={appointments} nav={nav} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/cita/nueva"
+        element={
+          <ProtectedRoute>
+            <CreateAppointment nav={nav} onAdd={addAppointment} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/cita/:id"
+        element={
+          <ProtectedRoute>
+            <AppointmentDetailPage appointments={appointments} onUpdate={updateAppointment} nav={nav} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute adminOnly>
+            <AdminDashboard appointments={appointments} employees={employees} nav={nav} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/:section"
+        element={
+          <ProtectedRoute adminOnly>
+            <AdminShellPage
+              employees={employees}
+              appointments={appointments}
+              onAddEmployee={addEmployee}
+              onUpdateEmployee={updateEmployee}
+              nav={nav}
+            />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
 }

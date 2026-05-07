@@ -97,29 +97,31 @@ const Tatuador_Schema = new mongoose.Schema({
     Especialidades: {
         type: String,
         default: 'Ninguna' //blackwork,tradicional, fine line, etc
-
-    },
-    Anos_De_Experiencia:{
-        type: Number,
-        default: 0
-
-    },
-    Horario_Dias: {
-        type: String,
-        default: 'Lunes a Viernes'
-
-    },
-    Horario_Horas: {
-        type: String,
-        default: '10am a 6pm'
-
-    },
-    Esta_Disponible: {
-        type: Boolean,
-        default: false
-
-    }
-});
+        },
+        // Campos del frontend
+        Iniciales:          { type: String, default: '' },
+        Color_Avatar:       { type: String, default: '#c084fc' },
+        Foto_Base64:        { type: String, default: null },
+        Curriculum:         { type: mongoose.Schema.Types.Mixed, default: null },
+        Fecha_Nacimiento:   { type: String, default: '' },
+        RFC:                { type: String, default: '' },
+        CURP:               { type: String, default: '' },
+        Especialidades_Array: { type: [String], default: [] },
+        Horario_Inicio:     { type: String, default: '10:00' },
+        Horario_Fin:        { type: String, default: '18:00' },
+        Horario_Dias_Array: { type: [String], default: [] },
+        Tarifa_Hora:        { type: Number, default: 0 },
+        Salario_Mensual:    { type: Number, default: 0 },
+        Portafolio:         { type: mongoose.Schema.Types.Mixed, default: [] },
+        Esta_Fichado:       { type: Boolean, default: false },
+        Id_Frontend:        { type: String, default: '' },
+        Artist_Id_Numerico: { type: Number, default: 0 },
+        // Campos legacy (se mantienen por compatibilidad)
+        Anos_De_Experiencia:{ type: Number, default: 0 },
+        Horario_Dias:       { type: String, default: 'Lunes a Viernes' },
+        Horario_Horas:      { type: String, default: '10am a 6pm' },
+        Esta_Disponible:    { type: Boolean, default: false },
+    }, { timestamps: true });
 
 
 

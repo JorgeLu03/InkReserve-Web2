@@ -33,31 +33,69 @@ export const Obtener_Tatuador = async (req, res) => {
     }
 };
 
+// Helper: normaliza payload frontend para mongo
+function extraerCampos(body) {
+    const {
+        Nombre,
+        Especialidades,
+        Anos_De_Experiencia,
+        Horario_Dias,
+        Horario_Horas,
+        Esta_Disponible,
+        Iniciales,
+        Color_Avatar,
+        Foto_Base64,
+        Curriculum,
+        Fecha_Nacimiento,
+        RFC,
+        CURP,
+        Especialidades_Array,
+        Horario_Inicio,
+        Horario_Fin,
+        Horario_Dias_Array,
+        Tarifa_Hora,
+        Salario_Mensual,
+        Portafolio,
+        Esta_Fichado,
+        Id_Frontend,
+        Artist_Id_Numerico,
+    } = body;
+
+    return {
+        Nombre: Nombre?.trim() ?? '',
+        Especialidades: Especialidades ?? 'Ninguna',
+        Anos_De_Experiencia: Anos_De_Experiencia ?? 0,
+        Horario_Dias: Horario_Dias ?? 'Lunes a Viernes',
+        Horario_Horas: Horario_Horas ?? '10am a 6pm',
+        Esta_Disponible: Esta_Disponible ?? true,
+        Iniciales: Iniciales ?? '',
+        Color_Avatar: Color_Avatar ?? '#c084fc',
+        Foto_Base64: Foto_Base64 ?? null,
+        Curriculum: Curriculum ?? null,
+        Fecha_Nacimiento: Fecha_Nacimiento ?? '',
+        RFC: RFC ?? '',
+        CURP: CURP ?? '',
+        Especialidades_Array: Especialidades_Array ?? [],
+        Horario_Inicio: Horario_Inicio ?? '10:00',
+        Horario_Fin: Horario_Fin ?? '18:00',
+        Horario_Dias_Array: Horario_Dias_Array ?? [],
+        Tarifa_Hora: Tarifa_Hora ?? 0,
+        Salario_Mensual: Salario_Mensual ?? 0,
+        Portafolio: Portafolio ?? [],
+        Esta_Fichado: Esta_Fichado ?? false,
+        Id_Frontend: Id_Frontend ?? '',
+        Artist_Id_Numerico: Artist_Id_Numerico ?? 0,
+    };
+}
+
 // POST /api/tatuadores — Crear un tatuador
 export const Crear_Tatuador = async (req, res) => {
     try {
-        const {
-            Nombre,
-            Especialidades,
-            Anos_De_Experiencia,
-            Horario_Dias,
-            Horario_Horas,
-            Esta_Disponible,
-        } = req.body;
-
-        if (!Nombre || Nombre.trim() === '') {
+        if (!req.body.Nombre || req.body.Nombre.trim() === '') {
             return res.status(400).json({ message: 'El nombre del tatuador es obligatorio.' });
         }
 
-        const nuevo = await Tatuador.create({
-            Nombre:               Nombre.trim(),
-            Especialidades:       Especialidades       ?? 'Ninguna',
-            Anos_De_Experiencia:  Anos_De_Experiencia  ?? 0,
-            Horario_Dias:         Horario_Dias         ?? 'Lunes a Viernes',
-            Horario_Horas:        Horario_Horas        ?? '10am a 6pm',
-            Esta_Disponible:      Esta_Disponible      ?? true,
-        });
-
+        const nuevo = await Tatuador.create(extraerCampos(req.body));
         res.status(201).json({ message: 'Tatuador creado.', tatuador: nuevo });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -67,32 +105,49 @@ export const Crear_Tatuador = async (req, res) => {
 // PUT /api/tatuadores/:id — Actualizar un tatuador
 export const Actualizar_Tatuador = async (req, res) => {
     try {
-        const {
-            Nombre,
-            Especialidades,
-            Anos_De_Experiencia,
-            Horario_Dias,
-            Horario_Horas,
-            Esta_Disponible,
-        } = req.body;
+        const body = req.body;
 
-        if (Nombre !== undefined && Nombre.trim() === '') {
-            return res.status(400).json({ message: 'El nombre no puede estar vacío.' });
+        if (body.Nombre !== undefined && body.Nombre.trim() === '') {
+            return res.status(400).json({ message: 'El nombre no puede estar vacio.' });
         }
 
-        const cambios = {};
-        if (Nombre              !== undefined) cambios.Nombre              = Nombre.trim();
-        if (Especialidades      !== undefined) cambios.Especialidades      = Especialidades;
-        if (Anos_De_Experiencia !== undefined) cambios.Anos_De_Experiencia = Anos_De_Experiencia;
-        if (Horario_Dias        !== undefined) cambios.Horario_Dias        = Horario_Dias;
-        if (Horario_Horas       !== undefined) cambios.Horario_Horas       = Horario_Horas;
-        if (Esta_Disponible     !== undefined) cambios.Esta_Disponible     = Esta_Disponible;
+        const CAMPOS = [
+            'Nombre',
+            'Especialidades',
+            'Anos_De_Experiencia',
+            'Horario_Dias',
+            'Horario_Horas',
+            'Esta_Disponible',
+            'Iniciales',
+            'Color_Avatar',
+            'Foto_Base64',
+            'Curriculum',
+            'Fecha_Nacimiento',
+            'RFC',
+            'CURP',
+            'Especialidades_Array',
+            'Horario_Inicio',
+            'Horario_Fin',
+            'Horario_Dias_Array',
+            'Tarifa_Hora',
+            'Salario_Mensual',
+            'Portafolio',
+            'Esta_Fichado',
+            'Id_Frontend',
+            'Artist_Id_Numerico',
+        ];
 
-        const actualizado = await Tatuador.findByIdAndUpdate(
-            req.params.id,
-            cambios,
-            { new: true, runValidators: true }
-        );
+        const cambios = {};
+        for (const campo of CAMPOS) {
+            if (body[campo] !== undefined) {
+                cambios[campo] = campo === 'Nombre' ? body[campo].trim() : body[campo];
+            }
+        }
+
+        const actualizado = await Tatuador.findByIdAndUpdate(req.params.id, cambios, {
+            new: true,
+            runValidators: true,
+        });
 
         if (!actualizado) {
             return res.status(404).json({ message: 'Tatuador no encontrado.' });

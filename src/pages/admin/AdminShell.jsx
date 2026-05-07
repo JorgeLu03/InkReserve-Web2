@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AdminShell.css";
 import EmployeeList from "./EmployeeList";
 import EmployeeDetail from "./EmployeeDetail";
@@ -161,6 +163,7 @@ export default function AdminShell({
 }) {
   const [section, setSection] = useState(initialSection ?? "employees");
   const [selEmp, setSelEmp] = useState(null);
+  const navigate = useNavigate();
 
   function goDetail(emp) {
     setSelEmp(emp);
@@ -168,11 +171,21 @@ export default function AdminShell({
   }
 
   function goCreate() {
-    setSection("createEmployee");
+    changeSection("createEmployee");
+  }
+
+  // Sincronizar cuando el prop cambia (navegación por URL)
+  useEffect(() => {
+    setSection(initialSection ?? "employees");
+  }, [initialSection]);
+
+  function changeSection(key) {
+    setSection(key);
+    navigate(`/admin/${key}`, { replace: true });
   }
 
   function goList() {
-    setSection("employees");
+    changeSection("employees");
   }
 
   function handleAdd(emp) {
@@ -217,7 +230,7 @@ export default function AdminShell({
                 <button
                   key={item.key}
                   className={`adminSidebarItem ${active ? "adminSidebarItemActive" : ""}`}
-                  onClick={() => setSection(item.key)}
+                  onClick={() => changeSection(item.key)}
                 >
                   <span className="adminSidebarIcon">{item.icon}</span>
                   {item.label}
