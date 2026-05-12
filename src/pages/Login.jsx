@@ -178,6 +178,19 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
         <h1 className="title">Iniciar sesión</h1>
         <p className="subtitle">Accede a tu cuenta para continuar.</p>
 
+        <button
+          type="button"
+          className="demoBtn"
+          onClick={() => {
+            localStorage.setItem("token", "demo-token");
+            localStorage.setItem("rol", "admin");
+            localStorage.setItem("nombre", "Demo Admin");
+            onLoginSuccess?.("admin");
+          }}
+        >
+          Entrar en modo demo (sin servidor)
+        </button>
+
         <div className="roleToggle">
           <button
             type="button"

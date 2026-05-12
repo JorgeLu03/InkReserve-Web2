@@ -19,6 +19,7 @@ import CreateAppointment from "./pages/CreateAppointment";
 import AppointmentDetail from "./pages/AppointmentDetail";
 import AdminShell from "./pages/admin/AdminShell";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminReports from "./pages/admin/AdminReports";
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const token = localStorage.getItem("token");
@@ -122,7 +123,7 @@ export default function App() {
     const [citas, tats] = await Promise.allSettled([getCitas(), getTatuadores()]);
     if (citas.status === "fulfilled") setAppts(citas.value);
     if (tats.status === "fulfilled") setEmployees(tats.value);
-    navigate(role === "admin" ? "/admin" : "/dashboard");
+    navigate(role === "admin" ? "/admin/reports" : "/dashboard");
   }
 
   return (
@@ -189,6 +190,8 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route path="/preview/reports" element={<AdminReports />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
