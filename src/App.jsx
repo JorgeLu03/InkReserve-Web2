@@ -20,6 +20,8 @@ import AppointmentDetail from "./pages/AppointmentDetail";
 import AdminShell from "./pages/admin/AdminShell";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminReports from "./pages/admin/AdminReports";
+import GestionUsuarios from "./pages/admin/GestionUsuarios";
+import CatalogoServicios from "./pages/admin/CatalogoServicios";
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const token = localStorage.getItem("token");
@@ -71,6 +73,9 @@ export default function App() {
     toAdminClients: () => navigate("/admin/clients"),
     toAdminWeek: () => navigate("/admin/week"),
     toAdminMonth: () => navigate("/admin/month"),
+    toAdminReports: () => navigate("/admin/reports"),
+    toAdminUsuarios: () => navigate("/admin/usuarios"),
+    toAdminServicios: () => navigate("/admin/servicios"),
     goBack: () => navigate(rol === "admin" ? "/admin" : "/dashboard"),
   };
 
@@ -191,7 +196,9 @@ export default function App() {
         }
       />
 
-      <Route path="/preview/reports" element={<AdminReports />} />
+      <Route path="/preview/reports"   element={<AdminReports />} />
+      <Route path="/preview/usuarios"  element={<GestionUsuarios />} />
+      <Route path="/preview/servicios" element={<CatalogoServicios />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

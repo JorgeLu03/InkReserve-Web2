@@ -1,0 +1,239 @@
+/* ═══════════════════════════════════════════════
+   GESTIÓN DE USUARIOS
+═══════════════════════════════════════════════ */
+.ugView {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  animation: ugFadeUp .32s cubic-bezier(0.23,1,0.32,1) both;
+}
+@keyframes ugFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── STATS ── */
+.ugStatsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+.ugStat {
+  background: rgba(245,240,232,0.93);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,.10);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.ugStatVal {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #1b1b1e;
+  line-height: 1;
+}
+.ugStatOrange { color: #d6762a; }
+.ugStatBlue   { color: #0ea5e9; }
+.ugStatGreen  { color: #16a34a; }
+.ugStatLabel  { font-size: 0.7rem; color: rgba(27,27,30,.48); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+/* ── TOOLBAR ── */
+.ugToolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.ugSearch {
+  flex: 1;
+  min-width: 200px;
+  max-width: 340px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 10px;
+  background: rgba(255,255,255,.88);
+  font-size: 0.83rem;
+  color: #1b1b1e;
+  outline: none;
+}
+.ugSearch:focus { border-color: #d6762a; box-shadow: 0 0 0 3px rgba(214,118,42,.12); }
+
+.ugFilterGroup {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.ugFilterBtn {
+  padding: 0.42rem 0.9rem;
+  border-radius: 99px;
+  border: 1px solid rgba(0,0,0,.13);
+  background: rgba(255,255,255,.8);
+  font-size: 0.76rem;
+  color: rgba(27,27,30,.65);
+  cursor: pointer;
+  transition: all .15s;
+}
+.ugFilterBtn:hover { border-color: rgba(214,118,42,.4); }
+.ugFilterBtnOn {
+  background: rgba(214,118,42,.18) !important;
+  border-color: #d6762a !important;
+  color: #b85e1e !important;
+  font-weight: 700;
+}
+
+/* ── LAYOUT ── */
+.ugLayout { display: flex; flex-direction: column; gap: 1rem; }
+.ugLayoutSplit { display: grid; grid-template-columns: 1fr 300px; gap: 1rem; align-items: start; }
+
+/* ── TABLE CARD ── */
+.ugTableCard {
+  background: rgba(245,240,232,0.93);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.10);
+  overflow: hidden;
+}
+.ugTableHead {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 0.65rem 1.1rem;
+  background: rgba(214,118,42,.1);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: rgba(27,27,30,.5);
+  border-bottom: 1px solid rgba(214,118,42,.18);
+}
+.ugTableRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 0.75rem 1.1rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  cursor: pointer;
+  transition: background .15s;
+}
+.ugTableRow:last-child { border-bottom: none; }
+.ugTableRow:hover { background: rgba(214,118,42,.05); }
+.ugTableRowActive { background: rgba(214,118,42,.09) !important; }
+
+.ugUserCell { display: flex; align-items: center; gap: 0.75rem; }
+.ugAvatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 800; color: #fff;
+  flex-shrink: 0;
+}
+.ugUserInfo { display: flex; flex-direction: column; }
+.ugUserName  { font-size: 0.84rem; font-weight: 700; color: #1b1b1e; }
+.ugUserEmail { font-size: 0.69rem; color: rgba(27,27,30,.48); }
+
+/* Role badges */
+.ugRolBadge {
+  display: inline-flex; align-items: center;
+  padding: 0.22rem 0.65rem;
+  border-radius: 99px; font-size: 0.7rem; font-weight: 700;
+}
+.rolAdmin  { background: rgba(214,118,42,.15); color: #b85e1e; border: 1px solid rgba(214,118,42,.28); }
+.rolStaff  { background: rgba(14,165,233,.12); color: #0369a1; border: 1px solid rgba(14,165,233,.25); }
+.rolUser   { background: rgba(27,27,30,.08);   color: rgba(27,27,30,.6);  border: 1px solid rgba(0,0,0,.12); }
+
+/* Status dot */
+.ugStatusDot {
+  display: inline-flex; align-items: center; gap: 0.42rem;
+  font-size: 0.74rem; font-weight: 600;
+}
+.ugDotOn  { color: #16a34a; }
+.ugDotOff { color: #9ca3af; }
+.ugDotCircle {
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.ugDotOn  .ugDotCircle { background: #16a34a; }
+.ugDotOff .ugDotCircle { background: #9ca3af; }
+
+/* Row actions */
+.ugRowActions { display: flex; gap: 0.35rem; }
+.ugToggleBtn {
+  padding: 0.3rem 0.75rem; border-radius: 8px; border: none;
+  font-size: 0.71rem; font-weight: 700; cursor: pointer;
+  transition: opacity .15s;
+}
+.ugToggleOff { background: rgba(220,38,38,.1); color: #dc2626; }
+.ugToggleOn  { background: rgba(22,163,74,.1); color: #16a34a; }
+.ugToggleBtn:hover { opacity: 0.75; }
+
+.ugEmpty { padding: 2rem; text-align: center; color: rgba(27,27,30,.4); font-size: 0.85rem; }
+
+/* ── DETAIL PANEL ── */
+.ugDetailCard {
+  background: rgba(245,240,232,0.96);
+  border-radius: 16px;
+  box-shadow: 0 6px 22px rgba(0,0,0,.13);
+  padding: 1.25rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  position: sticky;
+  top: 0;
+}
+.ugDetailHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.ugDetailAvatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: 800; color: #fff;
+}
+.ugDetailClose {
+  background: rgba(0,0,0,.07); border: none; border-radius: 50%;
+  width: 28px; height: 28px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(27,27,30,.5);
+  transition: background .15s;
+}
+.ugDetailClose:hover { background: rgba(0,0,0,.15); }
+.ugDetailName  { font-size: 1rem; font-weight: 800; color: #1b1b1e; }
+.ugDetailEmail { font-size: 0.74rem; color: rgba(27,27,30,.5); }
+
+.ugDetailFields { display: flex; flex-direction: column; gap: 0.6rem; }
+.ugDetailField  { display: flex; flex-direction: column; gap: 0.18rem; }
+.ugDetailFieldLabel { font-size: 0.62rem; text-transform: uppercase; letter-spacing: .07em; color: rgba(27,27,30,.42); font-weight: 600; }
+.ugDetailFieldVal   { font-size: 0.83rem; color: #1b1b1e; font-weight: 500; }
+
+.ugRolRow { display: flex; align-items: center; gap: 0.5rem; }
+.ugEditRolBtn {
+  font-size: 0.68rem; color: #d6762a; background: none; border: none;
+  cursor: pointer; font-weight: 700; text-decoration: underline;
+}
+.ugRolSelect { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.ugRolOption {
+  padding: 0.25rem 0.6rem; border-radius: 99px; border: 1px solid rgba(0,0,0,.13);
+  background: rgba(255,255,255,.7); font-size: 0.7rem; cursor: pointer;
+  transition: all .15s;
+}
+.ugRolOptionOn { background: rgba(214,118,42,.18); border-color: #d6762a; color: #b85e1e; font-weight: 700; }
+
+.ugDetailActions { margin-top: 0.25rem; }
+.ugDetailToggle {
+  width: 100%; padding: 0.62rem; border: none; border-radius: 10px;
+  font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: opacity .15s;
+}
+.ugDetailToggleOff { background: rgba(220,38,38,.1); color: #dc2626; }
+.ugDetailToggleOn  { background: rgba(22,163,74,.1);  color: #16a34a; }
+.ugDetailToggle:hover { opacity: 0.75; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .ugStatsRow     { grid-template-columns: repeat(2, 1fr); }
+  .ugLayoutSplit  { grid-template-columns: 1fr; }
+  .ugTableHead,
+  .ugTableRow     { grid-template-columns: 2fr 1fr 1fr; }
+  .ugTableHead span:last-child,
+  .ugTableRow .ugRowActions { display: none; }
+}
+@media (max-width: 600px) {
+  .ugStatsRow { grid-template-columns: 1fr 1fr; }
+}

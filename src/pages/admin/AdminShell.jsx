@@ -8,6 +8,8 @@ import CreateEmployee from "./CreateEmployee";
 import ClientList from "./ClientList";
 import AdminAgenda from "./AdminAgenda";
 import AdminReports from "./AdminReports";
+import GestionUsuarios from "./GestionUsuarios";
+import CatalogoServicios from "./CatalogoServicios";
 import logo from "../../assets/logo.png";
 const NAV_ITEMS = [
   {
@@ -136,6 +138,30 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+  {
+    key: "usuarios",
+    label: "Usuarios",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="5.5" r="2.8" stroke="currentColor" strokeWidth="1.3" />
+        <path d="M2 14c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+        <circle cx="13" cy="5" r="1.6" stroke="currentColor" strokeWidth="1.1" />
+        <path d="M14.5 9.5c1 .5 1.5 1.5 1.5 2.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    key: "servicios",
+    label: "Catálogo",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <rect x="1.5" y="2" width="13" height="12" rx="2" stroke="currentColor" strokeWidth="1.3" />
+        <line x1="4.5" y1="5.5" x2="11.5" y2="5.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        <line x1="4.5" y1="8"   x2="11.5" y2="8"   stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        <line x1="4.5" y1="10.5" x2="8.5" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      </svg>
+    ),
+  },
 ];
 
 const SECTION_TITLES = {
@@ -146,6 +172,8 @@ const SECTION_TITLES = {
   week: "Agenda Semanal",
   month: "Agenda Mensual",
   reports: "Reportes",
+  usuarios: "Gestión de Usuarios",
+  servicios: "Catálogo de Servicios",
 };
 
 function topKey(section) {
@@ -329,7 +357,9 @@ export default function AdminShell({
             />
           )}
 
-          {section === "reports" && <AdminReports />}
+          {section === "reports"   && <AdminReports />}
+          {section === "usuarios"  && <GestionUsuarios />}
+          {section === "servicios" && <CatalogoServicios />}
         </main>
       </div>
     </div>

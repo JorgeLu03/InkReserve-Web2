@@ -104,6 +104,27 @@ export default function AdminDashboard({ appointments, employees, nav }) {
               <img src="/assets/269265_envelope-icon.png" alt="" width="15" height="15" className="navIcon" />
               Agenda Mensual
             </button>
+            <button
+              className={`navItem ${activeNav === "Reportes" ? "navItemActive" : ""}`}
+              onClick={() => navTo("Reportes", nav.toAdminReports)}
+            >
+              <img src="/assets/269265_envelope-icon.png" alt="" width="15" height="15" className="navIcon" />
+              Reportes
+            </button>
+            <button
+              className={`navItem ${activeNav === "Usuarios" ? "navItemActive" : ""}`}
+              onClick={() => navTo("Usuarios", nav.toAdminUsuarios)}
+            >
+              <img src="/assets/269275_user-icon.png" alt="" width="15" height="15" className="navIcon" />
+              Gestión de Usuarios
+            </button>
+            <button
+              className={`navItem ${activeNav === "Servicios" ? "navItemActive" : ""}`}
+              onClick={() => navTo("Servicios", nav.toAdminServicios)}
+            >
+              <img src="/assets/269265_envelope-icon.png" alt="" width="15" height="15" className="navIcon" />
+              Catálogo de Servicios
+            </button>
           </nav>
         </aside>
 
