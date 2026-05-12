@@ -14,7 +14,7 @@ const app = express();
 
 // MIDDLEWARE
 app.use(cors({
-    origin: /^http:\/\/localhost:\d+$/,
+    origin: true,
     credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
