@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "NOimLuDj0aKvCd6kBFkXj"
+uri = "file://inkreserve-web2.tar.gz"
+type = "unspecified"
+title = "InkReserve — Project Files"
