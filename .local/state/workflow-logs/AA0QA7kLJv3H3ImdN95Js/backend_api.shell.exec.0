@@ -1,0 +1,37 @@
+
+> inkreserve-web2@0.0.0 server
+> node MongoDB_Conexion/server.js
+
+[1G[0KConnection error MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+    at _handleConnectionErrors [90m(/home/runner/workspace/[39mnode_modules/[4mmongoose[24m/lib/connection.js:1169:11[90m)[39m
+    at NativeConnection.openUri [90m(/home/runner/workspace/[39mnode_modules/[4mmongoose[24m/lib/connection.js:1100:11[90m)[39m {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: [32m'Unknown'[39m,
+    servers: Map(1) { [32m'localhost:27017'[39m => [36m[ServerDescription][39m },
+    stale: [33mfalse[39m,
+    compatible: [33mtrue[39m,
+    heartbeatFrequencyMS: [33m10000[39m,
+    localThresholdMS: [33m15[39m,
+    setName: [1mnull[22m,
+    maxElectionId: [1mnull[22m,
+    maxSetVersion: [1mnull[22m,
+    commonWireVersion: [33m0[39m,
+    logicalSessionTimeoutMinutes: [1mnull[22m
+  },
+  code: [90mundefined[39m,
+  cause: TopologyDescription {
+    type: [32m'Unknown'[39m,
+    servers: Map(1) { [32m'localhost:27017'[39m => [36m[ServerDescription][39m },
+    stale: [33mfalse[39m,
+    compatible: [33mtrue[39m,
+    heartbeatFrequencyMS: [33m10000[39m,
+    localThresholdMS: [33m15[39m,
+    setName: [1mnull[22m,
+    maxElectionId: [1mnull[22m,
+    maxSetVersion: [1mnull[22m,
+    commonWireVersion: [33m0[39m,
+    logicalSessionTimeoutMinutes: [1mnull[22m
+  }
+}
+[1G[0K⠙[1G[0K
