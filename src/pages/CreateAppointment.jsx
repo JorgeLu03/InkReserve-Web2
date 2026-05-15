@@ -4,16 +4,105 @@ import "./CreateAppointment.css";
 import Avatar from "../components/Avatar";
 import AppointmentConfirmation from "./AppointmentConfirmation";
 import {
-  ARTISTS,
-  STYLES,
   TIME_SLOTS,
   TATTOO_KEYS,
   CLIENT_COLORS,
 } from "../data/mockData";
+import { getServicios } from "../services/apiService";
 
 function initials(name) {
   const parts = name.trim().split(" ").filter(Boolean);
   return (parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "");
+}
+
+/* ── HELPERS DE DISPONIBILIDAD ────────────────────────────────────
+   Calculan si un artista puede tomar una cita según fecha, hora,
+   duración y citas existentes. Las mismas reglas las aplica el
+   backend (hayTraslape en citasController) como segunda capa.
+─────────────────────────────────────────────────────────────────── */
+
+// JS Date.getDay() → abreviación que usa el frontend
+const DIA_POR_GETDAY = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+
+// Normaliza una etiqueta de día (acepta con o sin acento, mayúsculas)
+function normalizaDia(s) {
+  return String(s ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .slice(0, 3);
+}
+
+function parseHM(s) {
+  if (!s) return null;
+  const m = /^(\d{1,2}):(\d{2})$/.exec(s);
+  if (!m) return null;
+  return Number(m[1]) * 60 + Number(m[2]);
+}
+
+function diaDeFechaISO(dateISO) {
+  if (!dateISO) return null;
+  const [y, mo, d] = dateISO.split("-").map(Number);
+  if (!y || !mo || !d) return null;
+  return new Date(y, mo - 1, d).getDay(); // 0-6 (local time, no TZ issues)
+}
+
+/** Devuelve { available, reason } para un artista dado el form actual.
+ *  Si faltan datos (fecha o hora), solo evalúa lo que pueda. */
+function disponibilidadArtista(artist, form, appointments) {
+  const start = form.time ? parseHM(form.time) : null;
+  const hours = Number(form.hours) || 1;
+  const end   = start !== null ? start + hours * 60 : null;
+
+  // 1) Día laboral del artista (solo se evalúa si hay fecha)
+  if (form.date) {
+    const idx = diaDeFechaISO(form.date);
+    if (idx !== null && Array.isArray(artist.workingHours?.days) && artist.workingHours.days.length) {
+      const diaSeleccionado = normalizaDia(DIA_POR_GETDAY[idx]);
+      const diasArtista     = artist.workingHours.days.map(normalizaDia);
+      if (!diasArtista.includes(diaSeleccionado)) {
+        return { available: false, reason: `No trabaja en ${DIA_POR_GETDAY[idx]}.` };
+      }
+    }
+  }
+
+  // 2) Horario del artista (solo se evalúa si hay hora)
+  if (start !== null) {
+    const aStart = parseHM(artist.workingHours?.start);
+    const aEnd   = parseHM(artist.workingHours?.end);
+    if (aStart !== null && aEnd !== null) {
+      if (start < aStart || end > aEnd) {
+        return {
+          available: false,
+          reason: `Fuera de su horario (${artist.workingHours.start} – ${artist.workingHours.end}).`,
+        };
+      }
+    }
+  }
+
+  // 3) Traslape con citas existentes (necesita fecha, hora y duración)
+  if (form.date && start !== null) {
+    const conflicto = appointments.find((c) => {
+      if (String(c.artistId) !== String(artist.artistId)) return false;
+      if (c.date !== form.date) return false;
+      if (c.status === "cancelled") return false;
+      const cStart = parseHM(c.time);
+      if (cStart === null) return false;
+      const cEnd = cStart + (Number(c.hours) || 1) * 60;
+      return start < cEnd && cStart < end; // intervalos se cruzan
+    });
+    if (conflicto) {
+      const cStart = conflicto.time;
+      const cEnd   = (() => {
+        const s = parseHM(conflicto.time);
+        const e = s + (Number(conflicto.hours) || 1) * 60;
+        return `${String(Math.floor(e / 60)).padStart(2, "0")}:${String(e % 60).padStart(2, "0")}`;
+      })();
+      return { available: false, reason: `Ocupado con otra cita ${cStart} – ${cEnd}.` };
+    }
+  }
+
+  return { available: true, reason: null };
 }
 
 const EMPTY_FORM = {
@@ -228,8 +317,101 @@ function TimePickerModal({ currentTime, onConfirm, onClose }) {
   );
 }
 
+/* ── ARTIST INFO MODAL ───────────────────────────────────────── */
+function ArtistInfoModal({ artist, onClose }) {
+  /* Cerrar con Escape */
+  useEffect(() => {
+    function onKey(e) { if (e.key === "Escape") onClose(); }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  if (!artist) return null;
+
+  const formatCurrency = (n) =>
+    new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n || 0);
+
+  const horarioDias = Array.isArray(artist.workingHours?.days) && artist.workingHours.days.length
+    ? artist.workingHours.days.join(", ")
+    : "Sin horario definido";
+
+  const horarioHoras = artist.workingHours?.start && artist.workingHours?.end
+    ? `${artist.workingHours.start} – ${artist.workingHours.end}`
+    : "—";
+
+  const especialidades = Array.isArray(artist.specializations) && artist.specializations.length
+    ? artist.specializations
+    : ["Sin especialidades registradas"];
+
+  return (
+    <div className="modalOverlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="modalCard artistInfoModal" onClick={(e) => e.stopPropagation()}>
+        <div className="modalHeader">
+          <div className="modalHeaderContent">
+            <Avatar initials={artist.initials} color={artist.color} size={48} />
+            <div>
+              <h3 className="modalTitle">{artist.name}</h3>
+              <p className="modalSubtitle">
+                {artist.clockedIn ? "Fichado · Disponible" : "Fuera de turno"}
+              </p>
+            </div>
+          </div>
+          <button className="modalCloseBtn" onClick={onClose} aria-label="Cerrar">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div className="modalBody artistInfoBody">
+          <div className="artistInfoSection">
+            <p className="artistInfoLabel">Especialidades</p>
+            <div className="artistInfoChips">
+              {especialidades.map((e, i) => (
+                <span key={i} className="artistInfoChip">{e}</span>
+              ))}
+            </div>
+          </div>
+
+          <div className="artistInfoGrid">
+            <div className="artistInfoCell">
+              <p className="artistInfoLabel">Horario</p>
+              <strong>{horarioHoras}</strong>
+            </div>
+            <div className="artistInfoCell">
+              <p className="artistInfoLabel">Días de trabajo</p>
+              <strong>{horarioDias}</strong>
+            </div>
+            <div className="artistInfoCell">
+              <p className="artistInfoLabel">Tarifa por hora</p>
+              <strong>{formatCurrency(artist.hourlyFee)}</strong>
+            </div>
+            <div className="artistInfoCell">
+              <p className="artistInfoLabel">Salario mensual</p>
+              <strong>{formatCurrency(artist.monthlySalary)}</strong>
+            </div>
+          </div>
+
+          {artist.dateOfBirth && (
+            <div className="artistInfoSection">
+              <p className="artistInfoLabel">Fecha de nacimiento</p>
+              <strong>{artist.dateOfBirth}</strong>
+            </div>
+          )}
+        </div>
+
+        <div className="modalFooter">
+          <button type="button" className="modalConfirmBtn" onClick={onClose}>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── MAIN COMPONENT ──────────────────────────────────────────── */
-export default function CreateAppointment({ nav, onAdd }) {
+export default function CreateAppointment({ nav, onAdd, employees = [], appointments = [] }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
@@ -238,13 +420,61 @@ export default function CreateAppointment({ nav, onAdd }) {
   const [confirmed, setConfirmed] = useState(null);
   const [timeModalOpen, setTimeModalOpen] = useState(false);
   const [shakeErrors, setShakeErrors] = useState(false);
+  const [artistInfoOpen, setArtistInfoOpen] = useState(null); // empleado a mostrar en el modal de info
+  const [autoDeselectMsg, setAutoDeselectMsg] = useState(null);
+  const [estilosDisponibles, setEstilosDisponibles] = useState([]); // categorías desde el backend
+  const [estilosLoading, setEstilosLoading] = useState(true);
 
   const fileInputRef = useRef(null);
 
+  // Cargar categorías de tatuaje desde el backend
+  useEffect(() => {
+    let cancelado = false;
+    getServicios()
+      .then((data) => {
+        if (cancelado) return;
+        // Ordenar alfabéticamente para que el orden no dependa de la BD
+        const ordenadas = [...data].sort((a, b) =>
+          (a.Titulo || "").localeCompare(b.Titulo || "", "es")
+        );
+        setEstilosDisponibles(ordenadas);
+      })
+      .catch(() => {
+        if (!cancelado) setEstilosDisponibles([]);
+      })
+      .finally(() => {
+        if (!cancelado) setEstilosLoading(false);
+      });
+    return () => { cancelado = true; };
+  }, []);
+
+  // El campo artistId en la cita es un Number (schema de Mongoose).
+  // Cada tatuador tiene su Artist_Id_Numerico (mapeado a artistId en el FE),
+  // que es el que se persiste en las citas.
   const selectedArtist = useMemo(
-    () => ARTISTS.find((a) => a.id === form.artistId) || null,
-    [form.artistId]
+    () => employees.find((a) => a.artistId === form.artistId) || null,
+    [employees, form.artistId]
   );
+
+  // Disponibilidad por artista, recalculada cuando cambia el form o la lista
+  const disponibilidades = useMemo(() => {
+    const map = new Map();
+    for (const a of employees) {
+      map.set(a.artistId, disponibilidadArtista(a, form, appointments));
+    }
+    return map;
+  }, [employees, form.date, form.time, form.hours, appointments]);
+
+  // Si el artista seleccionado deja de estar disponible al cambiar fecha/hora/duración, lo deseleccionamos.
+  useEffect(() => {
+    if (!selectedArtist) return;
+    const d = disponibilidades.get(selectedArtist.artistId);
+    if (d && !d.available) {
+      setForm((p) => ({ ...p, artistId: null }));
+      setAutoDeselectMsg(`${selectedArtist.name.split(" ")[0]} se deseleccionó: ${d.reason}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.date, form.time, form.hours]);
 
   const formattedDate = useMemo(() => {
     if (!form.date) return null;
@@ -348,18 +578,6 @@ export default function CreateAppointment({ nav, onAdd }) {
     if (result.isConfirmed) nav.back?.();
   }
 
-  async function showArtistOffAlert(artistName) {
-    await Swal.fire({
-      icon: "warning",
-      title: "Artista no disponible",
-      text: `${artistName} no está fichado actualmente. Selecciona otro artista.`,
-      confirmButtonText: "Entendido",
-      confirmButtonColor: "#d6762a",
-      background: "#f4efe7",
-      color: "#1b1b1e",
-    });
-  }
-
   async function showInvalidFilesAlert(count) {
     await Swal.fire({
       icon: "info",
@@ -414,8 +632,28 @@ export default function CreateAppointment({ nav, onAdd }) {
 
   async function handleArtistSelect(artist) {
     clearSubmitError();
-    if (!artist.clockedIn) { await showArtistOffAlert(artist.name.split(" ")[0]); return; }
-    setField("artistId", artist.id);
+    setAutoDeselectMsg(null);
+    const dispo = disponibilidades.get(artist.artistId);
+    if (dispo && !dispo.available) {
+      await Swal.fire({
+        icon: "warning",
+        title: "Artista no disponible",
+        text: dispo.reason,
+        confirmButtonText: "Entendido",
+        confirmButtonColor: "#d6762a",
+        background: "#f4efe7",
+        color: "#1b1b1e",
+      });
+      return;
+    }
+    // Persistimos el id numérico que espera el schema de Cita.
+    setField("artistId", artist.artistId);
+  }
+
+  function openArtistInfo(artist, e) {
+    // Evitar que el click en el botón "i" dispare también la selección del artista
+    e?.stopPropagation();
+    setArtistInfoOpen(artist);
   }
 
   async function handleSubmit(e) {
@@ -558,18 +796,28 @@ export default function CreateAppointment({ nav, onAdd }) {
                   )}
                 </div>
                 {errors.style && <span className="fieldError">{errors.style}</span>}
-                <div className="styleGrid">
-                  {STYLES.map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      className={`styleChip ${form.style === s ? "styleChipActive" : ""}`}
-                      onClick={() => setField("style", s)}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
+
+                {estilosLoading ? (
+                  <p className="fieldHint">Cargando categorías…</p>
+                ) : estilosDisponibles.length === 0 ? (
+                  <div className="artistEmptyState">
+                    <strong>No hay categorías registradas.</strong>
+                    <span>El administrador debe agregar al menos un estilo desde el panel de Categorías antes de poder agendar citas.</span>
+                  </div>
+                ) : (
+                  <div className="styleGrid">
+                    {estilosDisponibles.map((cat) => (
+                      <button
+                        key={cat._id}
+                        type="button"
+                        className={`styleChip ${form.style === cat.Titulo ? "styleChipActive" : ""}`}
+                        onClick={() => setField("style", cat.Titulo)}
+                      >
+                        {cat.Titulo}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -590,35 +838,91 @@ export default function CreateAppointment({ nav, onAdd }) {
                 {errors.artistId && (
                   <span className="fieldError">{errors.artistId}</span>
                 )}
-                <div className="artistPicker">
-                  {ARTISTS.map((a) => {
-                    const isActive = form.artistId === a.id;
-                    const isOff = !a.clockedIn;
-                    return (
-                      <button
-                        key={a.id}
-                        type="button"
-                        className={`artistOption ${isActive ? "artistOptionActive" : ""} ${isOff ? "artistOff" : ""}`}
-                        onClick={() => handleArtistSelect(a)}
-                        style={{ "--artist-color": a.color }}
-                        aria-label={`Seleccionar a ${a.name}`}
-                        aria-pressed={isActive}
-                      >
-                        <Avatar initials={a.initials} color={a.color} size={40} />
-                        <span className="artistOptionName">{a.name.split(" ")[0]}</span>
-                        {isOff && <span className="artistOffBadge">Off</span>}
-                        {isActive && (
-                          <span className="artistCheckmark">
-                            <svg width="12" height="12" viewBox="0 0 12 12">
-                              <polyline points="1.5,6 4.5,9 10.5,3" stroke="currentColor" strokeWidth="2"
-                                fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+
+                {/* Aviso si se deseleccionó automáticamente */}
+                {autoDeselectMsg && (
+                  <div className="artistAutoDeselect">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/>
+                      <line x1="12" y1="7.5" x2="12" y2="13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                      <circle cx="12" cy="16.5" r="0.9" fill="currentColor"/>
+                    </svg>
+                    <span>{autoDeselectMsg}</span>
+                  </div>
+                )}
+
+                {/* Hint contextual sobre disponibilidad */}
+                {employees.length > 0 && (
+                  <p className="artistHint">
+                    {form.date && form.time
+                      ? "Mostrando disponibilidad para la fecha y hora elegidas. Los artistas con conflicto aparecen deshabilitados."
+                      : "Selecciona fecha y hora para filtrar artistas disponibles según su horario y citas existentes."}
+                  </p>
+                )}
+
+                {employees.length === 0 ? (
+                  <div className="artistEmptyState">
+                    <strong>No hay artistas registrados todavía.</strong>
+                    <span>El administrador debe crear al menos un tatuador desde el panel de Artistas antes de poder agendar citas.</span>
+                  </div>
+                ) : (
+                  <div className="artistPicker">
+                    {employees.map((a) => {
+                      const artistKey = a.artistId;
+                      const isActive  = form.artistId === artistKey;
+                      const isOff     = !a.clockedIn;
+                      const dispo     = disponibilidades.get(artistKey) || { available: true, reason: null };
+                      const isUnavailable = !dispo.available;
+                      const tooltip   = isUnavailable ? dispo.reason : `Seleccionar a ${a.name}`;
+                      return (
+                        <div
+                          key={artistKey}
+                          className={`artistOption ${isActive ? "artistOptionActive" : ""} ${isOff ? "artistOff" : ""} ${isUnavailable ? "artistUnavailable" : ""}`}
+                          style={{ "--artist-color": a.color }}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => handleArtistSelect(a)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              handleArtistSelect(a);
+                            }
+                          }}
+                          aria-label={`Seleccionar a ${a.name}`}
+                          aria-pressed={isActive}
+                          aria-disabled={isUnavailable}
+                          title={tooltip}
+                        >
+                          <Avatar initials={a.initials} color={a.color} size={40} />
+                          <span className="artistOptionName">{a.name.split(" ")[0]}</span>
+                          {isOff && !isUnavailable && <span className="artistOffBadge">Off</span>}
+                          {isUnavailable && <span className="artistBusyBadge">Ocupado</span>}
+                          {isActive && (
+                            <span className="artistCheckmark">
+                              <svg width="12" height="12" viewBox="0 0 12 12">
+                                <polyline points="1.5,6 4.5,9 10.5,3" stroke="currentColor" strokeWidth="2"
+                                  fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            className="artistInfoBtn"
+                            onClick={(e) => openArtistInfo(a, e)}
+                            aria-label={`Ver información de ${a.name}`}
+                            title="Ver información del artista"
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/>
+                              <line x1="12" y1="10.5" x2="12" y2="16.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                              <circle cx="12" cy="7.5" r="0.9" fill="currentColor"/>
                             </svg>
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -897,6 +1201,14 @@ export default function CreateAppointment({ nav, onAdd }) {
           currentTime={form.time}
           onConfirm={(t) => setField("time", t)}
           onClose={() => setTimeModalOpen(false)}
+        />
+      )}
+
+      {/* ── ARTIST INFO MODAL ── */}
+      {artistInfoOpen && (
+        <ArtistInfoModal
+          artist={artistInfoOpen}
+          onClose={() => setArtistInfoOpen(null)}
         />
       )}
     </div>

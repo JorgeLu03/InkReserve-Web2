@@ -1,4 +1,5 @@
 import { Cliente } from './schema.js';
+import { logger } from './logger.js';
 
 // GET /api/clientes — Obtener todos los clientes
 export const Obtener_Clientes = async (req, res) => {
@@ -6,6 +7,7 @@ export const Obtener_Clientes = async (req, res) => {
         const clientes = await Cliente.find().sort({ Nombre: 1 });
         res.status(200).json(clientes);
     } catch (error) {
+        logger.error('Excepción en controller de Clientes', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -19,6 +21,7 @@ export const Obtener_Cliente = async (req, res) => {
         }
         res.status(200).json(cliente);
     } catch (error) {
+        logger.error('Excepción en controller de Clientes', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -33,8 +36,21 @@ export const Crear_Cliente = async (req, res) => {
             Preferencias,
         } = req.body;
 
-        if (!Nombre || Nombre.trim() === '') {
-            return res.status(400).json({ message: 'El nombre del cliente es obligatorio.' });
+        // Validaciones independientes de backend
+        if (!Nombre || Nombre.trim().length < 2) {
+            return res.status(400).json({ message: 'El nombre del cliente es obligatorio (mínimo 2 caracteres).' });
+        }
+        if (Nombre.trim().length > 100) {
+            return res.status(400).json({ message: 'El nombre no puede exceder 100 caracteres.' });
+        }
+        if (Fecha_Nacimiento) {
+            const fechaParseada = new Date(Fecha_Nacimiento);
+            if (isNaN(fechaParseada.getTime())) {
+                return res.status(400).json({ message: 'Fecha de nacimiento inválida.' });
+            }
+            if (fechaParseada > new Date()) {
+                return res.status(400).json({ message: 'La fecha de nacimiento no puede ser futura.' });
+            }
         }
 
         const nuevo = await Cliente.create({
@@ -48,6 +64,7 @@ export const Crear_Cliente = async (req, res) => {
 
         res.status(201).json({ message: 'Cliente registrado.', cliente: nuevo });
     } catch (error) {
+        logger.error('Excepción en controller de Clientes', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -64,8 +81,24 @@ export const Actualizar_Cliente = async (req, res) => {
             Total_Gastado,
         } = req.body;
 
-        if (Nombre !== undefined && Nombre.trim() === '') {
-            return res.status(400).json({ message: 'El nombre no puede estar vacío.' });
+        // Validaciones independientes de backend
+        if (Nombre !== undefined && Nombre.trim().length < 2) {
+            return res.status(400).json({ message: 'El nombre debe tener al menos 2 caracteres.' });
+        }
+        if (Nombre !== undefined && Nombre.trim().length > 100) {
+            return res.status(400).json({ message: 'El nombre no puede exceder 100 caracteres.' });
+        }
+        if (Citas_Anteriores !== undefined) {
+            const n = Number(Citas_Anteriores);
+            if (!Number.isInteger(n) || n < 0) {
+                return res.status(400).json({ message: 'Citas_Anteriores debe ser un entero >= 0.' });
+            }
+        }
+        if (Total_Gastado !== undefined) {
+            const t = Number(Total_Gastado);
+            if (!Number.isFinite(t) || t < 0) {
+                return res.status(400).json({ message: 'Total_Gastado debe ser un número >= 0.' });
+            }
         }
 
         const cambios = {};
@@ -88,6 +121,7 @@ export const Actualizar_Cliente = async (req, res) => {
 
         res.status(200).json({ message: 'Cliente actualizado.', cliente: actualizado });
     } catch (error) {
+        logger.error('Excepción en controller de Clientes', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -103,6 +137,7 @@ export const Eliminar_Cliente = async (req, res) => {
 
         res.status(200).json({ message: 'Cliente eliminado.' });
     } catch (error) {
+        logger.error('Excepción en controller de Clientes', error);
         res.status(500).json({ message: error.message });
     }
 };

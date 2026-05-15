@@ -6,17 +6,18 @@ import {
     Actualizar_Servicio,
     Eliminar_Servicio,
 } from './serviciosController.js';
-import { Token_Verificar } from './authMiddleware.js';
+import { Token_Verificar, Admin_Only } from './authMiddleware.js';
 
 const router = express.Router();
 
-// Rutas públicas (solo lectura)
-router.get('/',     Obtener_Servicios);
-router.get('/:id',  Obtener_Servicio);
+// Lectura: cualquier usuario autenticado puede ver las categorías
+// (las necesita para crear citas y tatuadores).
+router.get('/',     Token_Verificar, Obtener_Servicios);
+router.get('/:id',  Token_Verificar, Obtener_Servicio);
 
-// Rutas protegidas (requieren token de admin)
-router.post('/',        Token_Verificar, Crear_Servicio);
-router.put('/:id',      Token_Verificar, Actualizar_Servicio);
-router.delete('/:id',   Token_Verificar, Eliminar_Servicio);
+// Escritura: solo administradores pueden crear, editar o eliminar.
+router.post('/',     Token_Verificar, Admin_Only, Crear_Servicio);
+router.put('/:id',   Token_Verificar, Admin_Only, Actualizar_Servicio);
+router.delete('/:id', Token_Verificar, Admin_Only, Eliminar_Servicio);
 
 export default router;

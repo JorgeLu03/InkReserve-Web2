@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Avatar from "../../components/Avatar";
 import { employeeService } from "../../services/employeeService";
-import { SPECIALIZATION_OPTIONS, WORKING_DAYS } from "../../data/employeesMock";
+import { WORKING_DAYS } from "../../data/employeesMock";
+import { getServicios } from "../../services/apiService";
 import "./AdminShell.css";
 
 function initials(name) {
@@ -28,6 +29,22 @@ export default function CreateEmployee({ employees, onAdd, onCancel }) {
   const [resume,    setResume]    = useState(null);
   const [portfolio, setPortfolio] = useState([]);
   const [errors,    setErrors]    = useState({});
+  const [categorias, setCategorias] = useState([]); // estilos disponibles desde el backend
+
+  // Cargar categorías al montar
+  useEffect(() => {
+    let cancelado = false;
+    getServicios()
+      .then((data) => {
+        if (cancelado) return;
+        const ordenadas = [...data].sort((a, b) =>
+          (a.Titulo || "").localeCompare(b.Titulo || "", "es")
+        );
+        setCategorias(ordenadas);
+      })
+      .catch(() => { if (!cancelado) setCategorias([]); });
+    return () => { cancelado = true; };
+  }, []);
 
   const photoRef    = useRef(null);
   const resumeRef   = useRef(null);
@@ -108,7 +125,7 @@ export default function CreateEmployee({ employees, onAdd, onCancel }) {
       hourlyFee: Number(form.hourlyFee),
       monthlySalary: Number(form.monthlySalary),
       portfolio,
-      clockedIn: false,
+      clockedIn: true,
       createdAt: "2026-03-03",
     };
     onAdd(emp);
@@ -200,15 +217,30 @@ export default function CreateEmployee({ employees, onAdd, onCancel }) {
         <div className="cField" style={{ marginBottom: "1rem" }}>
           <label className="cLabel">Especialización(es) *</label>
           {errors.specializations && <span className="cErr">{errors.specializations}</span>}
-          <div className="specGrid" style={{ marginTop: "0.45rem" }}>
-            {SPECIALIZATION_OPTIONS.map((s) => (
-              <button
-                key={s} type="button"
-                className={`specChip ${form.specializations.includes(s) ? "specChipOn" : ""}`}
-                onClick={() => toggleSpec(s)}
-              >{s}</button>
-            ))}
-          </div>
+
+          {categorias.length === 0 ? (
+            <p style={{
+              marginTop: "0.45rem",
+              padding: "0.65rem 0.85rem",
+              background: "rgba(214, 118, 42, 0.06)",
+              border: "1px dashed rgba(214, 118, 42, 0.30)",
+              borderRadius: "8px",
+              color: "#7a4520",
+              fontSize: "0.82rem",
+            }}>
+              No hay categorías registradas. Pide al administrador que cree estilos desde el panel de Categorías.
+            </p>
+          ) : (
+            <div className="specGrid" style={{ marginTop: "0.45rem" }}>
+              {categorias.map((cat) => (
+                <button
+                  key={cat._id} type="button"
+                  className={`specChip ${form.specializations.includes(cat.Titulo) ? "specChipOn" : ""}`}
+                  onClick={() => toggleSpec(cat.Titulo)}
+                >{cat.Titulo}</button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="cField" style={{ marginBottom: "1rem" }}>

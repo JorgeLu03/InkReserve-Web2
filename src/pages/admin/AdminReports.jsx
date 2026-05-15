@@ -1,113 +1,18 @@
+import { useState, useEffect } from "react";
 import "./AdminReports.css";
+import {
+  getReporteGanancias,
+  getReporteServicios,
+  getReporteCitasPorMes,
+  getReporteClientesFrecuentes,
+} from "../../services/apiService";
 
 /* ══════════════════════════════════════════════════════════════
-   DATA
+   CONSTANTES
 ══════════════════════════════════════════════════════════════ */
-const PERIOD_OPTIONS = ["Hoy", "Semana", "Mes", "Año", "Personalizado"];
-
-const KPI_CARDS = [
-  {
-    id: "income",
-    label: "Ingresos del periodo",
-    value: "$48,600",
-    rawValue: 48600,
-    trend: +12.4,
-    trendLabel: "vs mes anterior",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"
-          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
-    accent: "orange",
-  },
-  {
-    id: "appointments",
-    label: "Citas registradas",
-    value: "36",
-    rawValue: 36,
-    trend: +8.2,
-    trendLabel: "vs mes anterior",
-    breakdown: [
-      { label: "Completadas", value: 28, color: "green" },
-      { label: "Pendientes",  value: 5,  color: "amber" },
-      { label: "Canceladas",  value: 3,  color: "red"   },
-    ],
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
-        <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
-    ),
-    accent: "blue",
-  },
-  {
-    id: "ticket",
-    label: "Ticket promedio",
-    value: "$1,350",
-    rawValue: 1350,
-    trend: +3.6,
-    trendLabel: "vs mes anterior",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M9 14l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M21 10V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h14a2 2 0 002-2v-2"
-          stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/>
-      </svg>
-    ),
-    accent: "green",
-  },
-  {
-    id: "artist",
-    label: "Artista más productivo",
-    value: "Diego R.",
-    rawValue: null,
-    trend: null,
-    trendLabel: "12 citas · $18,400 generados",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/>
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
-    ),
-    accent: "purple",
-  },
-];
-
-const REVENUE_SERIES = [
-  { label: "Sem 1", value: 8200  },
-  { label: "Sem 2", value: 11400 },
-  { label: "Sem 3", value: 9800  },
-  { label: "Sem 4", value: 14600 },
-  { label: "Sem 5", value: 4600  },
-];
-
-const TOP_SERVICES = [
-  { name: "Blackwork",      qty: 14, income: 19600 },
-  { name: "Fine Line",      qty: 9,  income: 10800 },
-  { name: "Neotradicional", qty: 6,  income: 9600  },
-  { name: "Geométrico",     qty: 4,  income: 5200  },
-  { name: "Acuarela",       qty: 3,  income: 3400  },
-];
-
-const MONTHLY_APPOINTMENTS = [
-  { month: "Ene", value: 18 },
-  { month: "Feb", value: 22 },
-  { month: "Mar", value: 27 },
-  { month: "Abr", value: 24 },
-  { month: "May", value: 31 },
-  { month: "Jun", value: 29 },
-  { month: "Jul", value: 34 },
-  { month: "Ago", value: 30 },
-];
-
-const TOP_CLIENTS = [
-  { name: "Mariana López",    initials: "ML", color: "#7c3aed", visits: 6, spent: 12400, favorite: "Blackwork"      },
-  { name: "Carlos Hernández", initials: "CH", color: "#0ea5e9", visits: 5, spent: 9800,  favorite: "Fine Line"      },
-  { name: "Valeria Torres",   initials: "VT", color: "#16a34a", visits: 4, spent: 9100,  favorite: "Neotradicional" },
-  { name: "José Ramírez",     initials: "JR", color: "#d97706", visits: 4, spent: 7600,  favorite: "Geométrico"     },
-];
+const PERIOD_OPTIONS = ["Hoy", "Semana", "Mes", "Año", "Todo"];
+const NOMBRES_MES = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const COLORES_AVATAR = ["#7c3aed", "#0ea5e9", "#16a34a", "#d97706", "#ec4899", "#0891b2"];
 
 /* ══════════════════════════════════════════════════════════════
    HELPERS
@@ -117,7 +22,45 @@ function formatCurrency(value) {
     style: "currency",
     currency: "MXN",
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(value || 0);
+}
+
+function toISODate(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+/** Convierte un periodo legible (Hoy/Semana/Mes/Año/Todo) a { inicio, fin } ISO */
+function rangoDePeriodo(periodo) {
+  const hoy = new Date();
+  const fin = toISODate(hoy);
+  const inicio = new Date(hoy);
+
+  switch (periodo) {
+    case "Hoy":
+      return { inicio: fin, fin };
+    case "Semana":
+      inicio.setDate(inicio.getDate() - 6);
+      return { inicio: toISODate(inicio), fin };
+    case "Mes":
+      inicio.setMonth(inicio.getMonth() - 1);
+      return { inicio: toISODate(inicio), fin };
+    case "Año":
+      inicio.setFullYear(inicio.getFullYear() - 1);
+      return { inicio: toISODate(inicio), fin };
+    case "Todo":
+    default:
+      return { inicio: null, fin: null };
+  }
+}
+
+function iniciales(nombre) {
+  return (nombre || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase() || "??";
 }
 
 const RANK_COLORS = [
@@ -131,12 +74,11 @@ const RANK_COLORS = [
 const RANK_LABELS = ["🥇", "🥈", "🥉", "4°", "5°"];
 
 /* ══════════════════════════════════════════════════════════════
-   SUB-COMPONENTS
+   SUB-COMPONENTES VISUALES
 ══════════════════════════════════════════════════════════════ */
 
-/* Trend chip */
 function TrendBadge({ value, label }) {
-  if (value === null) return <span className="kpiTrendNeutral">{label}</span>;
+  if (value === null || value === undefined) return <span className="kpiTrendNeutral">{label}</span>;
   const up = value >= 0;
   return (
     <span className={`kpiTrend kpiTrend--${up ? "up" : "down"}`}>
@@ -151,7 +93,6 @@ function TrendBadge({ value, label }) {
   );
 }
 
-/* KPI Card */
 function KpiCard({ card }) {
   return (
     <article className={`reportsKpiCard reportsKpiCard--${card.accent}`}>
@@ -161,96 +102,25 @@ function KpiCard({ card }) {
         </div>
         <TrendBadge value={card.trend} label={card.trendLabel} />
       </div>
-
       <strong className="reportsKpiValue">{card.value}</strong>
       <span className="reportsKpiLabel">{card.label}</span>
-
-      {card.breakdown && (
-        <div className="kpiBreakdown">
-          {card.breakdown.map((b) => (
-            <span key={b.label} className={`kpiBreakdownChip kpiBreakdownChip--${b.color}`}>
-              <span className="kpiBreakdownDot" />
-              {b.value} {b.label}
-            </span>
-          ))}
-        </div>
-      )}
     </article>
   );
 }
 
-/* Revenue bar chart */
-function RevenueChart({ data }) {
-  const max = Math.max(...data.map((d) => d.value));
-  const total = data.reduce((s, d) => s + d.value, 0);
-  const GRID_LINES = [0, 25, 50, 75, 100];
-
-  return (
-    <div className="revenueChartWrap">
-      {/* Y-axis grid */}
-      <div className="chartGridLines" aria-hidden="true">
-        {GRID_LINES.map((pct) => (
-          <div
-            key={pct}
-            className="chartGridLine"
-            style={{ bottom: `${pct}%` }}
-          >
-            <span className="chartGridValue">
-              {pct === 0 ? "$0" : formatCurrency((max * pct) / 100)}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* Bars */}
-      <div className="revenueChart">
-        {data.map((item) => {
-          const pct = (item.value / max) * 100;
-          const isMax = item.value === max;
-          const share = ((item.value / total) * 100).toFixed(0);
-
-          return (
-            <div key={item.label} className="revenueBarCol">
-              <div className={`revenueBarTrack ${isMax ? "revenueBarTrack--peak" : ""}`}>
-                {isMax && (
-                  <span className="revenuePeakBadge">Máximo</span>
-                )}
-                <div
-                  className={`revenueBarFill ${isMax ? "revenueBarFill--peak" : ""}`}
-                  style={{ height: `${pct}%` }}
-                >
-                  <span className="revenueBarTooltip">
-                    <strong>{formatCurrency(item.value)}</strong>
-                    <span>{share}% del total</span>
-                  </span>
-                </div>
-              </div>
-              <span className="revenueBarLabel">{item.label}</span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-/* Services ranking */
 function ServicesRank({ data }) {
+  if (!data.length) return <p className="reportsEmpty">Sin servicios registrados aún.</p>;
   const maxQty = Math.max(...data.map((d) => d.qty));
-  const totalIncome = data.reduce((s, d) => s + d.income, 0);
+  const totalIncome = data.reduce((s, d) => s + d.income, 0) || 1;
 
   return (
     <div className="serviceRankList">
-      {data.map((service, idx) => {
+      {data.slice(0, 5).map((service, idx) => {
         const rank = RANK_COLORS[idx] || RANK_COLORS[3];
         const incomePct = ((service.income / totalIncome) * 100).toFixed(0);
 
         return (
-          <div
-            key={service.name}
-            className="serviceRankItem"
-            style={{ "--rank-bg": rank.bg }}
-          >
+          <div key={service.name} className="serviceRankItem" style={{ "--rank-bg": rank.bg }}>
             <div className="serviceRankLeft">
               <span className="serviceRankMedal">{RANK_LABELS[idx]}</span>
               <div>
@@ -258,19 +128,14 @@ function ServicesRank({ data }) {
                 <span className="serviceRankMeta">{service.qty} sesiones</span>
               </div>
             </div>
-
             <div className="serviceRankRight">
               <strong className="serviceRankIncome">{formatCurrency(service.income)}</strong>
               <span className="serviceRankPct">{incomePct}% del total</span>
             </div>
-
             <div className="serviceRankTrack">
               <div
                 className="serviceRankFill"
-                style={{
-                  width: `${(service.qty / maxQty) * 100}%`,
-                  background: rank.bar,
-                }}
+                style={{ width: `${(service.qty / maxQty) * 100}%`, background: rank.bar }}
               />
             </div>
           </div>
@@ -280,8 +145,8 @@ function ServicesRank({ data }) {
   );
 }
 
-/* Monthly appointments chart */
 function MonthlyChart({ data }) {
+  if (!data.length) return <p className="reportsEmpty">Sin citas registradas aún.</p>;
   const max = Math.max(...data.map((d) => d.value));
   const lastIdx = data.length - 1;
 
@@ -296,7 +161,7 @@ function MonthlyChart({ data }) {
           : "monthlyBarFill--low";
 
         return (
-          <div key={item.month} className={`monthlyBarCol ${isCurrent ? "monthlyBarCol--current" : ""}`}>
+          <div key={`${item.month}-${idx}`} className={`monthlyBarCol ${isCurrent ? "monthlyBarCol--current" : ""}`}>
             <span className="monthlyBarValue">{item.value}</span>
             <div className="monthlyBarTrack">
               <div
@@ -313,9 +178,9 @@ function MonthlyChart({ data }) {
   );
 }
 
-/* Client table */
 function ClientTable({ data }) {
-  const maxSpent = Math.max(...data.map((d) => d.spent));
+  if (!data.length) return <p className="reportsEmpty">Sin clientes registrados aún.</p>;
+  const maxSpent = Math.max(...data.map((d) => d.spent)) || 1;
 
   return (
     <div className="clientTable">
@@ -323,12 +188,11 @@ function ClientTable({ data }) {
         <span>Cliente</span>
         <span>Visitas</span>
         <span>Gasto total</span>
-        <span>Estilo preferido</span>
+        <span>Ticket promedio</span>
       </div>
 
       {data.map((client, idx) => (
-        <div key={client.name} className="clientTableRow">
-          {/* Avatar + nombre */}
+        <div key={`${client.name}-${idx}`} className="clientTableRow">
           <div className="clientNameCell">
             <div
               className="clientAvatar"
@@ -342,28 +206,24 @@ function ClientTable({ data }) {
             </div>
           </div>
 
-          {/* Visitas */}
           <span className="clientVisitsCell">
             <strong>{client.visits}</strong>
             <span className="clientVisitsUnit">visitas</span>
           </span>
 
-          {/* Gasto con barra inline */}
           <div className="clientSpentCell">
             <strong>{formatCurrency(client.spent)}</strong>
             <div className="clientSpentBar">
               <div
                 className="clientSpentFill"
-                style={{
-                  width: `${(client.spent / maxSpent) * 100}%`,
-                  background: client.color,
-                }}
+                style={{ width: `${(client.spent / maxSpent) * 100}%`, background: client.color }}
               />
             </div>
           </div>
 
-          {/* Preferencia */}
-          <span className="clientFavChip">{client.favorite}</span>
+          <span className="clientFavChip">
+            {client.visits > 0 ? formatCurrency(client.spent / client.visits) : "—"}
+          </span>
         </div>
       ))}
     </div>
@@ -371,12 +231,160 @@ function ClientTable({ data }) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   MAIN COMPONENT
+   COMPONENTE PRINCIPAL
 ══════════════════════════════════════════════════════════════ */
+
 export default function AdminReports() {
-  const selectedPeriod = "Mes";
-  const totalRevenue = REVENUE_SERIES.reduce((s, d) => s + d.value, 0);
-  const totalAppointments = MONTHLY_APPOINTMENTS.reduce((s, d) => s + d.value, 0);
+  const [periodo, setPeriodo] = useState("Mes");
+
+  const [ganancias, setGanancias] = useState(null);
+  const [servicios, setServicios] = useState([]);
+  const [citasPorMes, setCitasPorMes] = useState([]);
+  const [clientesFrec, setClientesFrec] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Re-fetch de ganancias cuando cambia el periodo
+  useEffect(() => {
+    const { inicio, fin } = rangoDePeriodo(periodo);
+    getReporteGanancias(inicio, fin)
+      .then(setGanancias)
+      .catch((e) => setError(e.message));
+  }, [periodo]);
+
+  // Fetch inicial del resto de reportes (no dependen de periodo)
+  useEffect(() => {
+    let cancelado = false;
+    (async () => {
+      try {
+        const [serv, citas, clientes] = await Promise.all([
+          getReporteServicios(),
+          getReporteCitasPorMes(),
+          getReporteClientesFrecuentes(),
+        ]);
+        if (cancelado) return;
+        setServicios(serv);
+        setCitasPorMes(citas);
+        setClientesFrec(clientes);
+      } catch (e) {
+        if (!cancelado) setError(e.message);
+      } finally {
+        if (!cancelado) setLoading(false);
+      }
+    })();
+    return () => { cancelado = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="reportsView">
+        <p className="reportsEmpty">Cargando reportes…</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="reportsView">
+        <p className="reportsEmpty reportsError">No se pudieron cargar los reportes: {error}</p>
+      </section>
+    );
+  }
+
+  /* ─── Derivar datos a la forma que esperan los sub-componentes ─── */
+
+  const totalCitas = citasPorMes.reduce((s, m) => s + (m.Cantidad || 0), 0);
+  const totalGanancias = ganancias?.Total_Ganancias || 0;
+  const totalVentas    = ganancias?.Total_Ventas    || 0;
+  const totalAnticipos = ganancias?.Total_Anticipos || 0;
+  const ticketPromedio = totalVentas > 0 ? totalGanancias / totalVentas : 0;
+  const servicioTop    = servicios[0] || null;
+
+  const KPI_CARDS = [
+    {
+      id: "income",
+      label: "Ingresos del periodo",
+      value: formatCurrency(totalGanancias),
+      trend: null,
+      trendLabel: `${totalVentas} ventas registradas`,
+      accent: "orange",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+    },
+    {
+      id: "appointments",
+      label: "Citas registradas",
+      value: String(totalCitas),
+      trend: null,
+      trendLabel: "Histórico completo",
+      accent: "blue",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
+          <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+        </svg>
+      ),
+    },
+    {
+      id: "ticket",
+      label: "Ticket promedio",
+      value: formatCurrency(ticketPromedio),
+      trend: null,
+      trendLabel: `Sobre ${totalVentas} ventas`,
+      accent: "green",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M9 14l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M21 10V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h14a2 2 0 002-2v-2"
+            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/>
+        </svg>
+      ),
+    },
+    {
+      id: "topService",
+      label: "Servicio más solicitado",
+      value: servicioTop?.Estilo || "—",
+      trend: null,
+      trendLabel: servicioTop
+        ? `${servicioTop.Cantidad} sesiones · ${formatCurrency(servicioTop.Ingreso_Total)}`
+        : "Sin datos aún",
+      accent: "purple",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+        </svg>
+      ),
+    },
+  ];
+
+  const serviciosUI = servicios.map((s) => ({
+    name:   s.Estilo,
+    qty:    s.Cantidad,
+    income: s.Ingreso_Total,
+  }));
+
+  const citasMesUI = citasPorMes.map((m) => ({
+    month: NOMBRES_MES[m.Mes - 1] || `M${m.Mes}`,
+    value: m.Cantidad,
+  }));
+
+  const clientesUI = clientesFrec.slice(0, 5).map((c, idx) => ({
+    name:     c.Cliente,
+    initials: iniciales(c.Cliente),
+    color:    COLORES_AVATAR[idx % COLORES_AVATAR.length],
+    visits:   c.Total_Citas,
+    spent:    c.Total_Gastado,
+  }));
+
+  const { inicio, fin } = rangoDePeriodo(periodo);
+  const rangoLabel = inicio && fin ? `${inicio} — ${fin}` : "Todos los registros";
 
   return (
     <section className="reportsView">
@@ -391,34 +399,34 @@ export default function AdminReports() {
             clientes con más recurrencia.
           </p>
 
-          {/* Quick stats strip */}
           <div className="heroQuickStats">
             <div className="heroQuickStat">
-              <span className="heroQuickStatVal">{formatCurrency(totalRevenue)}</span>
-              <span className="heroQuickStatLabel">Ingresos acumulados (5 sem.)</span>
+              <span className="heroQuickStatVal">{formatCurrency(totalGanancias)}</span>
+              <span className="heroQuickStatLabel">Ingresos del periodo</span>
             </div>
             <div className="heroQuickStatDivider" />
             <div className="heroQuickStat">
-              <span className="heroQuickStatVal">{totalAppointments}</span>
-              <span className="heroQuickStatLabel">Citas en el año (8 meses)</span>
+              <span className="heroQuickStatVal">{totalCitas}</span>
+              <span className="heroQuickStatLabel">Citas totales</span>
             </div>
             <div className="heroQuickStatDivider" />
             <div className="heroQuickStat">
-              <span className="heroQuickStatVal">5</span>
-              <span className="heroQuickStatLabel">Estilos activos</span>
+              <span className="heroQuickStatVal">{servicios.length}</span>
+              <span className="heroQuickStatLabel">Estilos registrados</span>
             </div>
           </div>
         </div>
 
         <div className="reportsFiltersCard">
           <div className="reportsFiltersTop">
-            <span className="reportsFiltersLabel">Periodo de análisis</span>
+            <span className="reportsFiltersLabel">Periodo de ingresos</span>
             <div className="reportsPeriodSwitch">
               {PERIOD_OPTIONS.map((option) => (
                 <button
                   key={option}
                   type="button"
-                  className={`reportsPeriodBtn ${option === selectedPeriod ? "reportsPeriodBtnActive" : ""}`}
+                  className={`reportsPeriodBtn ${option === periodo ? "reportsPeriodBtnActive" : ""}`}
+                  onClick={() => setPeriodo(option)}
                 >
                   {option}
                 </button>
@@ -434,14 +442,14 @@ export default function AdminReports() {
               </svg>
               <span className="reportsRangeKey">Rango activo</span>
             </div>
-            <strong className="reportsRangeValue">01 Mar 2026 — 31 Mar 2026</strong>
-            <span className="reportsRangeDays">31 días · 5 semanas completas</span>
+            <strong className="reportsRangeValue">{rangoLabel}</strong>
+            <span className="reportsRangeDays">Aplica solo al reporte de ingresos</span>
           </div>
 
           <div className="reportsStatusRow">
             <span className="statusDot statusDot--live" />
-            <span className="statusText">Datos actualizados</span>
-            <span className="statusTime">hace 2 min</span>
+            <span className="statusText">Datos en vivo</span>
+            <span className="statusTime">desde MongoDB</span>
           </div>
         </div>
       </div>
@@ -453,23 +461,33 @@ export default function AdminReports() {
         ))}
       </div>
 
-      {/* ── CHARTS ROW 1 ── */}
+      {/* ── REPORTE 1 + 2 ── */}
       <div className="reportsGrid reportsGrid--top">
 
-        {/* Revenue Chart */}
+        {/* Reporte 1: Resumen Financiero */}
         <article className="reportsCard reportsCard--wide">
           <div className="reportsCardHead">
             <div>
               <p className="reportsCardKicker">Reporte 1 · Ingresos</p>
-              <h3 className="reportsCardTitle">Ganancia total por semana</h3>
+              <h3 className="reportsCardTitle">Resumen financiero del periodo</h3>
             </div>
-            <div className="cardHeadRight">
-              <span className="reportsBadge reportsBadge--orange">ingresos</span>
-              <span className="cardTotalPill">{formatCurrency(totalRevenue)} total</span>
-            </div>
+            <span className="reportsBadge reportsBadge--orange">{periodo}</span>
           </div>
 
-          <RevenueChart data={REVENUE_SERIES} />
+          <div className="finSummary">
+            <div className="finSummaryItem finSummaryItem--main">
+              <span className="finSummaryLabel">Ganancia total</span>
+              <strong className="finSummaryValue">{formatCurrency(totalGanancias)}</strong>
+            </div>
+            <div className="finSummaryItem">
+              <span className="finSummaryLabel">Anticipos cobrados</span>
+              <strong className="finSummaryValue">{formatCurrency(totalAnticipos)}</strong>
+            </div>
+            <div className="finSummaryItem">
+              <span className="finSummaryLabel">Ventas registradas</span>
+              <strong className="finSummaryValue">{totalVentas}</strong>
+            </div>
+          </div>
 
           <div className="reportsInsight">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -477,13 +495,15 @@ export default function AdminReports() {
               <path d="M12 8v4l3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
             </svg>
             <span>
-              <strong>Insight:</strong> La semana 4 fue la más rentable con{" "}
-              {formatCurrency(14600)} — 30% más que el promedio del mes.
+              <strong>Insight:</strong>{" "}
+              {totalVentas > 0
+                ? `Ticket promedio de ${formatCurrency(ticketPromedio)} por venta en el periodo seleccionado.`
+                : "No hay ventas registradas en el periodo seleccionado."}
             </span>
           </div>
         </article>
 
-        {/* Services Rank */}
+        {/* Reporte 2: Servicios */}
         <article className="reportsCard">
           <div className="reportsCardHead">
             <div>
@@ -493,18 +513,20 @@ export default function AdminReports() {
             <span className="reportsBadge reportsBadge--gold">Ranking</span>
           </div>
 
-          <ServicesRank data={TOP_SERVICES} />
+          <ServicesRank data={serviciosUI} />
 
-          <div className="reportsMiniNote">
-            <strong>Blackwork</strong> lidera con el 40% del ingreso total del periodo.
-          </div>
+          {servicioTop && (
+            <div className="reportsMiniNote">
+              <strong>{servicioTop.Estilo}</strong> lidera con {servicioTop.Cantidad} sesiones registradas.
+            </div>
+          )}
         </article>
       </div>
 
-      {/* ── CHARTS ROW 2 ── */}
+      {/* ── REPORTE 3 + 4 ── */}
       <div className="reportsGrid reportsGrid--bottom">
 
-        {/* Monthly appointments */}
+        {/* Reporte 3: Citas por mes */}
         <article className="reportsCard">
           <div className="reportsCardHead">
             <div>
@@ -518,15 +540,14 @@ export default function AdminReports() {
             </div>
           </div>
 
-          <MonthlyChart data={MONTHLY_APPOINTMENTS} />
+          <MonthlyChart data={citasMesUI} />
 
           <div className="reportsMiniNote">
-            Crecimiento sostenido: <strong>+88%</strong> de Ene a Jul. Agosto mantiene
-            el nivel alto con 30 citas.
+            Total acumulado: <strong>{totalCitas}</strong> citas en {citasPorMes.length} meses con actividad.
           </div>
         </article>
 
-        {/* Clients */}
+        {/* Reporte 4: Clientes frecuentes */}
         <article className="reportsCard">
           <div className="reportsCardHead">
             <div>
@@ -536,11 +557,13 @@ export default function AdminReports() {
             <span className="reportsBadge reportsBadge--purple">Fidelización</span>
           </div>
 
-          <ClientTable data={TOP_CLIENTS} />
+          <ClientTable data={clientesUI} />
 
-          <div className="reportsMiniNote">
-            <strong>Mariana López</strong> lidera en recurrencia y gasto acumulado.
-          </div>
+          {clientesUI[0] && (
+            <div className="reportsMiniNote">
+              <strong>{clientesUI[0].name}</strong> lidera en recurrencia con {clientesUI[0].visits} visitas.
+            </div>
+          )}
         </article>
       </div>
 

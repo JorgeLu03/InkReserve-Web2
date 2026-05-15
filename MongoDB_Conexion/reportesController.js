@@ -1,25 +1,31 @@
-import { Venta, Cita } from './schema.js';
+import { Cita } from './schema.js';
+import { logger } from './logger.js';
 
 // GET /api/reportes/ganancias?inicio=YYYY-MM-DD&fin=YYYY-MM-DD
-// Ganancia total por periodo (suma de Total_Pagado en Ventas)
+// Ganancia total por periodo. Agrega las citas COMPLETADAS (status: 'completed')
+// y suma su total_precio. Una cita completada representa un ingreso para el
+// estudio. El campo Anticipo de Cita acumula los anticipos cobrados. El conteo
+// equivale al número de servicios cobrados en el periodo.
 export const Reporte_Ganancias = async (req, res) => {
     try {
         const { inicio, fin } = req.query;
 
-        const filtro = {};
+        // El campo date de Cita es string YYYY-MM-DD, así que la comparación
+        // lexicográfica funciona idéntica a la temporal.
+        const filtro = { status: 'completed' };
         if (inicio || fin) {
-            filtro.Fecha_Pago = {};
-            if (inicio) filtro.Fecha_Pago.$gte = new Date(inicio);
-            if (fin)    filtro.Fecha_Pago.$lte = new Date(fin + 'T23:59:59.999Z');
+            filtro.date = {};
+            if (inicio) filtro.date.$gte = inicio;
+            if (fin)    filtro.date.$lte = fin;
         }
 
-        const resultado = await Venta.aggregate([
+        const resultado = await Cita.aggregate([
             { $match: filtro },
             {
                 $group: {
                     _id:              null,
-                    Total_Ganancias:  { $sum: '$Total_Pagado' },
-                    Total_Anticipos:  { $sum: '$Anticipo_Aplicado' },
+                    Total_Ganancias:  { $sum: '$total_precio' },
+                    Total_Anticipos:  { $sum: { $ifNull: ['$Anticipo', 0] } },
                     Total_Ventas:     { $sum: 1 },
                 }
             }
@@ -36,6 +42,7 @@ export const Reporte_Ganancias = async (req, res) => {
             ...data,
         });
     } catch (error) {
+        logger.error('Excepción en controller de Reportes', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -59,6 +66,7 @@ export const Reporte_Servicios = async (req, res) => {
 
         res.status(200).json(resultado);
     } catch (error) {
+        logger.error('Excepción en controller de Reportes', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -98,6 +106,7 @@ export const Reporte_Citas_Por_Mes = async (req, res) => {
 
         res.status(200).json(resultado);
     } catch (error) {
+        logger.error('Excepción en controller de Reportes', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -129,6 +138,7 @@ export const Reporte_Clientes_Frecuentes = async (req, res) => {
 
         res.status(200).json(resultado);
     } catch (error) {
+        logger.error('Excepción en controller de Reportes', error);
         res.status(500).json({ message: error.message });
     }
 };

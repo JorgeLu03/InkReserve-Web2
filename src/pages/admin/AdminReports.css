@@ -1131,3 +1131,72 @@
     transition: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   FINANCIAL SUMMARY (reemplaza al RevenueChart)
+═══════════════════════════════════════════════════════════════ */
+.finSummary {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1.5rem 0;
+}
+
+.finSummaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  padding: 1.25rem 1.25rem;
+  border-radius: 14px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(214,118,42,.15);
+}
+
+.finSummaryItem--main {
+  background: linear-gradient(135deg, rgba(214,118,42,.12), rgba(214,118,42,.04));
+  border-color: rgba(214,118,42,.30);
+}
+
+.finSummaryLabel {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--c-orange-700, #a85a23);
+  font-weight: 600;
+}
+
+.finSummaryValue {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--c-orange-900, #5c2e0a);
+  line-height: 1.1;
+}
+
+.finSummaryItem--main .finSummaryValue {
+  font-size: 2rem;
+}
+
+@media (max-width: 640px) {
+  .finSummary {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ESTADOS VACÍOS / ERROR
+═══════════════════════════════════════════════════════════════ */
+.reportsEmpty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--c-orange-700, #a85a23);
+  font-size: .95rem;
+  background: rgba(255,255,255,.4);
+  border-radius: 12px;
+  border: 1px dashed rgba(214,118,42,.30);
+}
+
+.reportsError {
+  color: var(--c-red, #dc2626);
+  border-color: rgba(220,38,38,.30);
+  background: rgba(220,38,38,.06);
+}

@@ -8,6 +8,8 @@ import CreateEmployee from "./CreateEmployee";
 import ClientList from "./ClientList";
 import AdminAgenda from "./AdminAgenda";
 import AdminReports from "./AdminReports";
+import UserManagement from "./UserManagement";
+import CategoryManagement from "./CategoryManagement";
 import logo from "../../assets/logo.png";
 const NAV_ITEMS = [
   {
@@ -113,6 +115,57 @@ const NAV_ITEMS = [
     ),
   },
   {
+    key: "users",
+    label: "Usuarios",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="5.5" cy="5.5" r="2.5" stroke="currentColor" strokeWidth="1.3" />
+        <path
+          d="M1 14c0-2.5 2-4.5 4.5-4.5S10 11.5 10 14"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+        />
+        <circle cx="11.5" cy="6" r="1.8" stroke="currentColor" strokeWidth="1.1" />
+        <path
+          d="M11 13c0-1.8 1-3.2 2.5-3.5"
+          stroke="currentColor"
+          strokeWidth="1.1"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    key: "categories",
+    label: "Categorías",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path
+          d="M2.5 4.5L8 1.5l5.5 3-5.5 3-5.5-3z"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M2.5 8L8 11l5.5-3"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M2.5 11.5L8 14.5l5.5-3"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
     key: "reports",
     label: "Reportes",
     icon: (
@@ -145,6 +198,8 @@ const SECTION_TITLES = {
   clients: "Clientes",
   week: "Agenda Semanal",
   month: "Agenda Mensual",
+  users: "Gestión de Usuarios",
+  categories: "Categorías de Tatuaje",
   reports: "Reportes",
 };
 
@@ -328,6 +383,10 @@ export default function AdminShell({
               mode="month"
             />
           )}
+
+          {section === "users" && <UserManagement />}
+
+          {section === "categories" && <CategoryManagement />}
 
           {section === "reports" && <AdminReports />}
         </main>

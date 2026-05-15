@@ -152,7 +152,12 @@ export default function App() {
         path="/cita/nueva"
         element={
           <ProtectedRoute>
-            <CreateAppointment nav={nav} onAdd={addAppointment} />
+            <CreateAppointment
+              nav={nav}
+              onAdd={addAppointment}
+              employees={employees}
+              appointments={appointments}
+            />
           </ProtectedRoute>
         }
       />

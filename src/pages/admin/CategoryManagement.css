@@ -1,0 +1,366 @@
+/* ═══════════════════════════════════════════════════════════════
+   CATEGORY MANAGEMENT — Estilos
+   Sigue el lenguaje visual de UserManagement / AdminReports
+═══════════════════════════════════════════════════════════════ */
+
+.catMgmtView {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  color: #2a1a0a;
+}
+
+/* ── HERO ───────────────────────────────────────────────────── */
+.catMgmtHero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  padding: 1.75rem 2rem;
+  background: linear-gradient(135deg, #fdf4ec 0%, #f8e6d3 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(214, 118, 42, 0.15);
+  flex-wrap: wrap;
+}
+
+.catMgmtEyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a85a23;
+  margin: 0 0 0.4rem 0;
+}
+
+.catMgmtTitle {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #5c2e0a;
+  margin: 0 0 0.4rem 0;
+}
+
+.catMgmtIntro {
+  font-size: 0.95rem;
+  color: #7a4520;
+  margin: 0;
+  max-width: 50ch;
+}
+
+.catMgmtStats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.catMgmtStat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 80px;
+}
+
+.catMgmtStatVal {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #5c2e0a;
+  line-height: 1;
+}
+
+.catMgmtStatLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #a85a23;
+  font-weight: 600;
+}
+
+/* ── FORM CREAR ─────────────────────────────────────────────── */
+.catMgmtCreate {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  padding: 1rem 1.25rem;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid rgba(214, 118, 42, 0.18);
+}
+
+.catMgmtCreateField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.catMgmtCreateLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a85a23;
+  font-weight: 600;
+}
+
+.catMgmtCreateInput {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid rgba(214, 118, 42, 0.22);
+  border-radius: 9px;
+  font-size: 0.92rem;
+  color: #2a1a0a;
+  background: white;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.catMgmtCreateInput:focus {
+  outline: none;
+  border-color: #d6762a;
+  box-shadow: 0 0 0 3px rgba(214, 118, 42, 0.15);
+}
+
+.catMgmtCreateInput::placeholder {
+  color: rgba(168, 90, 35, 0.45);
+}
+
+.catMgmtCreateBtn {
+  padding: 0.65rem 1.5rem;
+  background: #d6762a;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.catMgmtCreateBtn:hover:not(:disabled) {
+  background: #a85a23;
+}
+
+.catMgmtCreateBtn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.catMgmtCreateBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── FEEDBACK ───────────────────────────────────────────────── */
+.catMgmtFeedback {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  animation: catMgmtFadeIn 0.2s ease;
+}
+
+.catMgmtFeedback--success {
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.30);
+  color: #15803d;
+}
+
+.catMgmtFeedback--error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.30);
+  color: #b91c1c;
+}
+
+@keyframes catMgmtFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── BÚSQUEDA ───────────────────────────────────────────────── */
+.catMgmtSearchWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid rgba(214, 118, 42, 0.18);
+  color: #a85a23;
+}
+
+.catMgmtSearch {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: #2a1a0a;
+}
+
+.catMgmtSearch::placeholder {
+  color: rgba(168, 90, 35, 0.55);
+}
+
+/* ── LISTA ──────────────────────────────────────────────────── */
+.catMgmtListWrap {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid rgba(214, 118, 42, 0.15);
+  overflow: hidden;
+}
+
+.catMgmtList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.catMgmtItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(214, 118, 42, 0.08);
+  transition: background 0.15s ease;
+}
+
+.catMgmtItem:last-child {
+  border-bottom: none;
+}
+
+.catMgmtItem:hover {
+  background: rgba(253, 244, 236, 0.5);
+}
+
+.catMgmtItem--editing {
+  background: rgba(253, 244, 236, 0.8);
+  border-left: 3px solid #d6762a;
+  padding-left: calc(1.25rem - 3px);
+}
+
+.catMgmtItemTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2a1a0a;
+  flex: 1;
+}
+
+.catMgmtEditInput {
+  flex: 1;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #d6762a;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  color: #2a1a0a;
+  background: white;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(214, 118, 42, 0.12);
+}
+
+.catMgmtItemActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.catMgmtActionBtn {
+  padding: 0.4rem 0.85rem;
+  background: white;
+  border: 1px solid rgba(214, 118, 42, 0.25);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #a85a23;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.catMgmtActionBtn:hover:not(:disabled) {
+  background: #fdf4ec;
+  border-color: #d6762a;
+  color: #5c2e0a;
+}
+
+.catMgmtActionBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.catMgmtActionBtn--primary {
+  background: #d6762a;
+  color: white;
+  border-color: #d6762a;
+}
+
+.catMgmtActionBtn--primary:hover:not(:disabled) {
+  background: #a85a23;
+  color: white;
+}
+
+.catMgmtActionBtn--danger {
+  color: #b91c1c;
+  border-color: rgba(220, 38, 38, 0.30);
+}
+
+.catMgmtActionBtn--danger:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: #dc2626;
+}
+
+/* ── ESTADOS VACÍOS / ERROR ─────────────────────────────────── */
+.catMgmtEmpty {
+  padding: 2.5rem;
+  text-align: center;
+  color: #a85a23;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  border: 1px dashed rgba(214, 118, 42, 0.30);
+}
+
+.catMgmtEmpty--info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.catMgmtEmpty--info strong {
+  color: #5c2e0a;
+  font-size: 1rem;
+}
+
+.catMgmtEmpty--info span {
+  color: #7a4520;
+  font-size: 0.85rem;
+}
+
+.catMgmtError {
+  color: #b91c1c;
+  border-color: rgba(220, 38, 38, 0.30);
+  background: rgba(220, 38, 38, 0.06);
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .catMgmtCreate {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .catMgmtItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .catMgmtItemActions {
+    width: 100%;
+  }
+
+  .catMgmtActionBtn {
+    flex: 1;
+  }
+
+  .catMgmtHero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,4 +1,5 @@
 import { Categoria } from './schema.js';
+import { logger } from './logger.js';
 
 // GET /api/servicios — Obtener todos los servicios
 export const Obtener_Servicios = async (req, res) => {
@@ -6,6 +7,7 @@ export const Obtener_Servicios = async (req, res) => {
         const servicios = await Categoria.find().sort({ Titulo: 1 });
         res.status(200).json(servicios);
     } catch (error) {
+        logger.error('Excepción en controller de Servicios', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -19,6 +21,7 @@ export const Obtener_Servicio = async (req, res) => {
         }
         res.status(200).json(servicio);
     } catch (error) {
+        logger.error('Excepción en controller de Servicios', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -28,8 +31,12 @@ export const Crear_Servicio = async (req, res) => {
     try {
         const { Titulo } = req.body;
 
-        if (!Titulo || Titulo.trim() === '') {
-            return res.status(400).json({ message: 'El título del servicio es obligatorio.' });
+        // Validaciones independientes de backend
+        if (!Titulo || typeof Titulo !== 'string' || Titulo.trim().length < 2) {
+            return res.status(400).json({ message: 'El título debe tener al menos 2 caracteres.' });
+        }
+        if (Titulo.trim().length > 80) {
+            return res.status(400).json({ message: 'El título no puede exceder 80 caracteres.' });
         }
 
         const Existe = await Categoria.findOne({ Titulo: Titulo.trim() });
@@ -40,6 +47,7 @@ export const Crear_Servicio = async (req, res) => {
         const nuevo = await Categoria.create({ Titulo: Titulo.trim() });
         res.status(201).json({ message: 'Servicio creado.', servicio: nuevo });
     } catch (error) {
+        logger.error('Excepción en controller de Servicios', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -49,8 +57,12 @@ export const Actualizar_Servicio = async (req, res) => {
     try {
         const { Titulo } = req.body;
 
-        if (!Titulo || Titulo.trim() === '') {
-            return res.status(400).json({ message: 'El título del servicio es obligatorio.' });
+        // Validaciones independientes de backend
+        if (!Titulo || typeof Titulo !== 'string' || Titulo.trim().length < 2) {
+            return res.status(400).json({ message: 'El título debe tener al menos 2 caracteres.' });
+        }
+        if (Titulo.trim().length > 80) {
+            return res.status(400).json({ message: 'El título no puede exceder 80 caracteres.' });
         }
 
         const actualizado = await Categoria.findByIdAndUpdate(
@@ -65,6 +77,7 @@ export const Actualizar_Servicio = async (req, res) => {
 
         res.status(200).json({ message: 'Servicio actualizado.', servicio: actualizado });
     } catch (error) {
+        logger.error('Excepción en controller de Servicios', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -80,6 +93,7 @@ export const Eliminar_Servicio = async (req, res) => {
 
         res.status(200).json({ message: 'Servicio eliminado.' });
     } catch (error) {
+        logger.error('Excepción en controller de Servicios', error);
         res.status(500).json({ message: error.message });
     }
 };
