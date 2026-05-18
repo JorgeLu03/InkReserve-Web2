@@ -156,7 +156,7 @@ const Cita_Schema = new mongoose.Schema({
     clientName:     { type: String, default: '' },
     clientInitials: { type: String, default: '' },
     clientColor:    { type: String, default: '#c084fc' },
-    artistId:       { type: Number },          // id numérico del artista mock
+    artistId:       { type: mongoose.Schema.Types.Mixed }, // acepta número (mock) u ObjectId/string (artista real)
     date:           { type: String },          // "YYYY-MM-DD"
     time:           { type: String },          // "HH:MM"
     hours:          { type: Number, default: 1 },

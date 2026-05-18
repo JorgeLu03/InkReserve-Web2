@@ -41,9 +41,14 @@ function validarPayloadCita({ clientName, date, time, hours, total, status, arti
             return 'total debe ser un número mayor o igual a 0.';
         }
     }
-    if (artistId !== undefined && artistId !== null) {
-        const a = Number(artistId);
-        if (!Number.isFinite(a) || a < 0) return 'artistId debe ser un número válido.';
+    if (artistId !== undefined && artistId !== null && artistId !== '') {
+        // Acepta número (mock data) o string (ObjectId/identificador del artista).
+        // Solo rechazamos casos claramente inválidos.
+        const esNumeroOk = typeof artistId === 'number' && Number.isFinite(artistId) && artistId >= 0;
+        const esStringOk = typeof artistId === 'string' && artistId.trim().length > 0;
+        if (!esNumeroOk && !esStringOk) {
+            return 'artistId inválido.';
+        }
     }
     if (status !== undefined && !STATUS_VALIDOS.includes(status)) {
         return `status inválido. Permitidos: ${STATUS_VALIDOS.join(', ')}.`;
