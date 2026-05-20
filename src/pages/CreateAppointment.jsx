@@ -7,7 +7,7 @@ import {
   TIME_SLOTS,
   TATTOO_KEYS,
   CLIENT_COLORS,
-} from "../data/mockData";
+} from "../data/constants";
 import { getServicios } from "../services/apiService";
 
 function initials(name) {
@@ -708,6 +708,7 @@ export default function CreateAppointment({ nav, onAdd, employees = [], appointm
     return (
       <AppointmentConfirmation
         appointment={confirmed}
+        employees={employees}
         onViewCalendar={nav.toCalendar}
         onNewAppointment={() => {
           setConfirmed(null);

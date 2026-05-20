@@ -1,6 +1,5 @@
 import "./AppointmentConfirmation.css";
 import Avatar from "../components/Avatar";
-import { ARTISTS } from "../data/mockData";
 
 const MONTH_NAMES_SHORT = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
@@ -10,8 +9,10 @@ function formatDate(iso) {
   return `${parseInt(d)} ${MONTH_NAMES_SHORT[parseInt(m) - 1]} ${y}`;
 }
 
-export default function AppointmentConfirmation({ appointment, onViewCalendar, onNewAppointment }) {
-  const artist = ARTISTS.find((a) => a.id === appointment.artistId);
+export default function AppointmentConfirmation({ appointment, employees = [], onViewCalendar, onNewAppointment }) {
+  const artist = employees.find(
+    (a) => String(a._id) === String(appointment.artistId) || String(a.artistId) === String(appointment.artistId)
+  );
 
   return (
     <div className="confScreen">

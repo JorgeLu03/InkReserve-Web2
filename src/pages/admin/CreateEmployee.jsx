@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Avatar from "../../components/Avatar";
 import { employeeService } from "../../services/employeeService";
-import { WORKING_DAYS } from "../../data/employeesMock";
+import { WORKING_DAYS } from "../../data/constants";
 import { getServicios } from "../../services/apiService";
 import "./AdminShell.css";
 

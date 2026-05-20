@@ -1,14 +1,15 @@
 import { useState } from "react";
 import "./Calendar.css";
 import Avatar from "../components/Avatar";
-import { ARTISTS, STATUS_COLORS, STATUS_LABELS } from "../data/mockData";
+import { STATUS_COLORS, STATUS_LABELS } from "../data/constants";
 
 const WEEKDAYS = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"];
 const MONTH_NAMES = [
   "Enero","Febrero","Marzo","Abril","Mayo","Junio",
   "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",
 ];
-const TODAY_ISO = "2026-03-03";
+const _todayNow = new Date();
+const TODAY_ISO = `${_todayNow.getFullYear()}-${String(_todayNow.getMonth() + 1).padStart(2, '0')}-${String(_todayNow.getDate()).padStart(2, '0')}`;
 
 function getCalendarCells(year, month) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -23,9 +24,9 @@ function getCalendarCells(year, month) {
   return cells;
 }
 
-export default function Calendar({ appointments, nav }) {
-  const [year,  setYear]  = useState(2026);
-  const [month, setMonth] = useState(2);
+export default function Calendar({ appointments, employees = [], nav }) {
+  const [year,  setYear]  = useState(_todayNow.getFullYear());
+  const [month, setMonth] = useState(_todayNow.getMonth());
   const [selected, setSelected] = useState(TODAY_ISO);
 
   function prevMonth() {
@@ -161,7 +162,7 @@ export default function Calendar({ appointments, nav }) {
           ) : (
             <ul className="calApptList">
               {selectedAppts.map((appt) => {
-                const artist = ARTISTS.find((a) => a.id === appt.artistId);
+                const artist = employees.find((a) => String(a._id) === String(appt.artistId) || String(a.artistId) === String(appt.artistId));
                 return (
                   <li key={appt.id}>
                     <button type="button" className="calApptItem" onClick={() => nav.toDetail(appt.id)}>

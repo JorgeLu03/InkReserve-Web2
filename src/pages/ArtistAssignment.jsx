@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./ArtistAssignment.css";
 import Avatar from "../components/Avatar";
-import { STATUS_LABELS, STATUS_COLORS } from "../data/mockData";
+import { STATUS_LABELS, STATUS_COLORS } from "../data/constants";
 
 function matchScore(employee, style) {
   if (!style) return 0;

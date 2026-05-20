@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../Dashboard.css";
 import "./AdminDashboard.css";
 import Avatar from "../../components/Avatar";
-import { TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../../data/mockData";
+import { TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../../data/constants";
 
 function getTodayDisplay() {
   const d = new Date();

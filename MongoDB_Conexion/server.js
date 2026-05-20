@@ -14,9 +14,23 @@ import usuariosRoutes  from './usuariosRoutes.js';
 
 const app = express();
 
+const allowedOrigins = (process.env.FRONTEND_ORIGIN || '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
 // MIDDLEWARE
 app.use(cors({
-    origin: /^http:\/\/localhost:\d+$/,
+    origin(origin, callback) {
+        // Allow non-browser clients (Postman/curl) and same-origin requests without Origin header.
+        if (!origin) return callback(null, true);
+
+        const isLocalhost = /^http:\/\/localhost:\d+$/.test(origin);
+        const isAllowed = allowedOrigins.includes(origin);
+        if (isLocalhost || isAllowed) return callback(null, true);
+
+        return callback(new Error('CORS: origin no permitido'));
+    },
     credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));

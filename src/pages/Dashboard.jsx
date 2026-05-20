@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Dashboard.css";
 import Avatar from "../components/Avatar";
 import ArtistAssignment from "./ArtistAssignment";
-import { ARTISTS, TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../data/mockData";
+import { TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../data/constants";
 
 function getTodayDisplay() {
   const d = new Date();
@@ -178,7 +178,7 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
                   ) : (
                     <ul className="appointmentList">
                       {todayAppts.map((appt) => {
-                        const _artist = ARTISTS.find((a) => a.id === appt.artistId);
+
                         return (
                           <li key={appt.id}>
                             <button
@@ -250,13 +250,15 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
               <div className="dashCard artistsCard">
                 <h2 className="cardTitle">Artistas de hoy</h2>
                 <ul className="artistList">
-                  {ARTISTS.map((a) => (
-                    <li key={a.id} className="artistItem">
+                  {employees.map((a) => {
+                    const count = artistClientCounts[String(a._id)] || artistClientCounts[String(a.artistId)] || 0;
+                    return (
+                    <li key={String(a._id ?? a.id)} className="artistItem">
                       <Avatar initials={a.initials} color={a.color} size={40} />
                       <div className="artistInfo">
                         <span className="artistName">{a.name}</span>
                         <span className="artistClients">
-                          {artistClientCounts[a.id] || 0} cliente{(artistClientCounts[a.id] || 0) !== 1 ? "s" : ""} hoy
+                          {count} cliente{count !== 1 ? "s" : ""} hoy
                         </span>
                       </div>
                       <div className={`clockBadge ${a.clockedIn ? "clockedIn" : "clockedOut"}`}>
@@ -266,7 +268,8 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
                         {a.clockedIn ? "Fichado" : "Sin fichar"}
                       </div>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </div>
 

@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate, Navigate, useParams } from "react-router-dom";
 import "./index.css";
-import { INITIAL_APPOINTMENTS } from "./data/mockData";
 import {
   getCitas,
   createCita,
@@ -28,10 +27,10 @@ function ProtectedRoute({ children, adminOnly = false }) {
   return children;
 }
 
-function AppointmentDetailPage({ appointments, onUpdate, nav }) {
+function AppointmentDetailPage({ appointments, employees, onUpdate, nav }) {
   const { id } = useParams();
   const appt = appointments.find((a) => String(a._id ?? a.id) === id) ?? null;
-  return <AppointmentDetail appointment={appt} nav={nav} onUpdate={onUpdate} />;
+  return <AppointmentDetail appointment={appt} employees={employees} nav={nav} onUpdate={onUpdate} />;
 }
 
 function AdminShellPage({ employees, appointments, onAddEmployee, onUpdateEmployee, nav }) {
@@ -49,10 +48,24 @@ function AdminShellPage({ employees, appointments, onAddEmployee, onUpdateEmploy
 }
 
 export default function App() {
-  const [appointments, setAppts] = useState(INITIAL_APPOINTMENTS);
+  const [appointments, setAppts] = useState([]);
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
   const rol = localStorage.getItem("rol") ?? "user";
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    let isCancelled = false;
+    (async () => {
+      const [citas, tats] = await Promise.allSettled([getCitas(), getTatuadores()]);
+      if (!isCancelled && citas.status === "fulfilled") setAppts(citas.value);
+      if (!isCancelled && tats.status === "fulfilled") setEmployees(tats.value);
+    })();
+
+    return () => { isCancelled = true; };
+  }, []);
 
   const nav = {
     toDashboard: () => navigate("/dashboard"),
@@ -80,10 +93,22 @@ export default function App() {
   }
 
   async function updateAppointment(id, changes) {
-    setAppts((p) => p.map((a) => (String(a.id) === String(id) ? { ...a, ...changes } : a)));
+    setAppts((p) =>
+      p.map((a) =>
+        String(a._id ?? a.id) === String(id) || String(a.id) === String(id)
+          ? { ...a, ...changes }
+          : a
+      )
+    );
     try {
       const data = await updateCita(id, changes);
-      setAppts((p) => p.map((a) => (String(a.id) === String(data.cita.id) ? data.cita : a)));
+      setAppts((p) =>
+        p.map((a) =>
+          String(a._id ?? a.id) === String(data.cita.id) || String(a.id) === String(data.cita.id)
+            ? data.cita
+            : a
+        )
+      );
     } catch {
       // Se mantiene actualización optimista
     }
@@ -143,7 +168,7 @@ export default function App() {
         path="/calendar"
         element={
           <ProtectedRoute>
-            <Calendar appointments={appointments} nav={nav} />
+            <Calendar appointments={appointments} employees={employees} nav={nav} />
           </ProtectedRoute>
         }
       />
@@ -166,7 +191,12 @@ export default function App() {
         path="/cita/:id"
         element={
           <ProtectedRoute>
-            <AppointmentDetailPage appointments={appointments} onUpdate={updateAppointment} nav={nav} />
+            <AppointmentDetailPage
+              appointments={appointments}
+              employees={employees}
+              onUpdate={updateAppointment}
+              nav={nav}
+            />
           </ProtectedRoute>
         }
       />

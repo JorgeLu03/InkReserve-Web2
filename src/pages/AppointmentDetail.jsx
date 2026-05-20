@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import "./AppointmentDetail.css";
 import Avatar from "../components/Avatar";
 import TattooSvg from "../components/TattooSvg";
-import { ARTISTS, STATUSES, STATUS_LABELS, STATUS_COLORS, CANCELLATION_FEE_RATE, CANCELLATION_FEE_STATUSES } from "../data/mockData";
+import { STATUSES, STATUS_LABELS, STATUS_COLORS, CANCELLATION_FEE_RATE, CANCELLATION_FEE_STATUSES } from "../data/constants";
 
 function InfoItem({ label, value }) {
   return (
@@ -13,7 +13,7 @@ function InfoItem({ label, value }) {
   );
 }
 
-export default function AppointmentDetail({ appointment, nav, onUpdate }) {
+export default function AppointmentDetail({ appointment, employees = [], nav, onUpdate }) {
   const [notes,           setNotes]          = useState(appointment?.notes ?? "");
   const [saved,           setSaved]          = useState(false);
   const [saving,          setSaving]         = useState(false);
@@ -57,7 +57,9 @@ export default function AppointmentDetail({ appointment, nav, onUpdate }) {
     );
   }
 
-  const artist = ARTISTS.find((a) => a.id === appointment.artistId);
+  const artist = employees.find(
+    (a) => String(a._id) === String(appointment.artistId) || String(a.artistId) === String(appointment.artistId)
+  );
   const [, mm, dd] = appointment.date.split("-");
 
   async function saveNotes() {

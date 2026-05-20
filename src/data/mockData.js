@@ -1,4 +1,5 @@
-export const TODAY_ISO = "2026-03-03";
+const _now = new Date();
+export const TODAY_ISO = `${_now.getFullYear()}-${String(_now.getMonth() + 1).padStart(2, '0')}-${String(_now.getDate()).padStart(2, '0')}`;
 
 export const ARTISTS = [
   { id: 1, name: "Diego Ramírez",  initials: "DR", color: "#f472b6", clockedIn: true  },
