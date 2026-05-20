@@ -1,6 +1,11 @@
 /* ═══════════════════════════════════════════════════════════════
    USER MANAGEMENT — Estilos
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+   Sigue el lenguaje visual de AdminReports.css (paleta naranja /
+   crema, esquinas redondeadas, bordes sutiles).
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
    Sigue el lenguaje visual de AdminReports.css (paleta naranja /
    crema, esquinas redondeadas, bordes sutiles).
@@ -185,7 +190,11 @@
 .userMgmtMain {
   display: grid;
 <<<<<<< HEAD
+<<<<<<< HEAD
   grid-template-columns: 1fr 300px;
+=======
+  grid-template-columns: 1fr 320px;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
   grid-template-columns: 1fr 320px;
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -211,6 +220,7 @@
   display: flex;
   flex-direction: column;
 <<<<<<< HEAD
+<<<<<<< HEAD
   width: 100%;
 }
 
@@ -226,6 +236,8 @@
 
 .userMgmtTableHead {
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
 
 .userMgmtTableHead {
@@ -233,6 +245,9 @@
   grid-template-columns: minmax(220px, 1.5fr) 100px 100px minmax(230px, 1.2fr);
   gap: 1rem;
   padding: 0.85rem 1.25rem;
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   background: #fdf4ec;
   font-size: 0.72rem;
@@ -245,22 +260,31 @@
 
 .userMgmtTableRow {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   display: grid;
   grid-template-columns: minmax(220px, 1.5fr) 100px 100px minmax(230px, 1.2fr);
   gap: 1rem;
   align-items: center;
   padding: 0.85rem 1.25rem;
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   border-bottom: 1px solid rgba(214, 118, 42, 0.08);
   transition: background 0.15s ease;
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .userMgmtTableRow:last-child {
   border-bottom: none;
 }
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 .userMgmtTableRow:hover {
@@ -283,7 +307,10 @@
   text-align: left;
   padding: 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
   min-width: 0;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
@@ -316,9 +343,12 @@
   align-items: center;
   gap: 0.5rem;
 <<<<<<< HEAD
+<<<<<<< HEAD
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
@@ -334,7 +364,10 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 <<<<<<< HEAD
+<<<<<<< HEAD
   flex-shrink: 0;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
@@ -360,7 +393,10 @@
   letter-spacing: 0.04em;
   width: fit-content;
 <<<<<<< HEAD
+<<<<<<< HEAD
   white-space: nowrap;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
@@ -394,6 +430,7 @@
   display: flex;
   gap: 0.4rem;
 <<<<<<< HEAD
+<<<<<<< HEAD
   flex-wrap: nowrap;
   justify-content: flex-end;
 }
@@ -405,6 +442,8 @@
   border-radius: 8px;
   font-size: 0.75rem;
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   flex-wrap: wrap;
 }
 
@@ -414,6 +453,9 @@
   border: 1px solid rgba(214, 118, 42, 0.25);
   border-radius: 8px;
   font-size: 0.78rem;
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   font-weight: 600;
   color: #a85a23;
@@ -457,8 +499,12 @@
 /* ── PANEL DE DETALLE ────────────────────────────────────────── */
 .userMgmtDetail {
 <<<<<<< HEAD
+<<<<<<< HEAD
   position: sticky;
   top: 1rem;
+=======
+  position: relative;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
   position: relative;
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -471,6 +517,11 @@
   align-items: center;
   text-align: center;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  position: sticky;
+  top: 1rem;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
   position: sticky;
   top: 1rem;
@@ -586,7 +637,10 @@
   .userMgmtActions {
     width: 100%;
 <<<<<<< HEAD
+<<<<<<< HEAD
     justify-content: flex-start;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   }

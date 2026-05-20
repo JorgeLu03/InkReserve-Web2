@@ -1,10 +1,15 @@
 import { useState } from "react";
 import "./Calendar.css";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import "./Dashboard.css";
 import "./admin/AdminShell.css";
 import Avatar from "../components/Avatar";
 import { STATUS_COLORS, STATUS_LABELS } from "../data/mockData";
+=======
+import Avatar from "../components/Avatar";
+import { ARTISTS, STATUS_COLORS, STATUS_LABELS } from "../data/mockData";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 import Avatar from "../components/Avatar";
 import { ARTISTS, STATUS_COLORS, STATUS_LABELS } from "../data/mockData";
@@ -16,7 +21,11 @@ const MONTH_NAMES = [
   "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",
 ];
 <<<<<<< HEAD
+<<<<<<< HEAD
 const TODAY_ISO = new Date().toISOString().slice(0, 10);
+=======
+const TODAY_ISO = "2026-03-03";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 const TODAY_ISO = "2026-03-03";
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -35,6 +44,7 @@ function getCalendarCells(year, month) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default function Calendar({ appointments, employees = [], nav }) {
   const [year,  setYear]  = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
@@ -52,10 +62,15 @@ export default function Calendar({ appointments, employees = [], nav }) {
     appointments.some(a => a.date.startsWith(thisMonth) && a.artistId === emp.artistId)
   );
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 export default function Calendar({ appointments, nav }) {
   const [year,  setYear]  = useState(2026);
   const [month, setMonth] = useState(2);
   const [selected, setSelected] = useState(TODAY_ISO);
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
   function prevMonth() {
@@ -84,17 +99,23 @@ export default function Calendar({ appointments, nav }) {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div className="dashScreen">
       <div className="dashBg" />
 
       {/* HEADER */}
       <header className="dashHeader">
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
     <div className="pageScreen">
       <div className="pageBg" />
 
       {/* HEADER */}
       <header className="pageHeader">
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         <button className="iconBtn" onClick={nav.goBack} aria-label="Volver">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -103,6 +124,7 @@ export default function Calendar({ appointments, nav }) {
               strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
+<<<<<<< HEAD
 <<<<<<< HEAD
         <div className="dashTitle">
           <h1>Calendario de Citas</h1>
@@ -340,6 +362,8 @@ export default function Calendar({ appointments, nav }) {
           </div>
         </section>
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         <h1 className="pageTitle">Calendario de Citas</h1>
         <button className="primarySmallBtn" onClick={nav.toCreate}>+ Nueva cita</button>
       </header>
@@ -461,6 +485,9 @@ export default function Calendar({ appointments, nav }) {
             </ul>
           )}
         </div>
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       </main>
     </div>

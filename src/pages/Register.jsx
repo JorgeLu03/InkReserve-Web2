@@ -6,6 +6,7 @@ import { validateRegister } from "../utils/validators";
 const MySwal = withReactContent(Swal);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const EyeIcon = ({ open }) =>
   open ? (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -21,6 +22,8 @@ const EyeIcon = ({ open }) =>
     </svg>
   );
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 export default function Register({ onGoLogin }) {
@@ -65,9 +68,12 @@ export default function Register({ onGoLogin }) {
         text: "Hay campos con errores. Corrígelos para continuar.",
         confirmButtonText: "Ok",
 <<<<<<< HEAD
+<<<<<<< HEAD
         confirmButtonColor: "#d6762a",
         background: "#f4efe7",
         color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       });
@@ -98,9 +104,12 @@ export default function Register({ onGoLogin }) {
           text: data.message || "No se pudo crear la cuenta.",
           confirmButtonText: "Ok",
 <<<<<<< HEAD
+<<<<<<< HEAD
           confirmButtonColor: "#d6762a",
           background: "#f4efe7",
           color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         });
@@ -113,9 +122,12 @@ export default function Register({ onGoLogin }) {
         text: "Tu cuenta fue registrada exitosamente. Ahora puedes iniciar sesión.",
         confirmButtonText: "Ir a iniciar sesión",
 <<<<<<< HEAD
+<<<<<<< HEAD
         confirmButtonColor: "#d6762a",
         background: "#f4efe7",
         color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       });
@@ -128,9 +140,12 @@ export default function Register({ onGoLogin }) {
         text: "No se pudo conectar con el servidor. Intenta más tarde.",
         confirmButtonText: "Ok",
 <<<<<<< HEAD
+<<<<<<< HEAD
         confirmButtonColor: "#d6762a",
         background: "#f4efe7",
         color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       });
@@ -143,12 +158,15 @@ export default function Register({ onGoLogin }) {
     <div className="authScreen">
       <div className="authCard" role="main" aria-label="InkReserve Register">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <img className="decor decorTopLeft"    src="/assets/plant-top-left.png"    alt="" aria-hidden="true" />
         <img className="decor decorTopRight"   src="/assets/plant-top-right.png"   alt="" aria-hidden="true" />
         <img className="decor decorBottomLeft" src="/assets/plant-bottom-left.png" alt="" aria-hidden="true" />
         <img className="decor decorBottomRight" src="/assets/plant-bottom-right.png" alt="" aria-hidden="true" />
 
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         {/* Decoraciones */}
         <img className="decor decorTopLeft" src="/assets/plant-top-left.png" alt="" aria-hidden="true" />
         <img className="decor decorTopRight" src="/assets/plant-top-right.png" alt="" aria-hidden="true" />
@@ -156,6 +174,9 @@ export default function Register({ onGoLogin }) {
         <img className="decor decorBottomRight" src="/assets/plant-bottom-right.png" alt="" aria-hidden="true" />
 
         {/* Header */}
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         <div className="brandRow">
           <img className="brandLogo" src="/assets/Logo.png" alt="InkReserve" />
@@ -166,9 +187,14 @@ export default function Register({ onGoLogin }) {
 
         <form className="form" onSubmit={onSubmit} noValidate>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
           {/* Nombre */}
           <div className="field">
+=======
+          {/* Nombre */}
+          <label className="field">
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
           {/* Nombre */}
           <label className="field">
@@ -186,15 +212,21 @@ export default function Register({ onGoLogin }) {
             </div>
             {touched.fullName && err.fullName && <small className="errorText">{err.fullName}</small>}
 <<<<<<< HEAD
+<<<<<<< HEAD
           </div>
 
           {/* Email */}
           <div className="field">
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           </label>
 
           {/* Email */}
           <label className="field">
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
             <span className="label">Correo electrónico</span>
             <div className={`inputWrap ${touched.email && err.email ? "inputWrapError" : ""}`}>
@@ -202,8 +234,12 @@ export default function Register({ onGoLogin }) {
               <input
                 className="input"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 type="email"
                 placeholder="tucorreo@dominio.com"
+=======
+                placeholder="Correo electrónico"
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
                 placeholder="Correo electrónico"
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -214,15 +250,21 @@ export default function Register({ onGoLogin }) {
             </div>
             {touched.email && err.email && <small className="errorText">{err.email}</small>}
 <<<<<<< HEAD
+<<<<<<< HEAD
           </div>
 
           {/* Teléfono */}
           <div className="field">
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           </label>
 
           {/* Teléfono */}
           <label className="field">
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
             <span className="label">Teléfono</span>
             <div className={`inputWrap ${touched.phone && err.phone ? "inputWrapError" : ""}`}>
@@ -230,7 +272,11 @@ export default function Register({ onGoLogin }) {
               <input
                 className="input"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 placeholder="10 dígitos"
+=======
+                placeholder="Teléfono (10 dígitos)"
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
                 placeholder="Teléfono (10 dígitos)"
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -240,6 +286,7 @@ export default function Register({ onGoLogin }) {
               />
             </div>
             {touched.phone && err.phone && <small className="errorText">{err.phone}</small>}
+<<<<<<< HEAD
 <<<<<<< HEAD
           </div>
 
@@ -296,6 +343,8 @@ export default function Register({ onGoLogin }) {
             </div>
           </div>
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           </label>
 
           {/* Password */}
@@ -349,6 +398,9 @@ export default function Register({ onGoLogin }) {
               <small className="errorText">{err.confirmPassword}</small>
             )}
           </label>
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
           <button className="primaryBtn" type="submit" disabled={loading}>
@@ -362,7 +414,10 @@ export default function Register({ onGoLogin }) {
             </button>
           </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         </form>
@@ -370,7 +425,11 @@ export default function Register({ onGoLogin }) {
     </div>
   );
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 }
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

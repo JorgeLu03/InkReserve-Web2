@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const TODAY_ISO = new Date().toISOString().slice(0, 10);
+=======
+export const TODAY_ISO = "2026-03-03";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 export const TODAY_ISO = "2026-03-03";
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -51,7 +55,10 @@ export const CANCELLATION_FEE_RATE = 0.30;
 export const CANCELLATION_FEE_STATUSES = ["confirmed", "in_progress"];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 export const INITIAL_APPOINTMENTS = [
   {
     id: 1, clientName: "Camila Torres", clientInitials: "CT", clientColor: "#c084fc",
@@ -104,4 +111,7 @@ export const INITIAL_APPOINTMENTS = [
     tattooKey: "rose", status: "pending", notes: "",
   },
 ];
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

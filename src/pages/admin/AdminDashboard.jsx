@@ -2,7 +2,10 @@ import { useState } from "react";
 import "../Dashboard.css";
 import "./AdminDashboard.css";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import "./AdminShell.css";
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 import Avatar from "../../components/Avatar";
@@ -17,11 +20,14 @@ const TODAY_DISPLAY = getTodayDisplay();
 export default function AdminDashboard({ appointments, employees, nav }) {
   const [activeNav, setActiveNav] = useState(null);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [profileOpen, setProfileOpen] = useState(false);
 
   const adminNombre = localStorage.getItem("nombre") || "Administrador";
   const adminCorreo = localStorage.getItem("correo") || "";
   const adminInitials = adminNombre.trim().split(" ").filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join("");
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
@@ -76,6 +82,7 @@ export default function AdminDashboard({ appointments, employees, nav }) {
             </svg>
           </button>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <button className="adminProfileBtn" onClick={() => setProfileOpen(true)} aria-label="Ver perfil">
             <span className="adminProfileInitials">{adminInitials}</span>
           </button>
@@ -120,15 +127,21 @@ export default function AdminDashboard({ appointments, employees, nav }) {
       )}
 
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           <div className="userAvatarSmall" style={{ background: "#c084fc" }}>A</div>
         </div>
       </header>
 
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       {/* ── MAIN ── */}
       <main className="dashMain">
 
         {/* LEFT SIDEBAR */}
+<<<<<<< HEAD
 <<<<<<< HEAD
         <aside className="adminSidebar">
           <img src="/assets/logo.png" alt="InkReserve" className="adminSidebarLogo" />
@@ -163,6 +176,8 @@ export default function AdminDashboard({ appointments, employees, nav }) {
             Nuevo artista
           </button>
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         <aside className="dashLeft">
           <img src="/assets/logo.png" alt="InkReserve" className="dashLogo" />
           <p className="dashTagline">Panel de administración</p>
@@ -197,6 +212,9 @@ export default function AdminDashboard({ appointments, employees, nav }) {
               Agenda Mensual
             </button>
           </nav>
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         </aside>
 

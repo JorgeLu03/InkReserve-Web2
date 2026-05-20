@@ -10,6 +10,10 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
     email: "",
     password: "",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    remember: false,
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
     remember: false,
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -132,13 +136,19 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
       localStorage.setItem("rol", resolvedRole);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       if (form.remember) {
         localStorage.setItem("remember_email", form.email.trim());
       } else {
         localStorage.removeItem("remember_email");
       }
 
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       await MySwal.fire({
         icon: "success",
@@ -313,7 +323,10 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
           </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           <div className="rowBetween">
             <label className="remember">
               <input
@@ -343,6 +356,9 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
             </button>
           </div>
 
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           <button type="submit" className="primaryBtn" disabled={loading}>
             {loading ? "Ingresando..." : "Iniciar sesión"}
@@ -359,7 +375,11 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
     </div>
   );
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 }
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

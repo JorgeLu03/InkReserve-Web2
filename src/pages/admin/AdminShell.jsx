@@ -219,6 +219,7 @@ export default function AdminShell({
   const [section, setSection] = useState(initialSection ?? "employees");
   const [selEmp, setSelEmp] = useState(null);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -226,6 +227,10 @@ export default function AdminShell({
   const adminCorreo = localStorage.getItem("correo") || "";
   const adminInitials = adminNombre.trim().split(" ").filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join("");
 
+=======
+  const navigate = useNavigate();
+
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
   const navigate = useNavigate();
 
@@ -279,6 +284,7 @@ export default function AdminShell({
         </button>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className="adminHeaderCenter">
           <h1 className="adminTitle">{SECTION_TITLES[section]}</h1>
           <span className="adminHeaderDate">{new Date().toLocaleDateString("es-MX", { day: "numeric", month: "numeric", year: "numeric" })}</span>
@@ -331,10 +337,15 @@ export default function AdminShell({
       )}
 
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         <h1 className="adminTitle">{SECTION_TITLES[section]}</h1>
         <div style={{ width: 80 }} />
       </header>
 
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       <div className="adminBody">
         <aside className="adminSidebar">

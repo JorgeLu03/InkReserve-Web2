@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Cita, Cliente } from './schema.js';
+=======
+﻿import { Cita } from './schema.js';
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 ﻿import { Cita } from './schema.js';
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -184,6 +188,7 @@ export const Crear_Cita = async (req, res) => {
         });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Registrar o actualizar cliente en la colección de clientes
         try {
             const nombreCliente = (clientName || '').trim();
@@ -205,6 +210,8 @@ export const Crear_Cita = async (req, res) => {
             logger.warn('No se pudo registrar cliente', clienteErr?.message);
         }
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         logger.info('Fin: Crear_Cita OK', { citaId: nueva._id.toString() });

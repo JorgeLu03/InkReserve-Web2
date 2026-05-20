@@ -1,10 +1,16 @@
 import { useState } from "react";
 import "./Dashboard.css";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import "./admin/AdminShell.css";
 import Avatar from "../components/Avatar";
 import ArtistAssignment from "./ArtistAssignment";
 import { TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../data/mockData";
+=======
+import Avatar from "../components/Avatar";
+import ArtistAssignment from "./ArtistAssignment";
+import { ARTISTS, TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../data/mockData";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 import Avatar from "../components/Avatar";
 import ArtistAssignment from "./ArtistAssignment";
@@ -41,11 +47,14 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
   const [activeNav, setActiveNav] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [profileOpen, setProfileOpen] = useState(false);
 
   const userNombre = localStorage.getItem("nombre") || "Usuario";
   const userCorreo = localStorage.getItem("correo") || "";
   const userInitials = userNombre.trim().split(" ").filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join("");
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   const todayAppts = appointments.filter((a) => a.date === TODAY_ISO)
@@ -115,6 +124,7 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
             </svg>
           </button>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <button className="adminProfileBtn" onClick={() => setProfileOpen(true)} aria-label="Ver perfil">
             <span className="adminProfileInitials">{userInitials}</span>
           </button>
@@ -159,11 +169,16 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
       )}
 
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           <div className="userAvatarSmall" style={{ background: "#c084fc" }}>A</div>
           <div className="userAvatarSmall" style={{ background: "#fb923c" }}>U</div>
         </div>
       </header>
 
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       {/* ── MAIN ── */}
       <main className="dashMain">
@@ -240,7 +255,11 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
                     <ul className="appointmentList">
                       {todayAppts.map((appt) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
                         const _artist = employees.find((a) => a.artistId === appt.artistId);
+=======
+                        const _artist = ARTISTS.find((a) => a.id === appt.artistId);
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
                         const _artist = ARTISTS.find((a) => a.id === appt.artistId);
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -316,6 +335,7 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
                 <h2 className="cardTitle">Artistas de hoy</h2>
                 <ul className="artistList">
 <<<<<<< HEAD
+<<<<<<< HEAD
                   {employees.length === 0 ? (
                     <li style={{ color: "rgba(27,27,30,.45)", fontSize: "0.88rem", padding: "0.5rem 0" }}>
                       Sin artistas registrados.
@@ -326,12 +346,20 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
                   {ARTISTS.map((a) => (
                     <li key={a.id} className="artistItem">
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
+                  {ARTISTS.map((a) => (
+                    <li key={a.id} className="artistItem">
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
                       <Avatar initials={a.initials} color={a.color} size={40} />
                       <div className="artistInfo">
                         <span className="artistName">{a.name}</span>
                         <span className="artistClients">
 <<<<<<< HEAD
+<<<<<<< HEAD
                           {artistClientCounts[a.artistId] || 0} cliente{(artistClientCounts[a.artistId] || 0) !== 1 ? "s" : ""} hoy
+=======
+                          {artistClientCounts[a.id] || 0} cliente{(artistClientCounts[a.id] || 0) !== 1 ? "s" : ""} hoy
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
                           {artistClientCounts[a.id] || 0} cliente{(artistClientCounts[a.id] || 0) !== 1 ? "s" : ""} hoy
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

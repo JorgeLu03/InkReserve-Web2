@@ -147,6 +147,7 @@
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* ── FEEDBACK (toast flotante) ──────────────────────────────── */
 .catMgmtFeedback {
   position: fixed;
@@ -177,6 +178,8 @@
 @keyframes catMgmtFadeIn {
   from { opacity: 0; transform: translateY(8px); }
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 /* ── FEEDBACK ───────────────────────────────────────────────── */
 .catMgmtFeedback {
   padding: 0.7rem 1rem;
@@ -199,6 +202,9 @@
 
 @keyframes catMgmtFadeIn {
   from { opacity: 0; transform: translateY(-4px); }
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   to   { opacity: 1; transform: translateY(0); }
 }

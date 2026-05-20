@@ -1,13 +1,19 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, Navigate, useParams } from "react-router-dom";
 import "./index.css";
 
 =======
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 import { useState } from "react";
 import { Routes, Route, useNavigate, Navigate, useParams } from "react-router-dom";
 import "./index.css";
 import { INITIAL_APPOINTMENTS } from "./data/mockData";
+<<<<<<< HEAD
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
+=======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 import {
   getCitas,
@@ -57,7 +63,11 @@ function AdminShellPage({ employees, appointments, onAddEmployee, onUpdateEmploy
 
 export default function App() {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [appointments, setAppts] = useState([]);
+=======
+  const [appointments, setAppts] = useState(INITIAL_APPOINTMENTS);
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
   const [appointments, setAppts] = useState(INITIAL_APPOINTMENTS);
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -85,6 +95,7 @@ export default function App() {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Cargar datos reales si ya hay sesión activa (recarga de página)
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -95,6 +106,8 @@ export default function App() {
     });
   }, []);
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   async function addAppointment(appt) {
@@ -168,7 +181,11 @@ export default function App() {
         element={
           <ProtectedRoute>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Calendar appointments={appointments} employees={employees} nav={nav} />
+=======
+            <Calendar appointments={appointments} nav={nav} />
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
             <Calendar appointments={appointments} nav={nav} />
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

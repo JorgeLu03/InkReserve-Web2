@@ -561,7 +561,11 @@ export default function CreateAppointment({ nav, onAdd, employees = [], appointm
   async function handleCancel() {
     if (!isDirty) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       nav.goBack?.();
+=======
+      nav.back?.();
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
       nav.back?.();
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
@@ -580,7 +584,11 @@ export default function CreateAppointment({ nav, onAdd, employees = [], appointm
       color: "#1b1b1e",
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (result.isConfirmed) nav.goBack?.();
+=======
+    if (result.isConfirmed) nav.back?.();
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 =======
     if (result.isConfirmed) nav.back?.();
 >>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
