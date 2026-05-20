@@ -1,0 +1,193 @@
+/* ═══════════════════════════════════════════════════
+   ARTIST ASSIGNMENT — two-panel layout
+═══════════════════════════════════════════════════ */
+.assignWrap {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+}
+
+/* ── LEFT PANEL (card) ── */
+.assignLeft {
+  width: 270px; flex-shrink: 0;
+  background: rgba(245,240,232,0.95);
+  border-radius: 18px;
+  padding: 1.1rem 1rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  display: flex; flex-direction: column; gap: 0.75rem;
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+}
+
+.assignPanelHint {
+  font-size: 0.71rem; color: rgba(27,27,30,.5);
+  font-weight: 500; line-height: 1.4; margin: 0;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+
+.assignApptList {
+  display: flex; flex-direction: column; gap: 0.45rem;
+}
+
+.assignApptCard {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.62rem 0.8rem;
+  background: rgba(255,255,255,.65);
+  border-radius: 11px; border: 2px solid transparent;
+  cursor: pointer; text-align: left; width: 100%;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  transition: border-color 0.15s, background 0.15s, transform 0.12s;
+}
+.assignApptCard:hover {
+  border-color: rgba(214,118,42,.3);
+  background: rgba(255,255,255,.9);
+  transform: translateX(2px);
+}
+.assignApptCardActive {
+  border-color: #d6762a !important;
+  background: rgba(214,118,42,.09) !important;
+  box-shadow: 0 3px 12px rgba(214,118,42,.18) !important;
+}
+
+.assignApptDate {
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 30px;
+}
+.assignDay { font-size: 1rem; font-weight: 800; color: #d6762a; line-height: 1; }
+.assignMon { font-size: 0.62rem; color: rgba(27,27,30,.4); font-weight: 600; }
+
+.assignApptInfo {
+  flex: 1; display: flex; flex-direction: column; gap: 0.12rem; overflow: hidden;
+}
+.assignApptClient { font-size: 0.82rem; font-weight: 700; color: #1b1b1e; }
+.assignApptMeta   { font-size: 0.68rem; color: rgba(27,27,30,.55); }
+.assignApptArtist {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.64rem; color: rgba(27,27,30,.48); margin-top: 1px;
+}
+.assignDot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+}
+.assignApptStatusDot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+
+/* ── RIGHT PANEL (card) ── */
+.assignRight {
+  flex: 1; min-width: 0;
+  background: rgba(245,240,232,0.95);
+  border-radius: 18px;
+  padding: 1.25rem 1.25rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  display: flex; flex-direction: column; gap: 0.9rem;
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+}
+
+.assignRightTitle {
+  font-size: 0.95rem; font-weight: 700; color: #1b1b1e;
+  margin: 0;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+.assignRightTitle em { color: #d6762a; font-style: normal; }
+
+.assignClientBanner {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  padding: 0.55rem 0.9rem;
+  background: rgba(214,118,42,.1);
+  border: 1px solid rgba(214,118,42,.28);
+  border-radius: 10px;
+}
+.assignClientLabel { font-size: 0.68rem; color: rgba(27,27,30,.52); font-weight: 600; }
+.assignClientBanner strong { font-size: 0.85rem; color: #1b1b1e; }
+.assignClientMeta { font-size: 0.68rem; color: rgba(27,27,30,.5); }
+
+/* ── ARTIST CARDS GRID ── */
+.assignArtistGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.8rem;
+}
+
+.assignArtistCard {
+  position: relative;
+  background: rgba(255,255,255,.75);
+  border-radius: 13px; padding: 0.9rem 0.95rem 0.8rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  border: 2px solid transparent;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  overflow: hidden;
+}
+.assignArtistMatch {
+  border-color: rgba(214,118,42,.45) !important;
+  background: rgba(255,250,245,.95) !important;
+  box-shadow: 0 3px 14px rgba(214,118,42,.14) !important;
+}
+.assignArtistAssigned {
+  border-color: rgba(74,222,128,.55) !important;
+  background: rgba(240,253,244,.95) !important;
+  box-shadow: 0 3px 14px rgba(74,222,128,.12) !important;
+}
+
+/* Ribbons */
+.assignMatchRibbon, .assignedRibbon {
+  position: absolute; top: 0; right: 0;
+  font-size: 0.57rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.04em; padding: 0.2rem 0.6rem;
+  border-radius: 0 11px 0 9px;
+}
+.assignMatchRibbon { background: #d6762a; color: #fff; }
+.assignedRibbon    { background: #16a34a; color: #fff; }
+
+.assignArtistTop {
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.assignArtistMeta {
+  display: flex; flex-direction: column; gap: 0.18rem;
+}
+.assignArtistName { font-size: 0.87rem; font-weight: 700; color: #1b1b1e; }
+.assignClock {
+  display: flex; align-items: center; gap: 0.28rem;
+  font-size: 0.66rem; font-weight: 600;
+}
+.assignClock.on  { color: #16a34a; }
+.assignClock.off { color: #dc2626; }
+
+.assignSpecsRow {
+  display: flex; flex-wrap: wrap; gap: 0.28rem;
+}
+.assignSpecChip {
+  font-size: 0.62rem; padding: 0.16rem 0.52rem;
+  border-radius: 99px; border: 1px solid rgba(0,0,0,.11);
+  background: rgba(245,240,232,.9); color: rgba(27,27,30,.58);
+}
+.assignSpecChipMatch {
+  background: rgba(214,118,42,.16) !important;
+  border-color: rgba(214,118,42,.5) !important;
+  color: #b85e1e !important;
+  font-weight: 700 !important;
+}
+
+.assignBtn {
+  margin-top: 0.1rem;
+  padding: 0.48rem 0.8rem;
+  background: linear-gradient(135deg, #b85e1e, #d6762a);
+  border: none; border-radius: 8px; color: #fff;
+  font-size: 0.74rem; font-weight: 700; cursor: pointer;
+  transition: opacity 0.18s; text-align: center; width: 100%;
+}
+.assignBtn:hover { opacity: 0.86; }
+
+.assignedConfirm {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.71rem; font-weight: 600; color: #16a34a;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .assignWrap { flex-direction: column; }
+  .assignLeft { width: 100%; max-height: none; }
+  .assignRight { max-height: none; }
+  .assignArtistGrid { grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); }
+}

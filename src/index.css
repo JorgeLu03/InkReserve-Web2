@@ -1,0 +1,459 @@
+/* =============== InkReserve Auth UI (Refined) =============== */
+
+:root{
+  --bg: #0f1014;
+
+  /* Tarjeta */
+  --card-solid: #f4efe7;
+  --card-overlay: rgba(244, 239, 231, 0.90);
+  --card-edge: rgba(72, 53, 35, .08);
+
+  /* Texto */
+  --text: #1f1c19;
+  --muted: rgba(31,28,25,.66);
+
+  /* Campos */
+  --field: rgba(255,255,255,.46);
+  --field-edge: rgba(73,55,39,.10);
+  --field-focus: rgba(214,118,42,.18);
+
+  /* Marca */
+  --accent: #d6762a;
+  --accent-2: #e08a3f;
+  --accent-soft: rgba(214,118,42,.12);
+
+  /* Error */
+  --danger: #b00020;
+  --danger-soft: rgba(176,0,32,.12);
+
+  /* Sombra */
+  --shadow-lg: rgba(0,0,0,.32);
+  --shadow-sm: rgba(0,0,0,.12);
+}
+
+/* Reset */
+*{ box-sizing: border-box; }
+html, body{ height:100%; margin:0; }
+#root{ height:100%; }
+body{
+  margin:0;
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fondo principal */
+.authScreen{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 40px);
+  background:
+    linear-gradient(rgba(0,0,0,.38), rgba(0,0,0,.38)),
+    url("/assets/fondo.png") center/cover no-repeat fixed;
+}
+
+/* Tarjeta central */
+.authCard{
+  width: min(520px, 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+
+  padding: clamp(20px, 3vw, 30px);
+  padding-top: 14px;
+
+  background-color: #f4efe7;
+  background-image:
+    linear-gradient(rgba(244, 239, 231, 0.76), rgba(244, 239, 231, 0.76)),
+    url("/assets/papelTextura.png");
+  background-position: center, center;
+  background-size: auto, 700px auto;
+  background-repeat: no-repeat, repeat;
+
+  border: 1px solid rgba(72, 53, 35, .08);
+
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.32),
+    0 4px 14px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.35);
+
+  backdrop-filter: blur(3px);
+}
+
+/* Decoraciones */
+.decor{
+  position: absolute;
+  pointer-events: none;
+  opacity: .26;
+  filter: grayscale(.08) contrast(.95);
+  width: clamp(105px, 16vw, 160px);
+  height: auto;
+  z-index: 0;
+}
+
+.decorTopLeft{ top: 10px; left: 10px; }
+.decorTopRight{ top: 10px; right: 10px; }
+.decorBottomLeft{ bottom: 10px; left: 10px; }
+.decorBottomRight{ bottom: 10px; right: 10px; }
+
+/* Asegura que el contenido quede arriba */
+.brandRow,
+.title,
+.subtitle,
+.roleToggle,
+.form{
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.brandRow{
+  display:flex;
+  justify-content:center;
+  margin-bottom: 0;
+}
+
+.brandLogo{
+  width: clamp(220px, 35vw, 360px);
+  height: auto;
+  display: block;
+  margin: -18px auto -44px auto;
+  user-select: none;
+}
+
+.title{
+  margin: 0 0 2px;
+  text-align: center;
+  font-size: clamp(2rem, 2.6vw, 2.25rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+
+.subtitle{
+  margin: 0 0 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(14px, 1.5vw, 15px);
+  line-height: 1.35;
+}
+
+/* Toggle de rol */
+.roleToggle{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 10px 0 20px;
+}
+
+.roleBtn{
+  height: 50px;
+  border-radius: 14px;
+  border: 1px solid rgba(90,68,47,.10);
+  background: rgba(255,255,255,.34);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease,
+    opacity .18s ease;
+}
+
+.roleBtn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(214,118,42,.24);
+}
+
+.roleBtnGhost{
+  opacity: .82;
+}
+
+.roleBtnActive{
+  background: rgba(255,255,255,.56);
+  border-color: rgba(214,118,42,.36);
+  box-shadow:
+    0 0 0 3px var(--accent-soft),
+    inset 0 1px 0 rgba(255,255,255,.50);
+  opacity: 1;
+}
+
+/* Formulario */
+.form{
+  display: grid;
+  gap: 13px;
+}
+
+.field{
+  display: grid;
+  gap: 8px;
+}
+
+.label{
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.inputWrap{
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding-left: 44px;
+  padding-right: 46px;
+  border-radius: 14px;
+
+  background: var(--field);
+  border: 1px solid var(--field-edge);
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease,
+    transform .18s ease;
+}
+
+.inputWrap:hover{
+  border-color: rgba(214,118,42,.18);
+  background: rgba(255,255,255,.52);
+}
+
+.inputWrap:focus-within,
+.inputWrapActive{
+  border-color: rgba(214,118,42,.42);
+  box-shadow: 0 0 0 4px var(--field-focus);
+  background: rgba(255,255,255,.62);
+}
+
+.inputWrapError{
+  border-color: rgba(176, 0, 32, .34);
+  box-shadow: 0 0 0 4px var(--danger-soft);
+}
+
+.inputIcon{
+  position: absolute;
+  left: 14px;
+  width: 17px;
+  height: 17px;
+  opacity: .66;
+  object-fit: contain;
+}
+
+.input{
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input::placeholder{
+  color: rgba(31,28,25,.42);
+}
+
+.eyeBtn{
+  position: absolute;
+  right: 9px;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 16px;
+  opacity: .78;
+  transition: background .18s ease, opacity .18s ease, transform .18s ease;
+}
+
+.eyeBtn:hover{
+  background: rgba(0,0,0,.05);
+  opacity: 1;
+}
+
+.eyeBtn:active{
+  transform: scale(.97);
+}
+
+.errorText{
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 1px;
+  padding-left: 2px;
+}
+
+/* Fila inferior */
+.rowBetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.remember{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted);
+  user-select: none;
+}
+
+.remember input[type="checkbox"]{
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+}
+
+/* Links */
+.linkBtn{
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 800;
+  cursor: pointer;
+  padding: 6px 4px;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.linkBtn:hover{
+  opacity: .86;
+}
+
+.linkBtn:active{
+  transform: translateY(1px);
+}
+
+/* CTA principal */
+.primaryBtn{
+  margin-top: 8px;
+  height: 50px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: .01em;
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 24px rgba(214,118,42,.23),
+    inset 0 1px 0 rgba(255,255,255,.20);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease,
+    opacity .18s ease;
+}
+
+.primaryBtn:hover:not(:disabled){
+  transform: translateY(-1px);
+  box-shadow:
+    0 16px 28px rgba(214,118,42,.28),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  filter: saturate(1.03);
+}
+
+.primaryBtn:active:not(:disabled){
+  transform: translateY(0);
+}
+
+.primaryBtn:disabled{
+  opacity: .72;
+  cursor: wait;
+}
+
+/* Texto inferior */
+.bottomText{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* Responsive */
+@media (max-width: 520px){
+  .authCard{
+    border-radius: 18px;
+    padding: 18px 16px 16px;
+    padding-top: 12px;
+  }
+
+  .brandLogo{
+    width: clamp(210px, 58vw, 300px);
+    margin: -14px auto -34px auto;
+  }
+
+  .decor{
+    width: 120px;
+    opacity: .19;
+  }
+
+  .roleBtn{
+    height: 48px;
+    font-size: .97rem;
+  }
+
+  .inputWrap{
+    height: 50px;
+  }
+
+  .primaryBtn{
+    height: 48px;
+  }
+}
+
+@media (max-width: 420px){
+  .rowBetween{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bottomText{
+    flex-wrap: wrap;
+  }
+
+  .title{
+    font-size: 1.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.passRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+ 
+@media (max-width: 420px) {
+  .passRow {
+    grid-template-columns: 1fr;
+  }
+}
+ 

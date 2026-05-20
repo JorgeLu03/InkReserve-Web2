@@ -1,0 +1,541 @@
+/* ═══════════════════════════════════════════════════════════════
+   USER MANAGEMENT — Estilos
+═══════════════════════════════════════════════════════════════ */
+
+.userMgmtView {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  color: #2a1a0a;
+}
+
+/* ── HERO ───────────────────────────────────────────────────── */
+.userMgmtHero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  padding: 1.75rem 2rem;
+  background: linear-gradient(135deg, #fdf4ec 0%, #f8e6d3 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(214, 118, 42, 0.15);
+  flex-wrap: wrap;
+}
+
+.userMgmtEyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a85a23;
+  margin: 0 0 0.4rem 0;
+}
+
+.userMgmtTitle {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #5c2e0a;
+  margin: 0 0 0.4rem 0;
+}
+
+.userMgmtIntro {
+  font-size: 0.95rem;
+  color: #7a4520;
+  margin: 0;
+  max-width: 42ch;
+}
+
+.userMgmtStats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userMgmtStat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 80px;
+}
+
+.userMgmtStatVal {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #5c2e0a;
+}
+
+.userMgmtStatLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #a85a23;
+  font-weight: 600;
+}
+
+.userMgmtStatDivider {
+  width: 1px;
+  height: 32px;
+  background: rgba(214, 118, 42, 0.25);
+}
+
+/* ── FILTROS ─────────────────────────────────────────────────── */
+.userMgmtFilters {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(214, 118, 42, 0.15);
+}
+
+.userMgmtSearchWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 240px;
+  padding: 0.45rem 0.85rem;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid rgba(214, 118, 42, 0.20);
+  color: #a85a23;
+}
+
+.userMgmtSearch {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: #2a1a0a;
+}
+
+.userMgmtSearch::placeholder {
+  color: rgba(168, 90, 35, 0.55);
+}
+
+.userMgmtSelectWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.userMgmtSelectLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a85a23;
+  font-weight: 600;
+}
+
+.userMgmtSelect {
+  padding: 0.4rem 0.7rem;
+  background: white;
+  border: 1px solid rgba(214, 118, 42, 0.20);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: #2a1a0a;
+  cursor: pointer;
+  min-width: 130px;
+}
+
+.userMgmtSelect:focus {
+  outline: 2px solid rgba(214, 118, 42, 0.45);
+  outline-offset: 1px;
+}
+
+/* ── FEEDBACK INLINE ─────────────────────────────────────────── */
+.userMgmtFeedback {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+}
+
+.userMgmtFeedback--error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.30);
+  color: #b91c1c;
+}
+
+/* ── ESTADOS VACÍOS ──────────────────────────────────────────── */
+.userMgmtEmpty {
+  padding: 2.5rem;
+  text-align: center;
+  color: #a85a23;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  border: 1px dashed rgba(214, 118, 42, 0.30);
+}
+
+.userMgmtError {
+  color: #b91c1c;
+  border-color: rgba(220, 38, 38, 0.30);
+  background: rgba(220, 38, 38, 0.06);
+}
+
+/* ── LAYOUT PRINCIPAL ────────────────────────────────────────── */
+.userMgmtMain {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 1024px) {
+  .userMgmtMain {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── TABLA ───────────────────────────────────────────────────── */
+.userMgmtTableWrap {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid rgba(214, 118, 42, 0.15);
+  overflow: hidden;
+}
+
+.userMgmtTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Columnas: usuario | rol | estado | acciones */
+.userMgmtTableHead,
+.userMgmtTableRow {
+  display: grid;
+  grid-template-columns: 1fr 90px 90px auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+}
+
+.userMgmtTableHead {
+  background: #fdf4ec;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a85a23;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(214, 118, 42, 0.18);
+}
+
+.userMgmtTableRow {
+  border-bottom: 1px solid rgba(214, 118, 42, 0.08);
+  transition: background 0.15s ease;
+}
+
+.userMgmtTableRow:last-child {
+  border-bottom: none;
+}
+
+.userMgmtTableRow:hover {
+  background: rgba(253, 244, 236, 0.5);
+}
+
+.userMgmtTableRow--selected {
+  background: rgba(253, 244, 236, 0.8);
+  border-left: 3px solid #d6762a;
+  padding-left: calc(1.25rem - 3px);
+}
+
+.userMgmtRowMain {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  min-width: 0;
+}
+
+.userMgmtAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.userMgmtNameCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.userMgmtName {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #2a1a0a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userMgmtSelfTag {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  background: rgba(214, 118, 42, 0.18);
+  color: #a85a23;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.userMgmtEmail {
+  font-size: 0.78rem;
+  color: #7a4520;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── BADGES ──────────────────────────────────────────────────── */
+.userMgmtBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.userMgmtBadge--admin {
+  background: rgba(124, 58, 237, 0.12);
+  color: #6d28d9;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+}
+
+.userMgmtBadge--user {
+  background: rgba(100, 116, 139, 0.10);
+  color: #475569;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+.userMgmtBadge--active {
+  background: rgba(22, 163, 74, 0.10);
+  color: #15803d;
+  border: 1px solid rgba(22, 163, 74, 0.25);
+}
+
+.userMgmtBadge--inactive {
+  background: rgba(220, 38, 38, 0.09);
+  color: #b91c1c;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+/* ── ACCIONES ────────────────────────────────────────────────── */
+.userMgmtActions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.userMgmtActionBtn {
+  padding: 0.38rem 0.7rem;
+  background: white;
+  border: 1px solid rgba(214, 118, 42, 0.25);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #a85a23;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.userMgmtActionBtn:hover:not(:disabled) {
+  background: #fdf4ec;
+  border-color: #d6762a;
+  color: #5c2e0a;
+}
+
+.userMgmtActionBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.userMgmtActionBtn--primary {
+  background: #d6762a;
+  color: white;
+  border-color: #d6762a;
+}
+
+.userMgmtActionBtn--primary:hover:not(:disabled) {
+  background: #a85a23;
+  color: white;
+}
+
+.userMgmtActionBtn--danger {
+  color: #b91c1c;
+  border-color: rgba(220, 38, 38, 0.30);
+}
+
+.userMgmtActionBtn--danger:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: #dc2626;
+}
+
+/* ── PANEL DE DETALLE ────────────────────────────────────────── */
+.userMgmtDetail {
+  position: sticky;
+  top: 1rem;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid rgba(214, 118, 42, 0.18);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.userMgmtDetailClose {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.7rem;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #a85a23;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+}
+
+.userMgmtDetailClose:hover {
+  background: #fdf4ec;
+}
+
+.userMgmtDetailAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.userMgmtDetailName {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2a1a0a;
+  margin: 0 0 0.25rem 0;
+}
+
+.userMgmtDetailEmail {
+  font-size: 0.85rem;
+  color: #7a4520;
+  margin: 0 0 1rem 0;
+  word-break: break-all;
+}
+
+.userMgmtDetailBadges {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.userMgmtDetailList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(214, 118, 42, 0.15);
+}
+
+.userMgmtDetailList > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-align: left;
+}
+
+.userMgmtDetailList dt {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a85a23;
+  font-weight: 600;
+  margin: 0;
+}
+
+.userMgmtDetailList dd {
+  font-size: 0.85rem;
+  color: #2a1a0a;
+  margin: 0;
+  word-break: break-word;
+}
+
+.userMgmtDetailId {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  color: #7a4520;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .userMgmtTableHead {
+    display: none;
+  }
+
+  .userMgmtTableRow {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .userMgmtRowMain {
+    width: 100%;
+  }
+
+  .userMgmtActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .userMgmtActionBtn {
+    flex: 1;
+  }
+
+  .userMgmtHero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .userMgmtStats {
+    justify-content: space-between;
+    width: 100%;
+  }
+}

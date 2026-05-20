@@ -1,0 +1,365 @@
+/* ── PAGE BASE ── */
+.pageScreen {
+  position: relative; min-height: 100vh; display: flex; flex-direction: column;
+  background: url("/assets/fondo.png") center/cover no-repeat fixed;
+  color: #1b1b1e;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; overflow: hidden;
+}
+.pageBg { display: none; }
+.pageHeader {
+  position: relative; z-index: 10; display: flex; align-items: center; gap: 1rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #b85e1e 0%, #d6762a 55%, #e08a3f 100%);
+  border-bottom: 1px solid rgba(0,0,0,0.18); color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.pageTitle { flex: 1; text-align: center; margin: 0; font-size: 1.2rem; font-weight: 900; color: #fff; font-family: 'Cinzel', serif; letter-spacing: 0.06em; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.iconBtn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; color: white; transition: background 0.2s; flex-shrink: 0;
+}
+.iconBtn:hover { background: rgba(214,118,42,0.35); border-color: #d6762a; }
+
+.primarySmallBtn {
+  padding: 0.45rem 1.1rem; background: rgba(255,255,255,0.95); border: none;
+  border-radius: 999px; color: #b85e1e; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; white-space: nowrap; transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 6px rgba(0,0,0,.18);
+}
+.primarySmallBtn:hover { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.22); }
+
+.detailNotFound {
+  position: relative; z-index: 1; display: flex; align-items: center; justify-content: center;
+  flex: 1; color: rgba(245,240,232,.6); font-size: 1rem;
+}
+
+/* ── MAIN ── */
+.detailMain {
+  position: relative; z-index: 1; display: flex; flex-direction: column;
+  gap: 1.5rem; padding: 1.5rem 2rem; flex: 1; overflow-y: auto;
+}
+
+/* ── STATUS TRACKER ── */
+.statusTrackerCard {
+  background: rgba(245,240,232,0.92); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 16px; box-shadow: 0 8px 28px rgba(0,0,0,.22);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.trackerSteps {
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 1.25rem 2rem; gap: 0;
+}
+.statusStep {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  background: none; border: none; cursor: pointer; padding: 0; position: relative; flex: 1;
+}
+.stepDot {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(0,0,0,.1); border: 2px solid rgba(0,0,0,.15);
+  transition: all 0.2s; z-index: 1; flex-shrink: 0;
+}
+.statusStep:hover .stepDot { border-color: #d6762a; }
+.stepDone .stepDot { border-color: transparent; }
+.stepActive .stepDot { box-shadow: 0 0 10px currentColor; transform: scale(1.2); }
+.stepLine {
+  position: absolute; top: 9px; left: calc(50% + 9px);
+  width: calc(100% - 18px); height: 2px;
+  background: rgba(0,0,0,.1); z-index: 0;
+}
+.stepLineDone { background: rgba(214,118,42,0.45); }
+.stepLabel {
+  font-size: 0.72rem; color: rgba(27,27,30,.5); text-align: center; white-space: nowrap;
+  transition: color 0.2s;
+}
+.stepDone .stepLabel { color: rgba(27,27,30,.7); }
+.stepActive .stepLabel { color: #1b1b1e; font-weight: 700; }
+
+/* ── BODY ── */
+.detailBody { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.detailLeft  { display: flex; flex-direction: column; gap: 1.25rem; }
+.detailRight { display: flex; flex-direction: column; gap: 1.25rem; }
+
+/* ── CARDS ── */
+.detailCard {
+  background: rgba(245,240,232,0.92); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 16px; padding: 1.25rem 1.4rem;
+  box-shadow: 0 8px 28px rgba(0,0,0,.22);
+  display: flex; flex-direction: column; gap: 0.85rem;
+}
+.detailCardTitle { margin: 0; font-size: 0.78rem; font-weight: 600; color: rgba(27,27,30,.55); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── PARTIES ── */
+.detailParty { display: flex; align-items: center; gap: 0.85rem; }
+.detailPartyName { display: block; font-size: 1rem; font-weight: 700; color: #1b1b1e; }
+.detailPartyMeta { display: block; font-size: 0.75rem; color: rgba(27,27,30,.6); margin-top: 0.2rem; }
+.clockBadgeInline {
+  display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 600;
+  padding: 0.2rem 0.55rem; border-radius: 999px; margin-top: 0.35rem;
+}
+.clockBadgeInline.clockedIn  { background: rgba(74,222,128,0.15); color: #16a34a; border: 1px solid rgba(74,222,128,0.4); }
+.clockBadgeInline.clockedOut { background: rgba(239,68,68,0.1); color: #dc2626; border: 1px solid rgba(239,68,68,0.3); }
+
+/* ── INFO GRID ── */
+.detailInfoGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+.detailInfoItem { display: flex; flex-direction: column; gap: 0.15rem; }
+.detailInfoLabel { font-size: 0.68rem; color: rgba(27,27,30,.5); text-transform: uppercase; letter-spacing: 0.05em; }
+.detailInfoValue { font-size: 0.9rem; font-weight: 600; color: #1b1b1e; }
+
+/* ── TATTOO ── */
+.tattooCard { align-items: center; }
+.tattooPreview {
+  background: rgba(255,255,255,.55); border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px; padding: 1.5rem; width: 100%; display: flex;
+  align-items: center; justify-content: center; box-sizing: border-box;
+}
+.tattooSvgLarge { width: 150px; height: 150px; }
+.tattooLabel { font-size: 0.73rem; color: rgba(27,27,30,.55); letter-spacing: 0.03em; text-align: center; }
+
+/* ── NOTES ── */
+.notesTextarea {
+  background: rgba(255,255,255,.6); border: 1px solid rgba(0,0,0,.1);
+  border-radius: 10px; padding: 0.7rem 0.9rem; color: #1b1b1e; font-size: 0.85rem;
+  outline: none; resize: vertical; width: 100%; box-sizing: border-box;
+  font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.notesTextarea:focus { border-color: rgba(214,118,42,0.5); box-shadow: 0 0 0 3px rgba(214,118,42,0.12); }
+.notesActions { display: flex; align-items: center; justify-content: flex-end; gap: 1rem; }
+.savedMsg { font-size: 0.78rem; color: #16a34a; font-weight: 600; }
+.saveNotesBtn {
+  padding: 0.55rem 1.25rem; background: rgba(214,118,42,0.15); border: 1px solid #d6762a;
+  border-radius: 10px; color: #d6762a; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; transition: background 0.2s;
+}
+.saveNotesBtn:hover:not(:disabled) { background: rgba(214,118,42,0.3); }
+.saveNotesBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── REFERENCE IMAGE CAROUSEL ── */
+.refCount {
+  margin-left: 0.5rem; font-size: 0.7rem; font-weight: 500;
+  color: rgba(27,27,30,.5); background: rgba(0,0,0,.07);
+  padding: 0.15rem 0.55rem; border-radius: 99px;
+}
+
+.refCarouselWrap { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.refCarouselStage {
+  position: relative; border-radius: 12px; overflow: hidden;
+  background: rgba(0,0,0,.06); aspect-ratio: 4/3; cursor: zoom-in;
+}
+.refCarouselImg {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+  transition: opacity 0.2s;
+}
+.refCarouselImg:hover { opacity: 0.92; }
+
+.refExpandHint {
+  position: absolute; bottom: 8px; right: 8px;
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(0,0,0,.45); color: #fff; font-size: 0.65rem;
+  padding: 3px 8px; border-radius: 99px; pointer-events: none;
+}
+
+.carouselArrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.85); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; z-index: 2;
+  color: #1b1b1e; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  transition: background 0.15s, transform 0.15s;
+}
+.carouselArrow:hover { background: #fff; transform: translateY(-50%) scale(1.08); }
+.carouselPrev { left: 8px; }
+.carouselNext { right: 8px; }
+
+.carouselDots { display: flex; justify-content: center; gap: 6px; }
+.carouselDot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(27,27,30,.2); border: none; cursor: pointer;
+  padding: 0; transition: background 0.2s, transform 0.2s;
+}
+.dotActive { background: #d6762a; transform: scale(1.25); }
+
+.carouselStrip {
+  display: flex; gap: 0.45rem; overflow-x: auto; padding-bottom: 2px;
+  scrollbar-width: thin; scrollbar-color: rgba(0,0,0,.15) transparent;
+}
+.stripThumb {
+  flex: 0 0 62px; height: 50px; border-radius: 8px; overflow: hidden;
+  border: 2px solid transparent; padding: 0; cursor: pointer;
+  background: rgba(0,0,0,.06); transition: border-color 0.15s, opacity 0.15s;
+  opacity: 0.6;
+}
+.stripThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.stripActive { border-color: #d6762a !important; opacity: 1 !important; }
+.stripThumb:hover { opacity: 0.85; }
+
+/* ── LIGHTBOX ── */
+.lightboxOverlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.88); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.75rem;
+  padding: 1.5rem; cursor: zoom-out;
+  animation: lbFadeIn 0.18s ease;
+}
+@keyframes lbFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.lightboxImg {
+  max-width: min(90vw, 900px); max-height: 80vh;
+  object-fit: contain; border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6); cursor: default;
+  animation: lbZoomIn 0.18s ease;
+}
+@keyframes lbZoomIn { from { transform: scale(0.93); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.lightboxClose {
+  position: fixed; top: 18px; right: 22px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+  color: #fff; width: 36px; height: 36px; border-radius: 50%;
+  font-size: 1rem; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; transition: background 0.15s;
+}
+.lightboxClose:hover { background: rgba(255,255,255,.25); }
+
+.lightboxCaption {
+  color: rgba(255,255,255,.55); font-size: 0.75rem; max-width: 500px;
+  text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── CANCELLED BANNER ── */
+.cancelledBanner {
+  display: flex; align-items: center; gap: 0.85rem;
+  background: rgba(245,240,232,0.96);
+  border: 1.5px solid rgba(239,68,68,.35);
+  border-radius: 14px; padding: 0.9rem 1.25rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,.22);
+}
+.cancelledBannerText { display: flex; flex-direction: column; gap: 0.25rem; }
+.cancelledBannerTitle { font-size: 0.95rem; font-weight: 800; color: #b91c1c; }
+.cancelledBannerFee { font-size: 0.8rem; color: rgba(27,27,30,.65); }
+.cancelledBannerFee strong { color: #dc2626; font-weight: 700; }
+
+/* ── DISABLED TRACKER ── */
+.trackerDisabled { opacity: 0.45; pointer-events: none; filter: grayscale(0.6); }
+
+/* ── TRACKER FOOTER (cancel button row inside the card) ── */
+.trackerFooter {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 1.5rem 0.75rem;
+  border-top: 1px solid rgba(0,0,0,.07);
+  gap: 0.75rem;
+}
+
+/* ── CONFIRM BUTTON ── */
+.confirmApptBtn {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  background: rgba(34,197,94,.12); border: 1.5px solid rgba(34,197,94,.35);
+  border-radius: 10px; color: #16a34a;
+  font-size: 0.83rem; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+}
+.confirmApptBtn:hover {
+  background: rgba(34,197,94,.22); border-color: #22c55e;
+  box-shadow: 0 2px 8px rgba(34,197,94,.25);
+}
+
+/* ── CANCEL BUTTON ── */
+.cancelApptBtn {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  background: rgba(239,68,68,.08); border: 1.5px solid rgba(239,68,68,.3);
+  border-radius: 10px; color: #dc2626;
+  font-size: 0.83rem; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+}
+.cancelApptBtn:hover {
+  background: rgba(239,68,68,.15); border-color: #ef4444;
+  box-shadow: 0 2px 8px rgba(239,68,68,.2);
+}
+
+/* ── CANCEL MODAL ── */
+.cancelModalOverlay {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(0,0,0,.55); display: flex;
+  align-items: center; justify-content: center;
+  padding: 1.5rem; animation: lbFadeIn 0.18s ease;
+}
+.cancelModal {
+  background: rgba(245,240,232,0.98); border-radius: 20px;
+  padding: 2rem 1.75rem 1.5rem;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.32);
+  display: flex; flex-direction: column; align-items: center; gap: 0.9rem;
+  animation: lbZoomIn 0.18s ease;
+}
+.cancelModalIcon { margin-bottom: 0.25rem; }
+.cancelModalTitle {
+  margin: 0; font-size: 1.1rem; font-weight: 800; color: #1b1b1e; text-align: center;
+}
+.cancelModalSub {
+  margin: 0; font-size: 0.85rem; color: rgba(27,27,30,.65);
+  text-align: center; line-height: 1.5;
+}
+
+/* Fee breakdown box */
+.cancelFeeBox {
+  width: 100%; background: rgba(239,68,68,.05);
+  border: 1px solid rgba(239,68,68,.18);
+  border-radius: 12px; overflow: hidden;
+}
+.cancelFeeRow {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.65rem 1rem;
+}
+.cancelFeeRow + .cancelFeeRow { border-top: 1px solid rgba(239,68,68,.12); }
+.cancelFeeRowHighlight { background: rgba(239,68,68,.07); }
+.cancelFeeLabel { font-size: 0.8rem; color: rgba(27,27,30,.6); }
+.cancelFeeValue { font-size: 0.88rem; font-weight: 700; color: #1b1b1e; }
+.cancelFeeRed { color: #dc2626; }
+
+.cancelModalWarn {
+  margin: 0; font-size: 0.72rem; color: rgba(27,27,30,.45); text-align: center;
+}
+
+/* Modal actions */
+.cancelModalActions { display: flex; gap: 0.65rem; width: 100%; margin-top: 0.25rem; }
+.cancelModalBack {
+  flex: 1; padding: 0.7rem 1rem;
+  background: rgba(255,255,255,.7); border: 1.5px solid rgba(0,0,0,.12);
+  border-radius: 11px; font-size: 0.88rem; font-weight: 600;
+  color: rgba(27,27,30,.7); cursor: pointer; transition: all 0.18s;
+}
+.cancelModalBack:hover { background: #fff; border-color: rgba(0,0,0,.2); }
+.cancelModalConfirm {
+  flex: 2; padding: 0.7rem 1rem;
+  background: linear-gradient(135deg, #b91c1c, #ef4444);
+  border: none; border-radius: 11px;
+  font-size: 0.88rem; font-weight: 700; color: #fff;
+  cursor: pointer; transition: opacity 0.18s;
+  box-shadow: 0 3px 12px rgba(239,68,68,.35);
+}
+.cancelModalConfirm:hover { opacity: 0.9; }
+
+/* ── OLD GRID (kept for safety) ── */
+.detailRefGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.6rem; margin-top: 0.5rem;
+}
+.detailRefThumb {
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.5);
+  display: flex; flex-direction: column;
+}
+.detailRefThumb img { width: 100%; height: 84px; object-fit: cover; display: block; }
+.detailRefName {
+  font-size: 0.63rem; color: rgba(27,27,30,.55); padding: 0.2rem 0.35rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+@media (max-width: 800px) {
+  .detailBody { grid-template-columns: 1fr; }
+  .trackerSteps { flex-wrap: wrap; gap: 0.75rem; padding: 1rem; }
+  .stepLine { display: none; }
+  .trackerFooter { padding: 0.6rem 1rem 0.7rem; }
+}

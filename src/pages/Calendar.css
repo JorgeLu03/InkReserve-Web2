@@ -1,0 +1,151 @@
+/* ── SHARED PAGE BASE ── */
+.pageScreen {
+  position: relative; min-height: 100vh; display: flex; flex-direction: column;
+  background: url("/assets/fondo.png") center/cover no-repeat fixed;
+  color: #1b1b1e;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; overflow: hidden;
+}
+.pageBg { display: none; }
+.pageHeader {
+  position: relative; z-index: 10; display: flex; align-items: center; gap: 1rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #b85e1e 0%, #d6762a 55%, #e08a3f 100%);
+  border-bottom: 1px solid rgba(0,0,0,0.18); color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.pageTitle { flex: 1; text-align: center; margin: 0; font-size: 1.2rem; font-weight: 900; color: #fff; font-family: 'Cinzel', serif; letter-spacing: 0.06em; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+
+.iconBtn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; color: white; transition: background 0.2s; flex-shrink: 0;
+}
+.iconBtn:hover { background: rgba(214,118,42,0.35); border-color: #d6762a; }
+
+.primarySmallBtn {
+  padding: 0.45rem 1.1rem;
+  background: rgba(255,255,255,0.95);
+  border: none;
+  border-radius: 999px;
+  color: #b85e1e;
+  font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 6px rgba(0,0,0,.18);
+}
+.primarySmallBtn:hover { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.22); }
+
+/* ── CALENDAR LAYOUT ── */
+.calMain {
+  position: relative; z-index: 1; display: flex; gap: 1.5rem;
+  padding: 1.5rem 2rem; flex: 1; align-items: flex-start; overflow-y: auto;
+  isolation: isolate;
+}
+
+/* Grid section — cream card container */
+.calGridSection {
+  flex: 1; display: flex; flex-direction: column; gap: 1rem; min-width: 0;
+  background: rgba(245,240,232,0.95);
+  border-radius: 18px;
+  padding: 1.25rem 1.25rem 1rem;
+  box-shadow: 0 6px 24px rgba(0,0,0,.22);
+}
+
+/* Month nav */
+.calMonthNav {
+  display: flex; align-items: center; gap: 1rem; justify-content: center;
+}
+.calMonthLabel {
+  font-size: 1.05rem; font-weight: 800; min-width: 180px; text-align: center;
+  color: #1b1b1e; letter-spacing: 0.02em;
+}
+
+/* In-grid nav buttons (dark on cream background) */
+.calNavBtn {
+  background: rgba(214,118,42,.12); border: 1px solid rgba(214,118,42,.3);
+  border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; color: #b85e1e; transition: background 0.2s; flex-shrink: 0;
+}
+.calNavBtn:hover { background: rgba(214,118,42,.22); border-color: #d6762a; }
+
+/* Weekdays */
+.calWeekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+}
+.calWeekday {
+  text-align: center; font-size: 0.68rem; font-weight: 700;
+  color: rgba(27,27,30,.45); padding: 0.3rem 0;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+
+/* Day grid */
+.calGrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+
+.calCell {
+  min-height: 68px; background: rgba(255,255,255,.62); border: 1.5px solid rgba(0,0,0,.06);
+  border-radius: 9px; padding: 0.45rem; display: flex; flex-direction: column; align-items: flex-start;
+  gap: 0.28rem; cursor: pointer; transition: all 0.15s; text-align: left;
+}
+.calCell:hover { background: rgba(255,255,255,.9); border-color: rgba(214,118,42,.4); }
+.calCellEmpty { background: rgba(0,0,0,.03); border-color: transparent; cursor: default; pointer-events: none; }
+.calCellToday { border-color: #d6762a !important; background: rgba(214,118,42,.08) !important; }
+.calCellSelected { background: rgba(214,118,42,.14) !important; border-color: #d6762a !important; box-shadow: 0 0 0 2px rgba(214,118,42,.2); }
+
+.calDayNum {
+  font-size: 0.83rem; font-weight: 600; color: rgba(27,27,30,.7); line-height: 1;
+}
+.calCellToday .calDayNum { color: #d6762a; font-weight: 800; }
+.calCellSelected .calDayNum { color: #b85e1e; font-weight: 800; }
+
+.calDots { display: flex; gap: 3px; flex-wrap: wrap; }
+.calDot { width: 7px; height: 7px; border-radius: 50%; }
+.calDotMore { font-size: 0.6rem; color: rgba(27,27,30,.45); line-height: 1; }
+
+/* Legend */
+.calLegend { display: flex; gap: 1.1rem; flex-wrap: wrap; padding: 0.35rem 0 0; border-top: 1px solid rgba(0,0,0,.07); margin-top: 0.25rem; }
+.calLegendItem { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: rgba(27,27,30,.6); font-weight: 500; }
+.calLegendDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── DAY PANEL ── */
+.calDayPanel {
+  width: 320px; flex-shrink: 0;
+  background: rgba(245,240,232,0.92); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 18px; padding: 1.25rem;
+  box-shadow: 0 8px 28px rgba(0,0,0,.28);
+  display: flex; flex-direction: column; gap: 1rem;
+  position: sticky; top: 0; max-height: calc(100vh - 100px); overflow-y: auto;
+  z-index: 2;
+}
+.calDayHeader { display: flex; align-items: center; justify-content: space-between; }
+.calDayTitle { margin: 0; font-size: 1rem; font-weight: 700; color: #1b1b1e; }
+.calDayCount { font-size: 0.75rem; color: rgba(27,27,30,.55); }
+
+.calDayEmpty {
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  padding: 2rem 1rem; text-align: center;
+}
+.calDayEmpty p { margin: 0; color: rgba(27,27,30,.55); font-size: 0.85rem; }
+
+/* Appointment list in day panel */
+.calApptList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.calApptItem {
+  width: 100%; background: rgba(255,255,255,.65); border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px; padding: 0.75rem; display: flex; align-items: center; gap: 0.65rem;
+  cursor: pointer; transition: all 0.2s; text-align: left;
+}
+.calApptItem:hover { border-color: rgba(214,118,42,0.4); background: rgba(214,118,42,0.08); }
+.calApptTime { font-size: 0.78rem; font-weight: 700; color: #d6762a; min-width: 36px; }
+.calApptInfo { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.calApptName { font-size: 0.83rem; font-weight: 600; color: #1b1b1e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.calApptMeta { font-size: 0.72rem; color: rgba(27,27,30,.6); }
+.calApptStatus {
+  font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.5rem;
+  border-radius: 999px; border: 1px solid; white-space: nowrap; flex-shrink: 0;
+  background: rgba(255,255,255,.5);
+}
+
+@media (max-width: 900px) {
+  .calMain { flex-direction: column; }
+  .calDayPanel { width: 100%; position: static; max-height: none; }
+}
