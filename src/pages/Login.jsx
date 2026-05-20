@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
+const API_BASE = import.meta.env.VITE_API_URL || "/api";
 
 export default function Login({ onGoRegister, onLoginSuccess }) {
   const [role, setRole] = useState("user"); // "user" | "admin"
@@ -75,7 +76,7 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

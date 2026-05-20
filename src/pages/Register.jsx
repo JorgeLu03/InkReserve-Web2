@@ -4,6 +4,7 @@ import withReactContent from "sweetalert2-react-content";
 import { validateRegister } from "../utils/validators";
 
 const MySwal = withReactContent(Swal);
+const API_BASE = import.meta.env.VITE_API_URL || "/api";
 
 export default function Register({ onGoLogin }) {
   const [form, setForm] = useState({
@@ -52,7 +53,7 @@ export default function Register({ onGoLogin }) {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
