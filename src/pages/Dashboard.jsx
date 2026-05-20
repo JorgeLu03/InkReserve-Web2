@@ -1,9 +1,15 @@
 import { useState } from "react";
 import "./Dashboard.css";
+<<<<<<< HEAD
 import "./admin/AdminShell.css";
 import Avatar from "../components/Avatar";
 import ArtistAssignment from "./ArtistAssignment";
 import { TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../data/mockData";
+=======
+import Avatar from "../components/Avatar";
+import ArtistAssignment from "./ArtistAssignment";
+import { ARTISTS, TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../data/mockData";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
 function getTodayDisplay() {
   const d = new Date();
@@ -34,11 +40,14 @@ function TrendArrow({ direction }) {
 export default function Dashboard({ appointments, employees, onUpdate, nav }) {
   const [activeNav, setActiveNav] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
+<<<<<<< HEAD
   const [profileOpen, setProfileOpen] = useState(false);
 
   const userNombre = localStorage.getItem("nombre") || "Usuario";
   const userCorreo = localStorage.getItem("correo") || "";
   const userInitials = userNombre.trim().split(" ").filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join("");
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   const todayAppts = appointments.filter((a) => a.date === TODAY_ISO)
     .sort((a, b) => a.time.localeCompare(b.time));
 
@@ -105,6 +114,7 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
               <line x1="2" y1="8" x2="14" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
+<<<<<<< HEAD
           <button className="adminProfileBtn" onClick={() => setProfileOpen(true)} aria-label="Ver perfil">
             <span className="adminProfileInitials">{userInitials}</span>
           </button>
@@ -148,6 +158,13 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
         </div>
       )}
 
+=======
+          <div className="userAvatarSmall" style={{ background: "#c084fc" }}>A</div>
+          <div className="userAvatarSmall" style={{ background: "#fb923c" }}>U</div>
+        </div>
+      </header>
+
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       {/* ── MAIN ── */}
       <main className="dashMain">
 
@@ -222,7 +239,11 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
                   ) : (
                     <ul className="appointmentList">
                       {todayAppts.map((appt) => {
+<<<<<<< HEAD
                         const _artist = employees.find((a) => a.artistId === appt.artistId);
+=======
+                        const _artist = ARTISTS.find((a) => a.id === appt.artistId);
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
                         return (
                           <li key={appt.id}>
                             <button
@@ -294,17 +315,26 @@ export default function Dashboard({ appointments, employees, onUpdate, nav }) {
               <div className="dashCard artistsCard">
                 <h2 className="cardTitle">Artistas de hoy</h2>
                 <ul className="artistList">
+<<<<<<< HEAD
                   {employees.length === 0 ? (
                     <li style={{ color: "rgba(27,27,30,.45)", fontSize: "0.88rem", padding: "0.5rem 0" }}>
                       Sin artistas registrados.
                     </li>
                   ) : employees.map((a) => (
                     <li key={a._id || a.id} className="artistItem">
+=======
+                  {ARTISTS.map((a) => (
+                    <li key={a.id} className="artistItem">
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
                       <Avatar initials={a.initials} color={a.color} size={40} />
                       <div className="artistInfo">
                         <span className="artistName">{a.name}</span>
                         <span className="artistClients">
+<<<<<<< HEAD
                           {artistClientCounts[a.artistId] || 0} cliente{(artistClientCounts[a.artistId] || 0) !== 1 ? "s" : ""} hoy
+=======
+                          {artistClientCounts[a.id] || 0} cliente{(artistClientCounts[a.id] || 0) !== 1 ? "s" : ""} hoy
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
                         </span>
                       </div>
                       <div className={`clockBadge ${a.clockedIn ? "clockedIn" : "clockedOut"}`}>

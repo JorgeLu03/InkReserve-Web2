@@ -146,6 +146,7 @@
   cursor: not-allowed;
 }
 
+<<<<<<< HEAD
 /* ── FEEDBACK (toast flotante) ──────────────────────────────── */
 .catMgmtFeedback {
   position: fixed;
@@ -175,6 +176,30 @@
 
 @keyframes catMgmtFadeIn {
   from { opacity: 0; transform: translateY(8px); }
+=======
+/* ── FEEDBACK ───────────────────────────────────────────────── */
+.catMgmtFeedback {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  animation: catMgmtFadeIn 0.2s ease;
+}
+
+.catMgmtFeedback--success {
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.30);
+  color: #15803d;
+}
+
+.catMgmtFeedback--error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.30);
+  color: #b91c1c;
+}
+
+@keyframes catMgmtFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   to   { opacity: 1; transform: translateY(0); }
 }
 

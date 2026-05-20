@@ -1,5 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
    USER MANAGEMENT — Estilos
+<<<<<<< HEAD
+=======
+   Sigue el lenguaje visual de AdminReports.css (paleta naranja /
+   crema, esquinas redondeadas, bordes sutiles).
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 ═══════════════════════════════════════════════════════════════ */
 
 .userMgmtView {
@@ -179,7 +184,11 @@
 /* ── LAYOUT PRINCIPAL ────────────────────────────────────────── */
 .userMgmtMain {
   display: grid;
+<<<<<<< HEAD
   grid-template-columns: 1fr 300px;
+=======
+  grid-template-columns: 1fr 320px;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   gap: 1rem;
   align-items: flex-start;
 }
@@ -201,6 +210,7 @@
 .userMgmtTable {
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   width: 100%;
 }
 
@@ -215,6 +225,15 @@
 }
 
 .userMgmtTableHead {
+=======
+}
+
+.userMgmtTableHead {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.5fr) 100px 100px minmax(230px, 1.2fr);
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   background: #fdf4ec;
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -225,14 +244,25 @@
 }
 
 .userMgmtTableRow {
+<<<<<<< HEAD
+=======
+  display: grid;
+  grid-template-columns: minmax(220px, 1.5fr) 100px 100px minmax(230px, 1.2fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   border-bottom: 1px solid rgba(214, 118, 42, 0.08);
   transition: background 0.15s ease;
 }
 
+<<<<<<< HEAD
 .userMgmtTableRow:last-child {
   border-bottom: none;
 }
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 .userMgmtTableRow:hover {
   background: rgba(253, 244, 236, 0.5);
 }
@@ -252,7 +282,10 @@
   cursor: pointer;
   text-align: left;
   padding: 0;
+<<<<<<< HEAD
   min-width: 0;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
 
 .userMgmtAvatar {
@@ -282,9 +315,12 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+<<<<<<< HEAD
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
 
 .userMgmtSelfTag {
@@ -297,7 +333,10 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+<<<<<<< HEAD
   flex-shrink: 0;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
 
 .userMgmtEmail {
@@ -320,7 +359,10 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   width: fit-content;
+<<<<<<< HEAD
   white-space: nowrap;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
 
 .userMgmtBadge--admin {
@@ -351,6 +393,7 @@
 .userMgmtActions {
   display: flex;
   gap: 0.4rem;
+<<<<<<< HEAD
   flex-wrap: nowrap;
   justify-content: flex-end;
 }
@@ -361,6 +404,17 @@
   border: 1px solid rgba(214, 118, 42, 0.25);
   border-radius: 8px;
   font-size: 0.75rem;
+=======
+  flex-wrap: wrap;
+}
+
+.userMgmtActionBtn {
+  padding: 0.4rem 0.75rem;
+  background: white;
+  border: 1px solid rgba(214, 118, 42, 0.25);
+  border-radius: 8px;
+  font-size: 0.78rem;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   font-weight: 600;
   color: #a85a23;
   cursor: pointer;
@@ -402,8 +456,12 @@
 
 /* ── PANEL DE DETALLE ────────────────────────────────────────── */
 .userMgmtDetail {
+<<<<<<< HEAD
   position: sticky;
   top: 1rem;
+=======
+  position: relative;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   background: white;
   border-radius: 14px;
   border: 1px solid rgba(214, 118, 42, 0.18);
@@ -412,6 +470,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+<<<<<<< HEAD
+=======
+  position: sticky;
+  top: 1rem;
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 }
 
 .userMgmtDetailClose {
@@ -522,7 +585,10 @@
 
   .userMgmtActions {
     width: 100%;
+<<<<<<< HEAD
     justify-content: flex-start;
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   }
 
   .userMgmtActionBtn {

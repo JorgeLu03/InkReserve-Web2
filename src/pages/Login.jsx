@@ -9,6 +9,10 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
   const [form, setForm] = useState({
     email: "",
     password: "",
+<<<<<<< HEAD
+=======
+    remember: false,
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   });
 
   const [touched, setTouched] = useState({});
@@ -127,6 +131,15 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
       localStorage.setItem("correo", form.email.trim());
       localStorage.setItem("rol", resolvedRole);
 
+<<<<<<< HEAD
+=======
+      if (form.remember) {
+        localStorage.setItem("remember_email", form.email.trim());
+      } else {
+        localStorage.removeItem("remember_email");
+      }
+
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       await MySwal.fire({
         icon: "success",
         title: "Ingreso correcto",
@@ -299,6 +312,38 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
             {passwordError ? <span className="errorText">{passwordError}</span> : null}
           </div>
 
+<<<<<<< HEAD
+=======
+          <div className="rowBetween">
+            <label className="remember">
+              <input
+                type="checkbox"
+                checked={form.remember}
+                onChange={(e) => setField("remember", e.target.checked)}
+              />
+              <span>Recuérdame</span>
+            </label>
+
+            <button
+              type="button"
+              className="linkBtn"
+              onClick={() => {
+                MySwal.fire({
+                  icon: "info",
+                  title: "Recuperación de contraseña",
+                  text: "Esta función todavía no está disponible.",
+                  confirmButtonText: "Ok",
+                  confirmButtonColor: "#d6762a",
+                  background: "#f4efe7",
+                  color: "#1b1b1e",
+                });
+              }}
+            >
+              ¿Olvidaste tu contraseña?
+            </button>
+          </div>
+
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           <button type="submit" className="primaryBtn" disabled={loading}>
             {loading ? "Ingresando..." : "Iniciar sesión"}
           </button>
@@ -313,4 +358,8 @@ export default function Login({ onGoRegister, onLoginSuccess }) {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

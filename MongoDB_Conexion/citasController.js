@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Cita, Cliente } from './schema.js';
+=======
+﻿import { Cita } from './schema.js';
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 import { logger } from './logger.js';
 
 // ── Mapeo estado string ↔ número ────────────────────────────────────────────
@@ -179,6 +183,7 @@ export const Crear_Cita = async (req, res) => {
             Duracion_Estimada: (hours || 1) * 60,
         });
 
+<<<<<<< HEAD
         // Registrar o actualizar cliente en la colección de clientes
         try {
             const nombreCliente = (clientName || '').trim();
@@ -200,6 +205,8 @@ export const Crear_Cita = async (req, res) => {
             logger.warn('No se pudo registrar cliente', clienteErr?.message);
         }
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         logger.info('Fin: Crear_Cita OK', { citaId: nueva._id.toString() });
         res.status(201).json({ message: 'Cita creada.', cita: mapToFrontend(nueva) });
     } catch (error) {

@@ -5,6 +5,7 @@ import { validateRegister } from "../utils/validators";
 
 const MySwal = withReactContent(Swal);
 
+<<<<<<< HEAD
 const EyeIcon = ({ open }) =>
   open ? (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -20,6 +21,8 @@ const EyeIcon = ({ open }) =>
     </svg>
   );
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 export default function Register({ onGoLogin }) {
   const [form, setForm] = useState({
     fullName: "",
@@ -61,9 +64,12 @@ export default function Register({ onGoLogin }) {
         title: "Revisa tu información",
         text: "Hay campos con errores. Corrígelos para continuar.",
         confirmButtonText: "Ok",
+<<<<<<< HEAD
         confirmButtonColor: "#d6762a",
         background: "#f4efe7",
         color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       });
       return;
     }
@@ -91,9 +97,12 @@ export default function Register({ onGoLogin }) {
           title: "Error al registrar",
           text: data.message || "No se pudo crear la cuenta.",
           confirmButtonText: "Ok",
+<<<<<<< HEAD
           confirmButtonColor: "#d6762a",
           background: "#f4efe7",
           color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         });
         return;
       }
@@ -103,9 +112,12 @@ export default function Register({ onGoLogin }) {
         title: "Cuenta creada",
         text: "Tu cuenta fue registrada exitosamente. Ahora puedes iniciar sesión.",
         confirmButtonText: "Ir a iniciar sesión",
+<<<<<<< HEAD
         confirmButtonColor: "#d6762a",
         background: "#f4efe7",
         color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       });
 
       onGoLogin?.();
@@ -115,9 +127,12 @@ export default function Register({ onGoLogin }) {
         title: "Error de conexión",
         text: "No se pudo conectar con el servidor. Intenta más tarde.",
         confirmButtonText: "Ok",
+<<<<<<< HEAD
         confirmButtonColor: "#d6762a",
         background: "#f4efe7",
         color: "#1b1b1e",
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       });
     } finally {
       setLoading(false);
@@ -127,11 +142,21 @@ export default function Register({ onGoLogin }) {
   return (
     <div className="authScreen">
       <div className="authCard" role="main" aria-label="InkReserve Register">
+<<<<<<< HEAD
         <img className="decor decorTopLeft"    src="/assets/plant-top-left.png"    alt="" aria-hidden="true" />
         <img className="decor decorTopRight"   src="/assets/plant-top-right.png"   alt="" aria-hidden="true" />
         <img className="decor decorBottomLeft" src="/assets/plant-bottom-left.png" alt="" aria-hidden="true" />
         <img className="decor decorBottomRight" src="/assets/plant-bottom-right.png" alt="" aria-hidden="true" />
 
+=======
+        {/* Decoraciones */}
+        <img className="decor decorTopLeft" src="/assets/plant-top-left.png" alt="" aria-hidden="true" />
+        <img className="decor decorTopRight" src="/assets/plant-top-right.png" alt="" aria-hidden="true" />
+        <img className="decor decorBottomLeft" src="/assets/plant-bottom-left.png" alt="" aria-hidden="true" />
+        <img className="decor decorBottomRight" src="/assets/plant-bottom-right.png" alt="" aria-hidden="true" />
+
+        {/* Header */}
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         <div className="brandRow">
           <img className="brandLogo" src="/assets/Logo.png" alt="InkReserve" />
         </div>
@@ -140,9 +165,14 @@ export default function Register({ onGoLogin }) {
         <p className="subtitle">Crea tu cuenta para comenzar a gestionar tu estudio</p>
 
         <form className="form" onSubmit={onSubmit} noValidate>
+<<<<<<< HEAD
 
           {/* Nombre */}
           <div className="field">
+=======
+          {/* Nombre */}
+          <label className="field">
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
             <span className="label">Nombre completo</span>
             <div className={`inputWrap ${touched.fullName && err.fullName ? "inputWrapError" : ""}`}>
               <img className="inputIcon" src="/assets/269275_user-icon.png" alt="" />
@@ -155,39 +185,62 @@ export default function Register({ onGoLogin }) {
               />
             </div>
             {touched.fullName && err.fullName && <small className="errorText">{err.fullName}</small>}
+<<<<<<< HEAD
           </div>
 
           {/* Email */}
           <div className="field">
+=======
+          </label>
+
+          {/* Email */}
+          <label className="field">
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
             <span className="label">Correo electrónico</span>
             <div className={`inputWrap ${touched.email && err.email ? "inputWrapError" : ""}`}>
               <img className="inputIcon" src="/assets/269265_envelope-icon.png" alt="" />
               <input
                 className="input"
+<<<<<<< HEAD
                 type="email"
                 placeholder="tucorreo@dominio.com"
+=======
+                placeholder="Correo electrónico"
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
                 value={form.email}
                 onChange={(e) => setField("email", e.target.value)}
                 onBlur={() => setTouched((p) => ({ ...p, email: true }))}
               />
             </div>
             {touched.email && err.email && <small className="errorText">{err.email}</small>}
+<<<<<<< HEAD
           </div>
 
           {/* Teléfono */}
           <div className="field">
+=======
+          </label>
+
+          {/* Teléfono */}
+          <label className="field">
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
             <span className="label">Teléfono</span>
             <div className={`inputWrap ${touched.phone && err.phone ? "inputWrapError" : ""}`}>
               <img className="inputIcon" src="/assets/telephone_icon-icons.com_69286.png" alt="" />
               <input
                 className="input"
+<<<<<<< HEAD
                 placeholder="10 dígitos"
+=======
+                placeholder="Teléfono (10 dígitos)"
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
                 value={form.phone}
                 onChange={(e) => setField("phone", e.target.value)}
                 onBlur={() => setTouched((p) => ({ ...p, phone: true }))}
               />
             </div>
             {touched.phone && err.phone && <small className="errorText">{err.phone}</small>}
+<<<<<<< HEAD
           </div>
 
           {/* Contraseñas en 2 columnas */}
@@ -242,6 +295,61 @@ export default function Register({ onGoLogin }) {
               )}
             </div>
           </div>
+=======
+          </label>
+
+          {/* Password */}
+          <label className="field">
+            <span className="label">Contraseña</span>
+            <div className={`inputWrap ${touched.password && err.password ? "inputWrapError" : ""}`}>
+              <img className="inputIcon" src="/assets/269326_lock-icon.png" alt="" />
+              <input
+                className="input"
+                placeholder="Contraseña"
+                type={showPass ? "text" : "password"}
+                value={form.password}
+                onChange={(e) => setField("password", e.target.value)}
+                onBlur={() => setTouched((p) => ({ ...p, password: true }))}
+              />
+              <button
+                className="eyeBtn"
+                type="button"
+                aria-label="Mostrar contraseña"
+                onClick={() => setShowPass((v) => !v)}
+              >
+                👁
+              </button>
+            </div>
+            {touched.password && err.password && <small className="errorText">{err.password}</small>}
+          </label>
+
+          {/* Confirm Password */}
+          <label className="field">
+            <span className="label">Confirmar contraseña</span>
+            <div className={`inputWrap ${touched.confirmPassword && err.confirmPassword ? "inputWrapError" : ""}`}>
+              <img className="inputIcon" src="/assets/269326_lock-icon.png" alt="" />
+              <input
+                className="input"
+                placeholder="Confirmar contraseña"
+                type={showPass2 ? "text" : "password"}
+                value={form.confirmPassword}
+                onChange={(e) => setField("confirmPassword", e.target.value)}
+                onBlur={() => setTouched((p) => ({ ...p, confirmPassword: true }))}
+              />
+              <button
+                className="eyeBtn"
+                type="button"
+                aria-label="Mostrar contraseña"
+                onClick={() => setShowPass2((v) => !v)}
+              >
+                👁
+              </button>
+            </div>
+            {touched.confirmPassword && err.confirmPassword && (
+              <small className="errorText">{err.confirmPassword}</small>
+            )}
+          </label>
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
           <button className="primaryBtn" type="submit" disabled={loading}>
             {loading ? "Creando..." : "Crear cuenta"}
@@ -253,9 +361,16 @@ export default function Register({ onGoLogin }) {
               Inicia sesión
             </button>
           </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         </form>
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

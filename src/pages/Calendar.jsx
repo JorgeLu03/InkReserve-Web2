@@ -1,16 +1,25 @@
 import { useState } from "react";
 import "./Calendar.css";
+<<<<<<< HEAD
 import "./Dashboard.css";
 import "./admin/AdminShell.css";
 import Avatar from "../components/Avatar";
 import { STATUS_COLORS, STATUS_LABELS } from "../data/mockData";
+=======
+import Avatar from "../components/Avatar";
+import { ARTISTS, STATUS_COLORS, STATUS_LABELS } from "../data/mockData";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
 const WEEKDAYS = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"];
 const MONTH_NAMES = [
   "Enero","Febrero","Marzo","Abril","Mayo","Junio",
   "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",
 ];
+<<<<<<< HEAD
 const TODAY_ISO = new Date().toISOString().slice(0, 10);
+=======
+const TODAY_ISO = "2026-03-03";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
 function getCalendarCells(year, month) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -25,6 +34,7 @@ function getCalendarCells(year, month) {
   return cells;
 }
 
+<<<<<<< HEAD
 export default function Calendar({ appointments, employees = [], nav }) {
   const [year,  setYear]  = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
@@ -41,6 +51,12 @@ export default function Calendar({ appointments, employees = [], nav }) {
   const artistsThisMonth = employees.filter(emp =>
     appointments.some(a => a.date.startsWith(thisMonth) && a.artistId === emp.artistId)
   );
+=======
+export default function Calendar({ appointments, nav }) {
+  const [year,  setYear]  = useState(2026);
+  const [month, setMonth] = useState(2);
+  const [selected, setSelected] = useState(TODAY_ISO);
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
   function prevMonth() {
     if (month === 0) { setMonth(11); setYear((y) => y - 1); }
@@ -67,11 +83,19 @@ export default function Calendar({ appointments, employees = [], nav }) {
     : ["—", "—", ""];
 
   return (
+<<<<<<< HEAD
     <div className="dashScreen">
       <div className="dashBg" />
 
       {/* HEADER */}
       <header className="dashHeader">
+=======
+    <div className="pageScreen">
+      <div className="pageBg" />
+
+      {/* HEADER */}
+      <header className="pageHeader">
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         <button className="iconBtn" onClick={nav.goBack} aria-label="Volver">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <circle cx="9" cy="9" r="8" stroke="white" strokeWidth="1.5" />
@@ -79,6 +103,7 @@ export default function Calendar({ appointments, employees = [], nav }) {
               strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
+<<<<<<< HEAD
         <div className="dashTitle">
           <h1>Calendario de Citas</h1>
           <span className="dashDate">{new Date().toLocaleDateString("es-MX", { day: "numeric", month: "numeric", year: "numeric" })}</span>
@@ -314,6 +339,129 @@ export default function Calendar({ appointments, employees = [], nav }) {
 
           </div>
         </section>
+=======
+        <h1 className="pageTitle">Calendario de Citas</h1>
+        <button className="primarySmallBtn" onClick={nav.toCreate}>+ Nueva cita</button>
+      </header>
+
+      {/* MAIN */}
+      <main className="calMain">
+
+        {/* CALENDAR GRID */}
+        <div className="calGridSection">
+          {/* Month Nav */}
+          <div className="calMonthNav">
+            <button className="calNavBtn" onClick={prevMonth} aria-label="Mes anterior">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <polyline points="9,2 5,7 9,12" stroke="currentColor" strokeWidth="1.8"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <span className="calMonthLabel">{MONTH_NAMES[month]} {year}</span>
+            <button className="calNavBtn" onClick={nextMonth} aria-label="Mes siguiente">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <polyline points="5,2 9,7 5,12" stroke="currentColor" strokeWidth="1.8"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Weekday headers */}
+          <div className="calWeekdays">
+            {WEEKDAYS.map((w) => <span key={w} className="calWeekday">{w}</span>)}
+          </div>
+
+          {/* Day cells */}
+          <div className="calGrid">
+            {cells.map((cell, i) => {
+              if (!cell) return <div key={`empty-${i}`} className="calCell calCellEmpty" />;
+              const isToday   = cell.dateStr === TODAY_ISO;
+              const isSelected = cell.dateStr === selected;
+              const dayAppts  = apptsByDate[cell.dateStr] || [];
+              return (
+                <button
+                  key={cell.dateStr}
+                  className={`calCell ${isToday ? "calCellToday" : ""} ${isSelected ? "calCellSelected" : ""}`}
+                  onClick={() => setSelected(cell.dateStr)}
+                >
+                  <span className="calDayNum">{cell.day}</span>
+                  {dayAppts.length > 0 && (
+                    <div className="calDots">
+                      {dayAppts.slice(0, 3).map((a) => (
+                        <span
+                          key={a.id}
+                          className="calDot"
+                          style={{ background: STATUS_COLORS[a.status] }}
+                        />
+                      ))}
+                      {dayAppts.length > 3 && <span className="calDotMore">+{dayAppts.length - 3}</span>}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Legend */}
+          <div className="calLegend">
+            {Object.entries(STATUS_LABELS).map(([key, label]) => (
+              <span key={key} className="calLegendItem">
+                <span className="calLegendDot" style={{ background: STATUS_COLORS[key] }} />
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* DAY PANEL */}
+        <div className="calDayPanel">
+          <div className="calDayHeader">
+            <h2 className="calDayTitle">
+              {selected ? `${dd}/${mm}/${yyyy}` : "Selecciona un día"}
+            </h2>
+            <span className="calDayCount">
+              {selectedAppts.length} cita{selectedAppts.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+
+          {selectedAppts.length === 0 ? (
+            <div className="calDayEmpty">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" stroke="rgba(27,27,30,.2)" strokeWidth="1.5" />
+                <line x1="14" y1="20" x2="26" y2="20" stroke="rgba(27,27,30,.2)" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <p>Sin citas este día</p>
+              <button className="primarySmallBtn" onClick={nav.toCreate}>+ Agregar cita</button>
+            </div>
+          ) : (
+            <ul className="calApptList">
+              {selectedAppts.map((appt) => {
+                const artist = ARTISTS.find((a) => a.id === appt.artistId);
+                return (
+                  <li key={appt.id}>
+                    <button type="button" className="calApptItem" onClick={() => nav.toDetail(appt.id)}>
+                      <div className="calApptTime">{appt.time}</div>
+                      <Avatar initials={appt.clientInitials} color={appt.clientColor} size={36} />
+                      <div className="calApptInfo">
+                        <span className="calApptName">{appt.clientName}</span>
+                        <span className="calApptMeta">
+                          {appt.style} · {appt.hours}h · {artist?.name ?? "—"}
+                        </span>
+                      </div>
+                      <span
+                        className="calApptStatus"
+                        style={{ color: STATUS_COLORS[appt.status], borderColor: STATUS_COLORS[appt.status] }}
+                      >
+                        {STATUS_LABELS[appt.status]}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       </main>
     </div>
   );

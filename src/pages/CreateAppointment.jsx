@@ -560,7 +560,11 @@ export default function CreateAppointment({ nav, onAdd, employees = [], appointm
 
   async function handleCancel() {
     if (!isDirty) {
+<<<<<<< HEAD
       nav.goBack?.();
+=======
+      nav.back?.();
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       return;
     }
     const result = await Swal.fire({
@@ -575,7 +579,11 @@ export default function CreateAppointment({ nav, onAdd, employees = [], appointm
       background: "#f4efe7",
       color: "#1b1b1e",
     });
+<<<<<<< HEAD
     if (result.isConfirmed) nav.goBack?.();
+=======
+    if (result.isConfirmed) nav.back?.();
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   }
 
   async function showInvalidFilesAlert(count) {

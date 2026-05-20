@@ -1,7 +1,10 @@
 import { useState } from "react";
 import "../Dashboard.css";
 import "./AdminDashboard.css";
+<<<<<<< HEAD
 import "./AdminShell.css";
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 import Avatar from "../../components/Avatar";
 import { TODAY_ISO, STATUS_LABELS, STATUS_COLORS } from "../../data/mockData";
 
@@ -13,11 +16,14 @@ const TODAY_DISPLAY = getTodayDisplay();
 
 export default function AdminDashboard({ appointments, employees, nav }) {
   const [activeNav, setActiveNav] = useState(null);
+<<<<<<< HEAD
   const [profileOpen, setProfileOpen] = useState(false);
 
   const adminNombre = localStorage.getItem("nombre") || "Administrador";
   const adminCorreo = localStorage.getItem("correo") || "";
   const adminInitials = adminNombre.trim().split(" ").filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join("");
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 
   const todayAppts = appointments
     .filter((a) => a.date === TODAY_ISO)
@@ -69,6 +75,7 @@ export default function AdminDashboard({ appointments, employees, nav }) {
               <line x1="2" y1="8" x2="14" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </button>
+<<<<<<< HEAD
           <button className="adminProfileBtn" onClick={() => setProfileOpen(true)} aria-label="Ver perfil">
             <span className="adminProfileInitials">{adminInitials}</span>
           </button>
@@ -112,10 +119,17 @@ export default function AdminDashboard({ appointments, employees, nav }) {
         </div>
       )}
 
+=======
+          <div className="userAvatarSmall" style={{ background: "#c084fc" }}>A</div>
+        </div>
+      </header>
+
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       {/* ── MAIN ── */}
       <main className="dashMain">
 
         {/* LEFT SIDEBAR */}
+<<<<<<< HEAD
         <aside className="adminSidebar">
           <img src="/assets/logo.png" alt="InkReserve" className="adminSidebarLogo" />
           <p className="adminSidebarTagline">Panel de administración</p>
@@ -148,6 +162,42 @@ export default function AdminDashboard({ appointments, employees, nav }) {
             </svg>
             Nuevo artista
           </button>
+=======
+        <aside className="dashLeft">
+          <img src="/assets/logo.png" alt="InkReserve" className="dashLogo" />
+          <p className="dashTagline">Panel de administración</p>
+
+          <nav className="dashNav">
+            <button
+              className={`navItem ${activeNav === "Artistas" ? "navItemActive" : ""}`}
+              onClick={() => navTo("Artistas", nav.toAdminEmployees)}
+            >
+              <img src="/assets/269275_user-icon.png" alt="" width="15" height="15" className="navIcon" />
+              Artistas
+            </button>
+            <button
+              className={`navItem ${activeNav === "Clientes" ? "navItemActive" : ""}`}
+              onClick={() => navTo("Clientes", nav.toAdminClients)}
+            >
+              <img src="/assets/269275_user-icon.png" alt="" width="15" height="15" className="navIcon" />
+              Clientes
+            </button>
+            <button
+              className={`navItem ${activeNav === "Semana" ? "navItemActive" : ""}`}
+              onClick={() => navTo("Semana", nav.toAdminWeek)}
+            >
+              <img src="/assets/269265_envelope-icon.png" alt="" width="15" height="15" className="navIcon" />
+              Agenda Semanal
+            </button>
+            <button
+              className={`navItem ${activeNav === "Mes" ? "navItemActive" : ""}`}
+              onClick={() => navTo("Mes", nav.toAdminMonth)}
+            >
+              <img src="/assets/269265_envelope-icon.png" alt="" width="15" height="15" className="navIcon" />
+              Agenda Mensual
+            </button>
+          </nav>
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
         </aside>
 
         {/* CONTENT */}

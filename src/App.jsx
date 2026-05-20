@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, Navigate, useParams } from "react-router-dom";
 import "./index.css";
 
+=======
+import { useState } from "react";
+import { Routes, Route, useNavigate, Navigate, useParams } from "react-router-dom";
+import "./index.css";
+import { INITIAL_APPOINTMENTS } from "./data/mockData";
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
 import {
   getCitas,
   createCita,
@@ -49,7 +56,11 @@ function AdminShellPage({ employees, appointments, onAddEmployee, onUpdateEmploy
 }
 
 export default function App() {
+<<<<<<< HEAD
   const [appointments, setAppts] = useState([]);
+=======
+  const [appointments, setAppts] = useState(INITIAL_APPOINTMENTS);
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
   const rol = localStorage.getItem("rol") ?? "user";
@@ -73,6 +84,7 @@ export default function App() {
     goBack: () => navigate(rol === "admin" ? "/admin" : "/dashboard"),
   };
 
+<<<<<<< HEAD
   // Cargar datos reales si ya hay sesión activa (recarga de página)
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -83,6 +95,8 @@ export default function App() {
     });
   }, []);
 
+=======
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   async function addAppointment(appt) {
     const data = await createCita(appt);
     setAppts((p) => [...p, data.cita]);
@@ -153,7 +167,11 @@ export default function App() {
         path="/calendar"
         element={
           <ProtectedRoute>
+<<<<<<< HEAD
             <Calendar appointments={appointments} employees={employees} nav={nav} />
+=======
+            <Calendar appointments={appointments} nav={nav} />
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
           </ProtectedRoute>
         }
       />

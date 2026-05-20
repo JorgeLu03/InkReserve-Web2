@@ -443,6 +443,7 @@ body{
     transition: none !important;
     scroll-behavior: auto !important;
   }
+<<<<<<< HEAD
 }
 
 .passRow {
@@ -457,3 +458,6 @@ body{
   }
 }
  
+=======
+}
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85

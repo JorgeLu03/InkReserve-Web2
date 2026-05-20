@@ -218,6 +218,7 @@ export default function AdminShell({
 }) {
   const [section, setSection] = useState(initialSection ?? "employees");
   const [selEmp, setSelEmp] = useState(null);
+<<<<<<< HEAD
   const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -225,6 +226,10 @@ export default function AdminShell({
   const adminCorreo = localStorage.getItem("correo") || "";
   const adminInitials = adminNombre.trim().split(" ").filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join("");
 
+=======
+  const navigate = useNavigate();
+
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
   function goDetail(emp) {
     setSelEmp(emp);
     setSection("employeeDetail");
@@ -273,6 +278,7 @@ export default function AdminShell({
           </svg>
         </button>
 
+<<<<<<< HEAD
         <div className="adminHeaderCenter">
           <h1 className="adminTitle">{SECTION_TITLES[section]}</h1>
           <span className="adminHeaderDate">{new Date().toLocaleDateString("es-MX", { day: "numeric", month: "numeric", year: "numeric" })}</span>
@@ -324,6 +330,12 @@ export default function AdminShell({
         </div>
       )}
 
+=======
+        <h1 className="adminTitle">{SECTION_TITLES[section]}</h1>
+        <div style={{ width: 80 }} />
+      </header>
+
+>>>>>>> de7ba5106116ce9e4194491af23416fd43d42c85
       <div className="adminBody">
         <aside className="adminSidebar">
           <img src={logo} alt="InkReserve" className="adminSidebarLogo" />
